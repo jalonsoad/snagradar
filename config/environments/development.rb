@@ -61,6 +61,11 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to  = { database: { writing: :queue } }
 
+  # Outgoing mail goes to letter_opener_web — mounted at /letter_opener
+  config.action_mailer.delivery_method      = :letter_opener_web
+  config.action_mailer.perform_deliveries   = true
+  config.action_mailer.default_url_options  = { host: "localhost", port: 3000 }
+
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true
 

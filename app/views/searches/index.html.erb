@@ -1,0 +1,62 @@
+<% content_for :title, "Search — SnagRadar" %>
+
+<div class="max-w-4xl space-y-6">
+  <div>
+    <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">
+      Search results <% if @q.present? %><span class="text-talent-muted font-normal">for "<%= @q %>"</span><% end %>
+    </h1>
+    <p class="mt-1 text-talent-slate"><%= @defects.size %> defect<%= "s" if @defects.size != 1 %> · <%= @sites.size %> site<%= "s" if @sites.size != 1 %></p>
+  </div>
+
+  <% if @defects.empty? && @sites.empty? %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-12 text-center">
+      <h3 class="font-display text-xl font-extrabold text-talent-navy">No matches</h3>
+      <p class="mt-2 text-talent-muted">Try a different query — searches by Hyde reference, title, description or site name.</p>
+    </div>
+  <% end %>
+
+  <% if @defects.any? %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+      <div class="px-5 py-4 border-b border-talent-navy/5 font-display text-lg font-extrabold">Defects</div>
+      <ul class="divide-y divide-talent-navy/5">
+        <% @defects.each do |d| %>
+          <li>
+            <%= link_to defect_path(d), class: "px-5 py-3.5 flex items-center gap-3 hover:bg-talent-mist/50 transition" do %>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 text-xs text-talent-muted">
+                  <span class="font-mono"><%= d.reference || "##{d.id}" %></span>
+                  <span>·</span><span><%= d.site&.name %></span>
+                  <% if d.plot %><span>·</span><span><%= d.plot.label %></span><% end %>
+                  <span>·</span><span><%= d.trade&.name %></span>
+                </div>
+                <div class="text-sm font-semibold text-talent-navy truncate"><%= d.title %></div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-talent-mist text-talent-navy px-2.5 py-1 text-xs font-semibold capitalize"><%= d.status.tr("_", " ") %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @sites.any? %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+      <div class="px-5 py-4 border-b border-talent-navy/5 font-display text-lg font-extrabold">Sites</div>
+      <ul class="divide-y divide-talent-navy/5">
+        <% @sites.each do |s| %>
+          <li>
+            <%= link_to site_path(s), class: "px-5 py-3.5 flex items-center gap-3 hover:bg-talent-mist/50 transition" do %>
+              <span class="h-9 w-9 rounded-xl bg-talent-blue/15 text-talent-blue grid place-items-center">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+              </span>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-talent-navy"><%= s.name %></div>
+                <% if s.reference.present? %><div class="text-xs text-talent-muted font-mono"><%= s.reference %></div><% end %>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

@@ -6,12 +6,27 @@
     </button>
 
     <%# Search %>
-    <div class="hidden md:flex flex-1 max-w-md">
-      <div class="relative w-full">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-talent-muted">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </span>
-        <input type="search" placeholder="Search defects, sites, contractors…" class="block w-full rounded-xl border border-talent-navy/10 bg-talent-mist/60 pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-talent-orange focus:bg-white focus:ring-2 focus:ring-talent-orange/20">
+    <div class="hidden md:flex flex-1 max-w-md relative"
+         data-controller="topbar-search"
+         data-topbar-search-url-value="<%= search_path %>"
+         data-action="click@window->topbar-search#clickOutside">
+      <%= form_with url: search_path, method: :get, class: "w-full" do |f| %>
+        <div class="relative w-full">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-talent-muted pointer-events-none">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <%= f.search_field :q,
+                placeholder: "Search defects, sites, contractors…",
+                data: { topbar_search_target: "input",
+                        action: "input->topbar-search#schedule focus->topbar-search#schedule" },
+                class: "block w-full rounded-xl border border-talent-navy/10 bg-talent-mist/60 pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-talent-orange focus:bg-white focus:ring-2 focus:ring-talent-orange/20" %>
+        </div>
+      <% end %>
+
+      <%# Live results dropdown %>
+      <div data-topbar-search-target="panel"
+           class="hidden absolute top-full left-0 right-0 mt-2 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden max-h-[28rem] overflow-y-auto z-50">
+        <div data-topbar-search-target="results"></div>
       </div>
     </div>
 

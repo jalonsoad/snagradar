@@ -1,7 +1,12 @@
 <% input_classes = "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
 <% label_classes = "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
 
-<%= form_with model: defect, url: (defect.persisted? ? defect_path(defect) : defects_path), multipart: true, class: "space-y-5" do |f| %>
+<%= form_with model: defect,
+              url: (defect.persisted? ? defect_path(defect) : defects_path),
+              multipart: true, class: "space-y-5",
+              data: { controller: "defect-classifier",
+                      defect_classifier_url_value: classify_defects_path,
+                      defect_classifier_csrf_token_value: form_authenticity_token } do |f| %>
 
   <div class="grid sm:grid-cols-2 gap-5">
     <div>
@@ -14,11 +19,15 @@
     </div>
     <div>
       <%= f.label :trade_id, "Trade", class: label_classes %>
-      <%= f.collection_select :trade_id, Current.organization.trades.order(:name), :id, :name, { include_blank: "Select trade" }, class: input_classes %>
+      <%= f.collection_select :trade_id, Current.organization.trades.order(:name), :id, :name, { include_blank: "Select trade" },
+            { class: input_classes,
+              data: { defect_classifier_target: "tradeSelect" } } %>
     </div>
     <div>
       <%= f.label :priority, class: label_classes %>
-      <%= f.select :priority, Defect.priorities.keys.map { |p| [p.titleize, p] }, {}, class: input_classes %>
+      <%= f.select :priority, Defect.priorities.keys.map { |p| [p.titleize, p] }, {},
+            { class: input_classes,
+              data: { defect_classifier_target: "prioritySelect" } } %>
     </div>
     <div>
       <%= f.label :reference, "Client reference", class: label_classes %>
@@ -32,12 +41,24 @@
 
   <div>
     <%= f.label :title, class: label_classes %>
-    <%= f.text_field :title, class: input_classes, placeholder: "Short summary, e.g. Leak under kitchen sink", required: true %>
+    <%= f.text_field :title, class: input_classes, required: true,
+          placeholder: "Short summary, e.g. Leak under kitchen sink",
+          data: { defect_classifier_target: "title",
+                  action: "input->defect-classifier#schedule" } %>
   </div>
 
   <div>
     <%= f.label :description, "Description (optional)", class: label_classes %>
-    <%= f.text_area :description, rows: 4, class: "#{input_classes} resize-none", placeholder: "Anything the trade should know before turning up?" %>
+    <%= f.text_area :description, rows: 4, class: "#{input_classes} resize-none",
+          placeholder: "Anything the trade should know before turning up?",
+          data: { defect_classifier_target: "description",
+                  action: "input->defect-classifier#schedule" } %>
+  </div>
+
+  <%# AI suggestion panel — rendered live by the Stimulus controller %>
+  <div class="hidden rounded-2xl bg-gradient-to-br from-talent-orange/5 via-white to-talent-blue/5 border border-talent-orange/20 p-4"
+       data-defect-classifier-target="panel"
+       aria-live="polite">
   </div>
 
   <div>

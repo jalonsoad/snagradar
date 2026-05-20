@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboards#show", as: :dashboard
 
   resources :defects do
+    collection do
+      post "classify", to: "defects/classifications#create"
+    end
     member do
       post :assign
       post :accept
@@ -31,6 +34,7 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index update]
   get  "reports",            to: "reports#index", as: :reports
   get  "reports/defects.csv", to: "reports#defects_csv", as: :reports_defects_csv
+  get  "search",             to: "searches#index", as: :search
 
   # ─── Tokenised contractor portal (no auth) ────────────────────────
   scope "/c/:token", controller: :contractor_portal, as: :contractor_portal do
@@ -49,6 +53,11 @@ Rails.application.routes.draw do
 
   # ─── Misc ─────────────────────────────────────────────────────────
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # Browser-based outgoing-mail preview in dev
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
   root      "pages#home"
   get "features", to: "pages#features", as: :features
