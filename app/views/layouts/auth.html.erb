@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "SnagRadar" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#022043">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <link rel="icon" href="<%= asset_path('snagradar-icon.png') %>" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-white text-talent-navy antialiased min-h-screen">
+    <div class="grid lg:grid-cols-2 min-h-screen">
+
+      <%# LEFT — Testimonial / brand panel (Panora style, translated to Talent palette) %>
+      <aside class="hidden lg:flex relative overflow-hidden bg-talent-navy text-white p-12 flex-col justify-between">
+        <div class="absolute inset-0 bp-grid opacity-40 pointer-events-none"></div>
+        <div class="absolute -top-40 -left-20 h-[28rem] w-[28rem] rounded-full bg-talent-orange/25 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 right-0 h-[26rem] w-[26rem] rounded-full bg-talent-blue/30 blur-3xl pointer-events-none"></div>
+
+        <div class="relative">
+          <%= link_to root_path, class: "inline-flex items-center gap-2.5" do %>
+            <%= image_tag "snagradar-icon.png", alt: "", class: "h-9 w-9 object-contain bg-white rounded-xl p-1" %>
+            <span class="font-display text-xl font-extrabold tracking-tight">
+              <span class="text-white">Snag</span><span class="text-talent-orange">Radar</span>
+            </span>
+          <% end %>
+        </div>
+
+        <%# Big quote with star rating %>
+        <div class="relative max-w-md">
+          <svg class="h-8 w-8 text-talent-orange" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v6h6V9H7c0-1.1.9-2 2-2V7zm10 0h-4a2 2 0 0 0-2 2v6h6V9h-2c0-1.1.9-2 2-2V7z"/></svg>
+          <p class="mt-6 font-display text-3xl font-bold leading-tight">
+            We went from chasing trades on WhatsApp to seeing every defect, owner and SLA in one place. Our overdue count halved in the first month.
+          </p>
+          <div class="mt-6 flex items-center gap-3">
+            <%= image_tag "photos/eleanor-marshall.png", alt: "", class: "h-12 w-12 rounded-full object-cover ring-2 ring-white/15" %>
+            <div>
+              <div class="font-semibold">Eleanor Marshall</div>
+              <div class="text-sm text-white/55">Customer Care Lead, PMC</div>
+            </div>
+            <div class="ml-4 flex gap-0.5 text-amber-400">
+              <% 5.times do %><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative text-xs text-white/50">© <%= Date.current.year %> SnagRadar Ltd</div>
+      </aside>
+
+      <%# RIGHT — Form panel %>
+      <main class="flex flex-col p-6 sm:p-12">
+        <%# Top bar on mobile shows the logo since the left panel is hidden %>
+        <div class="lg:hidden mb-6 flex items-center justify-between">
+          <%= link_to root_path, class: "inline-flex items-center gap-2" do %>
+            <%= image_tag "snagradar-icon.png", alt: "", class: "h-8 w-8 object-contain" %>
+            <span class="font-display text-lg font-extrabold tracking-tight">
+              <span class="text-talent-navy">Snag</span><span class="text-talent-orange">Radar</span>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="hidden lg:flex justify-end text-sm text-talent-muted mb-12">
+          <%= yield :auth_top_link %>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center">
+          <div class="w-full max-w-md">
+            <%= yield %>
+          </div>
+        </div>
+
+        <div class="mt-12 text-xs text-talent-muted flex justify-between">
+          <span>© <%= Date.current.year %> SnagRadar Ltd</span>
+          <%= link_to "Need help?", contact_path, class: "hover:text-talent-orange transition" %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

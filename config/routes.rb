@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
-  resource :session
+  # ─── Authentication ───────────────────────────────────────────────
+  resource  :session
   resources :passwords, param: :token
+  resource  :registration, only: [:new, :create], path: "sign_up"
+  resource  :onboarding,   only: [:new, :create]
+
+  # ─── Authenticated app ────────────────────────────────────────────
+  get "dashboard", to: "dashboards#show", as: :dashboard
+
+  # ─── Misc ─────────────────────────────────────────────────────────
   get "up" => "rails/health#show", as: :rails_health_check
 
   root      "pages#home"

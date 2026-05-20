@@ -1,0 +1,71 @@
+<% content_for :title, "Create an account — SnagRadar" %>
+<% content_for :auth_top_link do %>
+  Already have an account? <%= link_to "Sign in", new_session_path, class: "ml-1 font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
+<% end %>
+
+<div>
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Create an account</h1>
+  <p class="mt-2 text-talent-slate">Start a 14-day pilot. No credit card required.</p>
+
+  <% if flash.now[:alert].present? %>
+    <div class="mt-6 rounded-2xl bg-rose-50 ring-1 ring-rose-200 p-4 flex items-start gap-3" role="alert">
+      <svg class="h-5 w-5 text-rose-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="text-sm font-medium text-rose-800"><%= flash.now[:alert] %></div>
+    </div>
+  <% end %>
+
+  <%= form_with model: @user, url: registration_path, class: "mt-8 space-y-5" do |f| %>
+    <div>
+      <%= f.label :name, "Your name", class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+      <div class="relative mt-2">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <%= f.text_field :name, required: true, autofocus: true, autocomplete: "name", placeholder: "Sara Jenkins", class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :email_address, "Work email", class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+      <div class="relative mt-2">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+        </span>
+        <%= f.email_field :email_address, required: true, autocomplete: "username", placeholder: "sara@company.com", class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :password, class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+      <div class="relative mt-2">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <%= f.password_field :password, required: true, minlength: 8, maxlength: 72, autocomplete: "new-password", placeholder: "At least 8 characters", class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, "Confirm password", class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+      <div class="relative mt-2">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <%= f.password_field :password_confirmation, required: true, minlength: 8, maxlength: 72, autocomplete: "new-password", placeholder: "Re-type your password", class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+      </div>
+    </div>
+
+    <%= f.submit "Create account", class: "btn-primary w-full justify-center cursor-pointer" %>
+  <% end %>
+
+  <p class="mt-6 text-xs text-center text-talent-muted">
+    By signing up you agree to the
+    <%= link_to "Terms", terms_path, class: "underline hover:text-talent-navy" %> and
+    <%= link_to "Privacy policy", privacy_path, class: "underline hover:text-talent-navy" %>.
+  </p>
+
+  <p class="mt-6 text-center text-sm text-talent-muted lg:hidden">
+    Already have an account?
+    <%= link_to "Sign in", new_session_path, class: "font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
+  </p>
+</div>

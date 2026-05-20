@@ -11,8 +11,7 @@ class AuthenticatedController < ApplicationController
 
   def require_organization
     return if Current.user&.organization_id.present?
-    # User has no org yet — push them to onboarding
-    redirect_to new_organization_path, alert: "Set up your organisation to continue." if request.format.html?
+    redirect_to new_onboarding_path, alert: "Set up your organisation to continue."
   end
 
   def set_current_organization
