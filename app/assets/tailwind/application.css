@@ -112,12 +112,14 @@
     color: var(--color-talent-white);
   }
 
-  /* :where() keeps the colour rule at specificity 0,0,0 so Tailwind text-* utilities win */
+  /* Headings INHERIT their colour from the parent (body defaults to navy;
+     dark sections set text-white which propagates). Setting color directly
+     here — even via :where — would break inheritance and leave headings
+     invisible on bg-talent-navy sections. */
   :where(h1, h2, h3, h4) {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.025em;
-    color: var(--color-talent-navy);
   }
 
   /* Sofia-Sans throughout, like rocket-saas.io */
