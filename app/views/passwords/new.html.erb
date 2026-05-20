@@ -1,17 +1,30 @@
-<div class="mx-auto md:w-2/3 w-full">
+<% content_for :title, "Reset password — SnagRadar" %>
+<% content_for :auth_top_link do %>
+  Remembered it? <%= link_to "Sign in", new_session_path, class: "ml-1 font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
+<% end %>
+
+<div>
+  <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Forgot your password?</h1>
+  <p class="mt-2 text-talent-slate">We'll email you a reset link if there's an account on file.</p>
+
   <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+    <div class="mt-6 rounded-2xl bg-rose-50 ring-1 ring-rose-200 p-4 text-sm font-medium text-rose-800" role="alert"><%= alert %></div>
+  <% end %>
+  <% if notice = flash[:notice] %>
+    <div class="mt-6 rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 p-4 text-sm font-medium text-emerald-800" role="status"><%= notice %></div>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Forgot your password?</h1>
-
-  <%= form_with url: passwords_path, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-solid focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  <%= form_with url: passwords_path, class: "mt-8 space-y-5" do |form| %>
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Email address</label>
+      <div class="relative mt-2">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted pointer-events-none">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+        </span>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@company.com", value: params[:email_address], class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+      </div>
     </div>
 
-    <div class="inline">
-      <%= form.submit "Email reset instructions", class: "w-full sm:w-auto text-center rounded-lg px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-    </div>
+    <%= form.submit "Email reset instructions", class: "btn-primary w-full justify-center cursor-pointer" %>
   <% end %>
 </div>
