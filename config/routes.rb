@@ -32,6 +32,11 @@ Rails.application.routes.draw do
 
   resources :appointments,  only: %i[index update destroy]
   resources :notifications, only: %i[index update]
+  resources :invitations,   only: %i[index new create destroy]
+  # Tokenised accept flow — uses a separate helper name to avoid colliding
+  # with the resourceful :invitation helper that destroy uses.
+  get   "invite/:token", to: "invitations#show",   as: :accept_invitation
+  patch "invite/:token", to: "invitations#update"
   get  "reports",            to: "reports#index", as: :reports
   get  "reports/defects.csv", to: "reports#defects_csv", as: :reports_defects_csv
   get  "search",             to: "searches#index", as: :search

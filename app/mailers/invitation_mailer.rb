@@ -5,7 +5,7 @@ class InvitationMailer < ApplicationMailer
     @invitation = invitation
     @invited_by = invitation.invited_by
     @org        = invitation.organization
-    @url        = invitation_url(token: plain_token, host: default_host)
+    @url        = accept_invitation_url(token: plain_token, host: default_host)
 
     mail(
       to:      invitation.email_address,

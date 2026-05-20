@@ -1,7 +1,13 @@
 <header class="sticky top-0 z-40 bg-white border-b border-talent-navy/5">
   <div class="flex items-center justify-between gap-4 px-6 lg:px-10 h-16">
-    <%# Mobile menu trigger %>
-    <button type="button" class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-talent-navy" aria-label="Menu">
+    <%# Mobile menu trigger — Flowbite drawer %>
+    <button type="button"
+            data-drawer-target="mobile-sidebar"
+            data-drawer-show="mobile-sidebar"
+            data-drawer-placement="left"
+            aria-controls="mobile-sidebar"
+            class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-talent-navy hover:bg-talent-mist transition cursor-pointer"
+            aria-label="Open menu">
       <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
 
@@ -37,22 +43,90 @@
         New defect
       <% end %>
 
+      <%# Notifications — Flowbite dropdown %>
       <% unread_count = Current.user&.notifications&.unread&.count.to_i %>
-      <%= link_to notifications_path, class: "relative h-9 w-9 grid place-items-center rounded-full hover:bg-talent-mist transition", aria: { label: "Notifications (#{unread_count} unread)" } do %>
-        <svg class="h-5 w-5 text-talent-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <% if unread_count > 0 %>
-          <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-talent-orange text-white text-[10px] font-bold grid place-items-center ring-2 ring-white"><%= [unread_count, 99].min %></span>
-        <% end %>
-      <% end %>
+      <% recent_notifications = Current.user&.notifications&.recent&.limit(5)&.to_a || [] %>
+      <div class="relative">
+        <button id="notifications-bell"
+                data-dropdown-toggle="notifications-dropdown"
+                data-dropdown-placement="bottom-end"
+                type="button"
+                class="relative h-9 w-9 grid place-items-center rounded-full hover:bg-talent-mist transition cursor-pointer"
+                aria-label="Notifications (<%= unread_count %> unread)">
+          <svg class="h-5 w-5 text-talent-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <% if unread_count > 0 %>
+            <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-talent-orange text-white text-[10px] font-bold grid place-items-center ring-2 ring-white"><%= [unread_count, 99].min %></span>
+          <% end %>
+        </button>
 
+        <div id="notifications-dropdown"
+             class="z-50 hidden w-80 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden">
+          <div class="px-4 py-3 border-b border-talent-navy/5 flex items-center justify-between">
+            <div class="font-display text-sm font-extrabold text-talent-navy">Notifications</div>
+            <span class="text-xs text-talent-muted"><%= unread_count %> unread</span>
+          </div>
+          <% if recent_notifications.any? %>
+            <ul class="divide-y divide-talent-navy/5 max-h-80 overflow-y-auto">
+              <% recent_notifications.each do |n| %>
+                <li class="<%= 'bg-talent-orange/[0.04]' if n.read_at.nil? %>">
+                  <%= link_to (n.defect ? defect_path(n.defect) : notifications_path),
+                              class: "block px-4 py-3 hover:bg-talent-mist/40 transition" do %>
+                    <div class="flex items-start gap-3">
+                      <span class="mt-1 h-6 w-6 rounded-lg bg-talent-orange/15 text-talent-orange grid place-items-center flex-shrink-0">
+                        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+                      </span>
+                      <div class="flex-1 min-w-0">
+                        <div class="text-sm font-semibold text-talent-navy truncate"><%= n.subject || n.event_type.humanize %></div>
+                        <% if n.preview.present? %>
+                          <div class="text-xs text-talent-muted truncate"><%= n.preview %></div>
+                        <% end %>
+                        <div class="text-[10px] text-talent-muted font-mono mt-0.5"><%= time_ago_in_words(n.created_at) %> ago</div>
+                      </div>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+            <div class="px-4 py-2 border-t border-talent-navy/5 text-center">
+              <%= link_to "See all notifications", notifications_path, class: "text-xs font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
+            </div>
+          <% else %>
+            <div class="px-4 py-8 text-center text-sm text-talent-muted">You're all caught up.</div>
+          <% end %>
+        </div>
+      </div>
+
+      <%# User menu — Flowbite dropdown %>
       <% user = Current.user %>
-      <div class="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l sm:border-talent-navy/10 sm:ml-1">
+      <button id="user-menu-trigger"
+              data-dropdown-toggle="user-menu-dropdown"
+              data-dropdown-placement="bottom-end"
+              type="button"
+              class="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l sm:border-talent-navy/10 sm:ml-1 cursor-pointer hover:opacity-90 transition"
+              aria-label="Account menu">
         <div class="h-9 w-9 rounded-full bg-gradient-to-br from-talent-orange to-talent-orange-600 grid place-items-center text-white text-sm font-bold">
           <%= user&.initials %>
         </div>
-        <div class="hidden sm:block leading-tight">
+        <div class="hidden sm:block leading-tight text-left">
           <div class="text-sm font-semibold text-talent-navy truncate max-w-[140px]"><%= user&.display_name %></div>
           <div class="text-xs text-talent-muted capitalize"><%= user&.role&.tr("_", " ") %></div>
+        </div>
+        <svg class="hidden sm:block h-3 w-3 text-talent-muted ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <div id="user-menu-dropdown"
+           class="z-50 hidden w-56 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden">
+        <div class="px-4 py-3 border-b border-talent-navy/5">
+          <div class="text-xs text-talent-muted">Signed in as</div>
+          <div class="text-sm font-semibold text-talent-navy truncate"><%= user&.email_address %></div>
+        </div>
+        <ul class="py-1 text-sm">
+          <li><%= link_to "Team", invitations_path, class: "block px-4 py-2 text-talent-navy hover:bg-talent-mist transition" %></li>
+          <li><%= link_to "Profile", "#", class: "block px-4 py-2 text-talent-navy hover:bg-talent-mist transition" %></li>
+        </ul>
+        <div class="border-t border-talent-navy/5">
+          <%= button_to "Sign out", session_path, method: :delete,
+                class: "block w-full text-left px-4 py-2 text-sm text-talent-navy hover:bg-talent-mist transition cursor-pointer" %>
         </div>
       </div>
     </div>

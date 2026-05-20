@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Tell Tailwind to scan Flowbite's vendored JS for utility classes
+   used in its data-attribute components. */
+@source "../../../vendor/javascript/flowbite.js";
+
+/* SnagRadar-branded Flowbite design tokens (generated via Flowbite MCP) */
+@import "./flowbite-theme.css";
+
 /* ============================================================
    SnagRadar — Marketing Theme
    Uniflow-inspired layout + Talent brand palette

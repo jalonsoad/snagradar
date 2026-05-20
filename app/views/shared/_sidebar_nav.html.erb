@@ -1,0 +1,54 @@
+<%# Shared between the desktop sidebar and the mobile drawer.
+    Caller passes a tone (`dark` or `light`) — defaults to dark navy. %>
+<% tone = local_assigns.fetch(:tone, :dark) %>
+<% link_idle    = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-talent-slate hover:bg-talent-mist" %>
+<% link_active  = tone == :dark ? "bg-white/10 text-white"                                : "bg-talent-orange/10 text-talent-orange-700" %>
+<% footer_idle  = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-talent-slate hover:bg-talent-mist" %>
+<% divider_cls  = tone == :dark ? "border-white/10"                                       : "border-talent-navy/10" %>
+
+<nav class="flex-1 px-3 py-2 space-y-0.5 text-sm">
+  <% nav = [
+    { name: "Dashboard",    path: dashboard_path,              icon: :grid,    active: controller_path == "dashboards" },
+    { name: "Defects",      path: defects_path,                icon: :radar,   active: controller_path == "defects" },
+    { name: "Appointments", path: appointments_path,           icon: :calendar,active: controller_path == "appointments" },
+    { name: "Sites",        path: sites_path,                  icon: :building,active: %w[sites plots].include?(controller_path) },
+    { name: "Trades",       path: trades_path,                 icon: :tool,    active: controller_path == "trades" },
+    { name: "Contractors",  path: contractor_companies_path,   icon: :users,   active: controller_path == "contractor_companies" },
+    { name: "Team",         path: invitations_path,            icon: :team,    active: controller_path == "invitations" },
+    { name: "Reports",      path: reports_path,                icon: :chart,   active: controller_path == "reports" }
+  ] %>
+  <% nav.each do |item| %>
+    <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-xl transition #{item[:active] ? link_active : link_idle}" do %>
+      <% case item[:icon] %>
+      <% when :grid %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <% when :radar %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+      <% when :calendar %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <% when :building %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+      <% when :tool %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>
+      <% when :users %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <% when :team %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+      <% when :chart %>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <% end %>
+      <span class="font-medium"><%= item[:name] %></span>
+    <% end %>
+  <% end %>
+</nav>
+
+<div class="px-3 py-4 border-t <%= divider_cls %>">
+  <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl transition #{footer_idle}" do %>
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span class="text-sm font-medium">Settings</span>
+  <% end %>
+  <%= button_to session_path, method: :delete, class: "w-full flex items-center gap-3 px-3 py-2 rounded-xl transition cursor-pointer #{footer_idle}" do %>
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    <span class="text-sm font-medium">Sign out</span>
+  <% end %>
+</div>

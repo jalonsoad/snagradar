@@ -1,0 +1,119 @@
+/* ============================================================
+   SnagRadar — Flowbite design tokens
+   Generated via the Flowbite MCP (generate-theme) with brand
+   color #FC5A07 + SnagRadar instructions, then tuned for our
+   Talent palette + Sofia Sans typography.
+   ============================================================ */
+
+@theme {
+  /* Typography — Sofia Sans throughout (matches the rest of the app) */
+  --font-sans: "Sofia Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif";
+  --font-body: "Sofia Sans", "ui-sans-serif", "system-ui", "sans-serif";
+
+  --text-2xs: 0.625rem;
+  --spacing-8xl: 90rem;
+  --leading-9: 36px;
+  --leading-7: 28px;
+  --leading-8: 32px;
+  --leading-6: 24px;
+  --leading-4: 16px;
+  --leading-none: 1px;
+  --leading-5: 20px;
+  --leading-heading-none: 60px;
+  --tracking-tighter: -0.8px;
+  --tracking-tight: -0.4px;
+
+  /* Border radius — generous, SaaS-modern; cards 16px, inputs 12px */
+  --radius-0:    0px;
+  --radius-xxs:  4px;
+  --radius-xs:   6px;
+  --radius-sm:   8px;
+  --radius:     10px;
+  --radius-base:12px;   /* inputs */
+  --radius-lg:  16px;   /* cards */
+
+  --default-border-width: 1px;
+
+  /* TEXT COLOR VARIABLES — Talent navy on light backgrounds */
+  --color-body:                 var(--color-talent-slate);
+  --color-body-subtle:          var(--color-talent-muted);
+  --color-heading:              var(--color-talent-navy);
+
+  --color-fg-brand-subtle:      #ffd2bb;
+  --color-fg-brand:             var(--color-talent-orange);     /* #FC5A07 */
+  --color-fg-brand-strong:      var(--color-talent-orange-700); /* #BF3D00 */
+
+  --color-fg-success:           var(--color-emerald-700);
+  --color-fg-success-strong:    var(--color-emerald-900);
+  --color-fg-danger:            var(--color-rose-700);
+  --color-fg-danger-strong:     var(--color-rose-900);
+  --color-fg-warning-subtle:    var(--color-amber-600);
+  --color-fg-warning:           var(--color-amber-700);
+  --color-fg-yellow:            var(--color-yellow-400);
+  --color-fg-disabled:          var(--color-gray-400);
+
+  /* BACKGROUND COLOR VARIABLES */
+  --color-neutral-primary-soft:        var(--color-white);
+  --color-neutral-primary:             var(--color-white);
+  --color-neutral-primary-medium:      var(--color-white);
+  --color-neutral-primary-strong:      var(--color-white);
+  --color-neutral-secondary-soft:      var(--color-talent-mist);
+  --color-neutral-secondary:           var(--color-talent-mist);
+  --color-neutral-secondary-medium:    var(--color-talent-mist);
+  --color-neutral-secondary-strong:    var(--color-talent-mist);
+  --color-neutral-secondary-strongest: var(--color-talent-mist);
+  --color-neutral-tertiary-soft:       var(--color-gray-100);
+  --color-neutral-tertiary:            var(--color-gray-100);
+  --color-neutral-tertiary-medium:     var(--color-gray-100);
+  --color-neutral-quaternary:          var(--color-gray-200);
+  --color-neutral-quaternary-medium:   var(--color-gray-200);
+  --color-gray:                        var(--color-gray-300);
+
+  /* Brand background tokens — Flowbite components look up --color-brand */
+  --color-brand-softer:  #fff1e8;
+  --color-brand-soft:    #ffe1cd;
+  --color-brand:         var(--color-talent-orange);
+  --color-brand-medium:  #ffb98a;
+  --color-brand-strong:  var(--color-talent-orange-700);
+
+  /* Status backgrounds */
+  --color-success-soft:    var(--color-emerald-50);
+  --color-success:         var(--color-emerald-600);
+  --color-success-medium:  var(--color-emerald-100);
+  --color-success-strong:  var(--color-emerald-800);
+  --color-danger-soft:     var(--color-rose-50);
+  --color-danger:          var(--color-rose-600);
+  --color-danger-medium:   var(--color-rose-100);
+  --color-danger-strong:   var(--color-rose-800);
+  --color-warning-soft:    var(--color-amber-50);
+  --color-warning:         var(--color-amber-500);
+  --color-warning-medium:  var(--color-amber-100);
+  --color-warning-strong:  var(--color-amber-700);
+
+  /* "Dark" tokens use the Talent navy */
+  --color-dark-soft:    var(--color-talent-navy-700);
+  --color-dark:         var(--color-talent-navy);
+  --color-dark-strong:  var(--color-talent-navy-900);
+  --color-disabled:     var(--color-gray-100);
+
+  /* BORDER COLOR VARIABLES */
+  --color-buffer:           var(--color-white);
+  --color-buffer-medium:    var(--color-white);
+  --color-buffer-strong:    var(--color-white);
+  --color-muted:            var(--color-talent-mist);
+  --color-light-subtle:     var(--color-gray-100);
+  --color-light:            var(--color-gray-100);
+  --color-light-medium:     var(--color-gray-200);
+  --color-default-subtle:   var(--color-gray-200);
+  --color-default:          var(--color-talent-navy);
+  --color-default-medium:   var(--color-gray-300);
+  --color-default-strong:   var(--color-talent-navy);
+
+  --color-success-subtle:   var(--color-emerald-200);
+  --color-danger-subtle:    var(--color-rose-200);
+  --color-warning-subtle:   var(--color-amber-200);
+  --color-brand-subtle:     #ffd2bb;
+  --color-brand-light:      var(--color-talent-orange);
+  --color-dark-subtle:      var(--color-talent-navy-700);
+  --color-dark-backdrop:    var(--color-talent-navy-900);
+}
