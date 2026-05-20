@@ -18,52 +18,68 @@
     <div class="grid lg:grid-cols-12 gap-10 items-start reveal">
       <%# Form %>
       <div class="lg:col-span-7 card-surface p-8 sm:p-10">
-        <%= form_with url: "#", method: :post, class: "space-y-5", local: true do |f| %>
+        <% input_classes = "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+        <% label_classes = "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+
+        <% if flash[:notice].present? %>
+          <div class="mb-6 rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 p-4 flex items-start gap-3" role="status">
+            <svg class="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div class="text-sm font-medium text-emerald-800"><%= flash[:notice] %></div>
+          </div>
+        <% end %>
+
+        <% if flash.now[:alert].present? %>
+          <div class="mb-6 rounded-2xl bg-rose-50 ring-1 ring-rose-200 p-4 flex items-start gap-3" role="alert">
+            <svg class="h-5 w-5 text-rose-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="text-sm font-medium text-rose-800"><%= flash.now[:alert] %></div>
+          </div>
+        <% end %>
+
+        <%= form_with model: @contact, url: submit_contact_path, class: "space-y-5", local: true do |f| %>
           <div class="grid sm:grid-cols-2 gap-5">
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Full name</label>
-              <input type="text" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="Sara Jenkins">
+              <%= f.label :name, "Full name", class: label_classes %>
+              <%= f.text_field :name, class: input_classes, placeholder: "Sara Jenkins", autocomplete: "name" %>
             </div>
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Company</label>
-              <input type="text" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="PMC Customer Care">
+              <%= f.label :company, "Company", class: label_classes %>
+              <%= f.text_field :company, class: input_classes, placeholder: "PMC Customer Care", autocomplete: "organization" %>
             </div>
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Work email</label>
-              <input type="email" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="sara@pmccare.co.uk">
+              <%= f.label :email, "Work email", class: label_classes %>
+              <%= f.email_field :email, class: input_classes, placeholder: "sara@pmccare.co.uk", autocomplete: "email" %>
             </div>
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Phone <span class="font-normal text-talent-muted/60">(optional)</span></label>
-              <input type="tel" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="+44 7…">
+              <%= f.label :phone, class: label_classes do %>
+                Phone <span class="font-normal normal-case text-talent-muted/60">(optional)</span>
+              <% end %>
+              <%= f.telephone_field :phone, class: input_classes, placeholder: "+44 7…", autocomplete: "tel" %>
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">I'm interested in</label>
+            <span class="block text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">I'm interested in</span>
             <div class="grid sm:grid-cols-3 gap-2">
-              <% ["Book a demo", "Start a pilot", "Talk to sales"].each_with_index do |opt, i| %>
+              <% [["demo", "Book a demo"], ["pilot", "Start a pilot"], ["sales", "Talk to sales"]].each do |value, text| %>
                 <label class="flex items-center justify-center gap-2 rounded-xl border border-talent-navy/10 px-4 py-3 text-sm font-semibold cursor-pointer hover:border-talent-orange transition has-[:checked]:bg-talent-orange has-[:checked]:text-white has-[:checked]:border-talent-orange">
-                  <input type="radio" name="interest" class="sr-only" <%= 'checked' if i == 0 %>>
-                  <%= opt %>
+                  <%= f.radio_button :interest, value, class: "sr-only" %>
+                  <%= text %>
                 </label>
               <% end %>
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Tell us about your sites</label>
-            <textarea rows="5" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none" placeholder="How many sites? What's your current process? Where does it hurt?"></textarea>
+            <%= f.label :message, "Tell us about your sites", class: label_classes %>
+            <%= f.text_area :message, rows: 5, class: "#{input_classes} resize-none", placeholder: "How many sites? What's your current process? Where does it hurt?" %>
           </div>
 
-          <label class="flex items-start gap-3 text-sm text-talent-slate">
-            <input type="checkbox" class="mt-0.5 h-4 w-4 rounded border-talent-navy/20 text-talent-orange focus:ring-talent-orange">
+          <%= f.label :terms_accepted, class: "flex items-start gap-3 text-sm text-talent-slate" do %>
+            <%= f.check_box :terms_accepted, class: "mt-0.5 h-4 w-4 rounded border-talent-navy/20 text-talent-orange focus:ring-talent-orange" %>
             <span>I agree to be contacted about SnagRadar and have read the <%= link_to "privacy policy", privacy_path, class: "underline" %>.</span>
-          </label>
+          <% end %>
 
-          <button type="submit" class="btn-pill-orange w-full sm:w-auto px-8 py-4 text-base justify-center">
-            Send message
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </button>
+          <%= f.submit "Send message", class: "btn-pill-orange cursor-pointer w-full sm:w-auto px-8 py-4 text-base justify-center" %>
         <% end %>
       </div>
 
