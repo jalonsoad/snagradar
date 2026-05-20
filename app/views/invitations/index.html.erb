@@ -1,0 +1,57 @@
+<% content_for :title, "Team — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Team</h1>
+      <p class="mt-1 text-talent-slate">Invite teammates to your workspace.</p>
+    </div>
+    <%= link_to new_invitation_path, class: "btn-primary cursor-pointer" do %>
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Invite teammate
+    <% end %>
+  </div>
+
+  <%# Pending %>
+  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+    <div class="px-5 py-4 border-b border-talent-navy/5 flex items-center justify-between">
+      <div class="font-display text-lg font-extrabold">Pending invitations</div>
+      <span class="text-xs text-talent-muted"><%= @pending.size %></span>
+    </div>
+    <% if @pending.any? %>
+      <ul class="divide-y divide-talent-navy/5">
+        <% @pending.each do |inv| %>
+          <li class="px-5 py-3.5 flex items-center gap-4">
+            <div class="h-10 w-10 rounded-full bg-talent-mist grid place-items-center text-talent-muted font-semibold">
+              <%= inv.email_address[0].upcase %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-talent-navy truncate"><%= inv.email_address %></div>
+              <div class="text-xs text-talent-muted"><%= inv.role.titleize %> · invited <%= time_ago_in_words inv.created_at %> ago · expires <%= time_ago_in_words inv.expires_at %></div>
+            </div>
+            <%= button_to "Revoke", invitation_path(inv), method: :delete, data: { turbo_confirm: "Revoke this invitation?" }, class: "rounded-full bg-rose-50 text-rose-700 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100 transition" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="p-10 text-center text-sm text-talent-muted">No pending invitations.</div>
+    <% end %>
+  </div>
+
+  <%# Org users %>
+  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+    <div class="px-5 py-4 border-b border-talent-navy/5 font-display text-lg font-extrabold">Team members</div>
+    <ul class="divide-y divide-talent-navy/5">
+      <% Current.organization.users.order(:name).each do |u| %>
+        <li class="px-5 py-3.5 flex items-center gap-4">
+          <div class="h-10 w-10 rounded-full bg-gradient-to-br from-talent-orange to-talent-orange-600 grid place-items-center text-white font-bold"><%= u.initials %></div>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold text-talent-navy"><%= u.display_name %><% if u == Current.user %> <span class="text-xs text-talent-muted font-normal">(you)</span><% end %></div>
+            <div class="text-xs text-talent-muted"><%= u.email_address %></div>
+          </div>
+          <span class="inline-flex items-center rounded-full bg-talent-mist text-talent-navy px-2.5 py-1 text-xs font-semibold capitalize"><%= u.role.tr("_", " ") %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

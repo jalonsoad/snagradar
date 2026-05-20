@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_20_124843) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_20_141454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -150,6 +150,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_124843) do
     t.index ["trade_id"], name: "index_defects_on_trade_id"
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.datetime "accepted_at"
+    t.bigint "accepted_user_id"
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.datetime "expires_at", null: false
+    t.bigint "invited_by_id", null: false
+    t.string "name"
+    t.bigint "organization_id", null: false
+    t.integer "role", default: 0, null: false
+    t.string "token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accepted_user_id"], name: "index_invitations_on_accepted_user_id"
+    t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
+    t.index ["organization_id", "email_address"], name: "index_invitations_on_organization_id_and_email_address"
+    t.index ["organization_id"], name: "index_invitations_on_organization_id"
+    t.index ["token_digest"], name: "index_invitations_on_token_digest", unique: true
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.string "channel", null: false
     t.datetime "created_at", null: false
@@ -281,6 +300,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_124843) do
   add_foreign_key "defects", "sites"
   add_foreign_key "defects", "trades"
   add_foreign_key "defects", "users", column: "reporter_id"
+  add_foreign_key "invitations", "organizations"
+  add_foreign_key "invitations", "users", column: "accepted_user_id"
+  add_foreign_key "invitations", "users", column: "invited_by_id"
   add_foreign_key "notifications", "defects"
   add_foreign_key "notifications", "organizations"
   add_foreign_key "notifications", "users", column: "recipient_id"

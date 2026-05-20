@@ -1,15 +1,16 @@
 # Replace Rails' default `<div class="field_with_errors">…</div>` wrapper with
 # an inline approach that (1) adds Tailwind error styling to the invalid field
-# itself and (2) appends a <small> with the first error message right under it.
-#
-# Pattern taken from https://medium.com/@yamenmari/ (field_error_proc article).
+# itself with !important so it wins over the base border-talent-navy/10, and
+# (2) appends a <small> with the first error message right under it. We also
+# set aria-invalid="true" so surrounding icons can be coloured via the
+# wrapper's `has-[input[aria-invalid='true']]:text-rose-500` rule (or via the
+# explicit fallback in the password_field partial).
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   doc     = Nokogiri::HTML.fragment(html_tag)
   element = doc.children.first
   tag     = element&.name&.downcase
 
-  # Skip non-field tags (e.g. <label>) and elements without an error message
   unless %w[input select textarea].include?(tag)
     next html_tag.html_safe
   end
@@ -17,13 +18,13 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   error_text = Array(instance.error_message).first
   next html_tag.html_safe if error_text.blank?
 
-  # Don't paint the "interest" radios or the "terms_accepted" checkbox — they
-  # already render inside styled wrappers; show the message only.
   is_choice = element["type"].to_s.match?(/\A(radio|checkbox)\z/)
 
   unless is_choice
-    extra_classes  = "border-rose-500 focus:border-rose-500 focus:ring-rose-500 focus:outline-rose-500"
+    # `!` makes the colour win over base utilities regardless of cascade order
+    extra_classes = "!border-rose-500 !ring-2 !ring-rose-100 focus:!border-rose-500 focus:!ring-rose-200"
     element["class"] = [element["class"], extra_classes].compact.join(" ")
+    element["aria-invalid"] = "true"
   end
 
   field_html = doc.to_html

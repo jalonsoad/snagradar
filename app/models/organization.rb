@@ -9,6 +9,7 @@ class Organization < ApplicationRecord
   has_many :activity_events,      dependent: :destroy
   has_many :notifications,        dependent: :destroy
   has_many :sla_policies,         dependent: :destroy
+  has_many :invitations,          dependent: :destroy
 
   enum :status, { active: 0, suspended: 1, archived: 9 }, prefix: true
 

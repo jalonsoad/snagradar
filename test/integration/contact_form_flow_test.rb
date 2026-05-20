@@ -26,8 +26,8 @@ class ContactFormFlowTest < ActionDispatch::IntegrationTest
                       interest: "demo", terms_accepted: "1" }
     }
     assert_response :unprocessable_content
-    # field_error_proc decorates invalid inputs with border-rose-500 + <small>
-    assert_select "input.border-rose-500"
+    # field_error_proc decorates invalid inputs with aria-invalid + <small>
+    assert_select "input[aria-invalid='true']"
     assert_select "small.text-rose-600"
   end
 end
