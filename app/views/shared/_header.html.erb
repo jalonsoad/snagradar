@@ -22,8 +22,8 @@
 
       <%# Desktop CTA %>
       <div class="hidden lg:flex items-center gap-2 shrink-0">
-        <%= link_to "Sign in", "#", class: "nav-link" %>
-        <%= link_to "Book a demo", contact_path, class: "btn-light text-[15px] py-[12px] px-[26px]" %>
+        <%= link_to "Sign in", new_session_path, class: "nav-link" %>
+        <%= link_to "Sign up", new_registration_path, class: "btn-light text-[15px] py-[12px] px-[26px]" %>
       </div>
 
       <%# Mobile menu button %>
@@ -46,8 +46,9 @@
         <%= link_to "About",   about_path,    class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
         <%= link_to "Support", contact_path,  class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
         <div class="my-2 h-px bg-white/10"></div>
-        <%= link_to "Sign in", "#", class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
-        <%= link_to "Book a demo", contact_path, class: "btn-light w-full mt-2 text-[15px]" %>
+        <%= link_to "Sign in", new_session_path, class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <%= link_to "Sign up", new_registration_path, class: "btn-light w-full mt-2 text-[15px]" %>
+        <%= link_to "Book a demo", contact_path, class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
       </div>
     </div>
   </div>

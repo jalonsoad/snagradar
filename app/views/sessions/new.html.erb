@@ -3,6 +3,13 @@
   Don't have an account? <%= link_to "Sign up", new_registration_path, class: "ml-1 font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
 <% end %>
 
+<%# Different testimonial + live dashboard preview on the left panel for sign-in %>
+<% content_for :auth_quote_body do %>I log a defect on site with one photo and three taps. The trade gets it, accepts, books — I see the whole thing from my pocket.<% end %>
+<% content_for :auth_quote_photo, "photos/daniel-thornton.png" %>
+<% content_for :auth_quote_name,  "Daniel Thornton" %>
+<% content_for :auth_quote_role,  "Site Manager, Adur Shoreham" %>
+<% content_for :auth_dashboard_preview, "yes" %>
+
 <div>
   <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Welcome back</h1>
   <p class="mt-2 text-talent-slate">Sign in to your SnagRadar account.</p>
@@ -25,28 +32,37 @@
     <div>
       <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Email address</label>
       <div class="relative mt-2">
-        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
+        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted pointer-events-none">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
         </span>
         <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@company.com", value: params[:email_address], class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
       </div>
     </div>
 
-    <div>
-      <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Password</label>
-      <div class="relative mt-2">
-        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-talent-muted">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </span>
-        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "••••••••", maxlength: 72, class: "block w-full rounded-xl border border-talent-navy/10 pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
-      </div>
-    </div>
+    <%= render "shared/password_field",
+        form: form,
+        field: :password,
+        label: "Password",
+        autocomplete: "current-password",
+        minlength: 1 %>
 
-    <div class="flex items-center justify-end text-sm">
+    <div class="flex items-center justify-between text-sm">
+      <label class="flex items-center gap-2 text-talent-slate">
+        <input type="checkbox" name="remember_me" class="h-4 w-4 rounded border-talent-navy/20 text-talent-orange focus:ring-talent-orange">
+        Stay signed in
+      </label>
       <%= link_to "Forgot password?", new_password_path, class: "text-talent-orange hover:text-talent-orange-700 transition font-semibold" %>
     </div>
 
     <%= form.submit "Sign in", class: "btn-primary w-full justify-center cursor-pointer" %>
+  <% end %>
+
+  <%# Demo credentials hint (dev only) %>
+  <% if Rails.env.development? %>
+    <div class="mt-6 rounded-xl bg-talent-mist border border-talent-navy/10 p-3 text-xs text-talent-slate">
+      <div class="font-semibold text-talent-navy mb-1">Demo credentials</div>
+      <code class="font-mono">demo@snagradar.dev</code> / <code class="font-mono">password123</code>
+    </div>
   <% end %>
 
   <p class="mt-8 text-center text-sm text-talent-muted lg:hidden">

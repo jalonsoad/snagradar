@@ -130,48 +130,27 @@
 
 /* ---- Reusable component utilities ---- */
 @layer components {
-  /* Uniflow buttons — sizes from Figma: px-[35px] py-[17px] (lg), py-[12px] (md) */
-  /* Primary: orange gradient with orange glow (Uniflow's purple gradient translated) */
+  /* Pure-Tailwind button utilities — no custom shadows, no gradients.
+     Marketing keeps the same class names but they now compile to standard
+     Tailwind: bg + hover, ring on focus. Rails-standard, clean. */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full text-white px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
-    background: linear-gradient(to right, #FC5A07, #FF7A33);
-    box-shadow: var(--shadow-btn-primary);
-  }
-  .btn-primary:hover {
-    background: linear-gradient(to right, #BF3D00, #E54A00);
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-orange text-white px-7 py-3 text-base font-semibold whitespace-nowrap transition-colors hover:bg-talent-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-orange focus-visible:ring-offset-2;
   }
 
-  /* Secondary on dark / Get In Touch / Select Plan: solid navy pill */
   .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
-  }
-  .btn-dark:hover {
-    background: linear-gradient(to right, #FC5A07, #FF7A33);
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-7 py-3 text-base font-semibold whitespace-nowrap transition-colors hover:bg-talent-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-navy focus-visible:ring-offset-2;
   }
 
-  /* Medium height variant (Read More / Select Plan): py-12 */
   .btn-dark-md {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-[35px] py-[12px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200 shadow-[var(--shadow-btn-soft)];
-  }
-  .btn-dark-md:hover {
-    background: linear-gradient(to right, #FC5A07, #FF7A33);
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-talent-navy-700;
   }
 
-  /* White CTA on dark backgrounds (Get Started for Free on header) */
   .btn-light {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
-  }
-  .btn-light:hover {
-    background: linear-gradient(to right, #FC5A07, #FF7A33);
-    color: #fff;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy px-7 py-3 text-base font-semibold whitespace-nowrap transition-colors hover:bg-talent-mist focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-talent-navy;
   }
 
-  /* Accent (highlighted pricing CTA) */
   .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-orange text-white px-[35px] py-[12px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200 shadow-[var(--shadow-btn-soft)];
-  }
-  .btn-accent:hover {
-    background: #BF3D00;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-orange text-white px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-talent-orange-600;
   }
 
   /* Nav link */
@@ -179,18 +158,17 @@
     @apply inline-flex items-center text-white/85 hover:text-white px-3 py-2 text-[15px] font-medium tracking-[-0.2px] transition-colors;
   }
 
-  /* Legacy aliases — kept as raw CSS so Tailwind doesn't try to @apply a same-layer custom utility */
-  .btn-pill-dark, .btn-pill-orange {
+  /* Legacy aliases pointing at the cleaned-up Tailwind buttons */
+  .btn-pill-orange, .btn-pill-dark {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    border-radius: 9999px; padding: 17px 35px;
-    color: #fff; font-weight: 500; font-size: 16px; line-height: 26.4px;
-    letter-spacing: -0.4px; white-space: nowrap;
-    transition: all 0.2s ease;
+    border-radius: 9999px; padding: 0.75rem 1.75rem;
+    font-weight: 600; font-size: 1rem; line-height: 1.5;
+    white-space: nowrap; transition: background-color 0.2s ease;
   }
-  .btn-pill-orange { background: linear-gradient(to right, #FC5A07, #FF7A33); box-shadow: var(--shadow-btn-primary); }
-  .btn-pill-orange:hover { background: linear-gradient(to right, #BF3D00, #E54A00); }
-  .btn-pill-dark { background: var(--color-talent-navy); }
-  .btn-pill-dark:hover { background: linear-gradient(to right, #FC5A07, #FF7A33); }
+  .btn-pill-orange { background-color: var(--color-talent-orange); color: #fff; }
+  .btn-pill-orange:hover { background-color: var(--color-talent-orange-600); }
+  .btn-pill-dark   { background-color: var(--color-talent-navy);   color: #fff; }
+  .btn-pill-dark:hover   { background-color: var(--color-talent-navy-700); }
 
   .btn-pill-outline {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-talent-navy/15 bg-white text-talent-navy px-6 py-3 text-sm font-semibold transition-all duration-200 hover:border-talent-navy;

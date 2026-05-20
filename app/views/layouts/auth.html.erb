@@ -35,22 +35,48 @@
           <% end %>
         </div>
 
-        <%# Big quote with star rating %>
+        <%# Quote area — pages override via content_for(:auth_quote_*) %>
         <div class="relative max-w-md">
           <svg class="h-8 w-8 text-talent-orange" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v6h6V9H7c0-1.1.9-2 2-2V7zm10 0h-4a2 2 0 0 0-2 2v6h6V9h-2c0-1.1.9-2 2-2V7z"/></svg>
           <p class="mt-6 font-display text-3xl font-bold leading-tight">
-            We went from chasing trades on WhatsApp to seeing every defect, owner and SLA in one place. Our overdue count halved in the first month.
+            <%= content_for?(:auth_quote_body) ? yield(:auth_quote_body) : "We went from chasing trades on WhatsApp to seeing every defect, owner and SLA in one place. Our overdue count halved in the first month." %>
           </p>
           <div class="mt-6 flex items-center gap-3">
-            <%= image_tag "photos/eleanor-marshall.png", alt: "", class: "h-12 w-12 rounded-full object-cover ring-2 ring-white/15" %>
+            <%= image_tag (content_for?(:auth_quote_photo) ? yield(:auth_quote_photo) : "photos/eleanor-marshall.png"), alt: "", class: "h-12 w-12 rounded-full object-cover ring-2 ring-white/15" %>
             <div>
-              <div class="font-semibold">Eleanor Marshall</div>
-              <div class="text-sm text-white/55">Customer Care Lead, PMC</div>
+              <div class="font-semibold"><%= content_for?(:auth_quote_name) ? yield(:auth_quote_name) : "Eleanor Marshall" %></div>
+              <div class="text-sm text-white/55"><%= content_for?(:auth_quote_role) ? yield(:auth_quote_role) : "Customer Care Lead, PMC" %></div>
             </div>
             <div class="ml-4 flex gap-0.5 text-amber-400">
               <% 5.times do %><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
             </div>
           </div>
+
+          <%# Mini dashboard preview — only on sign-in to make the page feel richer %>
+          <% if content_for?(:auth_dashboard_preview) %>
+            <div class="mt-10 rounded-2xl bg-white/[0.06] ring-1 ring-white/10 backdrop-blur p-4 text-sm">
+              <div class="flex items-center justify-between">
+                <div class="text-xs font-semibold uppercase tracking-widest text-white/50">Live Radar — today</div>
+                <span class="text-xs text-emerald-400 flex items-center gap-1.5">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> live
+                </span>
+              </div>
+              <div class="mt-3 grid grid-cols-3 gap-2">
+                <div class="rounded-xl bg-white/[0.04] p-3">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-white/50">Open</div>
+                  <div class="font-display text-2xl font-extrabold mt-1">87</div>
+                </div>
+                <div class="rounded-xl bg-rose-500/15 ring-1 ring-rose-500/30 p-3">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-rose-300">Overdue</div>
+                  <div class="font-display text-2xl font-extrabold mt-1 text-rose-100">6</div>
+                </div>
+                <div class="rounded-xl bg-amber-500/15 ring-1 ring-amber-500/30 p-3">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-amber-300">≤48h</div>
+                  <div class="font-display text-2xl font-extrabold mt-1 text-amber-100">11</div>
+                </div>
+              </div>
+            </div>
+          <% end %>
         </div>
 
         <div class="relative text-xs text-white/50">© <%= Date.current.year %> SnagRadar Ltd</div>

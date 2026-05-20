@@ -55,6 +55,12 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  # Solid Queue + Solid Cable in dev (they connect_to the queue/cable databases
+  # configured in database.yml). Solid Cache is left at :memory_store in dev
+  # so sign-in / sessions don't touch a separate connection.
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to  = { database: { writing: :queue } }
+
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true
 
