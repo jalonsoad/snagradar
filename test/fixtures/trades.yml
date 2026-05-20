@@ -1,0 +1,9 @@
+plumbing:
+  organization: acme
+  name: Plumbing
+  default_sla_days: 3
+
+electrical:
+  organization: acme
+  name: Electrical
+  default_sla_days: 2

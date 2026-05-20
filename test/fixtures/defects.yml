@@ -1,0 +1,12 @@
+leaking_sink:
+  organization: acme
+  site: adur
+  plot: plot_14
+  trade: plumbing
+  reporter: one
+  reference: HY-2487
+  title: Leak under kitchen sink
+  description: Water on the floor reported by the resident.
+  priority: 2
+  status: 0
+  sla_target_date: <%= 3.days.from_now.to_date.to_fs(:db) %>
