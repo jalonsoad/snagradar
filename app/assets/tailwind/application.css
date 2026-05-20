@@ -36,9 +36,10 @@
   --color-talent-danger: #DC2626;
 
   /* Typography — Sofia Sans throughout (free stand-in for Sofia Pro, à la rocket-saas.io) */
-  --font-display: "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-sans:    "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-display:     "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:        "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-handwritten: "Caveat", "Patrick Hand", cursive;
+  --font-mono:        "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
   /* Shadows — soft, layered */
   --shadow-soft: 0 1px 2px rgba(2, 32, 67, 0.04), 0 8px 24px -8px rgba(2, 32, 67, 0.08);

@@ -154,22 +154,49 @@
   </div>
 </section>
 
-<%# ============== LOGO STRIP ============== %>
-<section class="bg-white pb-20">
+<%# ============== LOGO STRIP — editorial / hand-drawn flourish ============== %>
+<section class="bg-white pb-24 relative">
   <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="text-center text-xs font-semibold uppercase tracking-widest text-talent-muted mb-6">
-      Built for builders, housing associations &amp; aftercare teams
+    <%# Hand-drawn label tilted, with curved arrow pointing at the marquee %>
+    <div class="relative h-16 mb-4 hidden md:block" aria-hidden="true">
+      <div class="absolute left-[10%] top-0 -rotate-[6deg] flex items-end gap-2">
+        <svg class="h-7 w-7 text-talent-orange" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 4 14 11 14 9 22 20 10 13 10 13 2"/></svg>
+        <span style="font-family: var(--font-handwritten);" class="text-3xl font-bold text-talent-navy leading-none">Builders love it</span>
+      </div>
+      <%# Hand-drawn curved arrow %>
+      <svg class="absolute left-[26%] top-6 h-14 w-32 text-talent-navy" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5,15 C 50,5 90,25 130,55" stroke-dasharray="0" />
+        <path d="M120,40 L130,55 L120,62" />
+      </svg>
     </div>
+
+    <%# Mixed-typography logo marquee — different fonts per "brand" for editorial feel %>
     <div class="marquee overflow-hidden">
-      <div class="flex w-max items-center gap-12 animate-[marquee_38s_linear_infinite]">
-        <% logos = ["Hyde Group", "Adur Homes", "PMC Customer Care", "Northwall Build", "Stonecrest Developments", "Bridgemoor Homes", "Thornsby Group", "Caversham Build"] %>
-        <% (logos + logos).each do |name| %>
-          <div class="flex items-center gap-2 text-talent-navy/50 font-display text-2xl font-extrabold whitespace-nowrap">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
-            <%= name %>
+      <div class="flex w-max items-center gap-14 animate-[marquee_42s_linear_infinite]">
+        <% logos = [
+             { name: "Hyde Group",              cls: "font-display text-3xl font-extrabold italic tracking-tight" },
+             { name: "Adur Homes",              cls: "font-display text-3xl font-bold tracking-[-0.04em]" },
+             { name: "PMC ◆ Care",              cls: "font-display text-3xl font-black uppercase tracking-[0.18em]" },
+             { name: "northwall",                cls: "text-3xl font-light lowercase tracking-tight",                style: "font-family: var(--font-handwritten); font-size: 2.6rem;" },
+             { name: "Stonecrest",              cls: "font-display text-3xl font-bold tracking-tight",                  serif: true },
+             { name: "Bridgemoor",              cls: "font-display text-3xl font-extrabold tracking-tight" },
+             { name: "THORNSBY",                cls: "font-display text-2xl font-black uppercase tracking-[0.32em]" },
+             { name: "Caversham&nbsp;Build",    cls: "font-display text-3xl font-medium italic tracking-tight" }
+           ] %>
+        <% (logos + logos).each do |l| %>
+          <div class="flex items-center gap-2.5 text-talent-navy/55 whitespace-nowrap hover:text-talent-navy transition-colors" style="<%= l[:style] %>">
+            <% if l[:serif] %>
+              <span style="font-family: Georgia, serif;" class="text-3xl font-bold"><%== l[:name] %></span>
+            <% else %>
+              <span class="<%= l[:cls] %>"><%== l[:name] %></span>
+            <% end %>
           </div>
         <% end %>
       </div>
+    </div>
+
+    <div class="mt-6 text-center text-xs font-semibold uppercase tracking-[0.25em] text-talent-muted">
+      Built for builders, housing associations &amp; aftercare teams
     </div>
   </div>
 </section>
@@ -335,64 +362,369 @@
   </div>
 </section>
 
-<%# ============== TESTIMONIALS (Uniflow style: dark feature card + photo cards) ============== %>
-<section class="section bg-talent-mist">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
-    <div class="text-center reveal">
-      <h2 class="font-display text-4xl sm:text-5xl font-extrabold tracking-tight">Customer testimonials</h2>
-    </div>
+<%# ============== GET YOUR TIME BACK — two-column with realistic defect card ============== %>
+<section class="bg-white py-24 sm:py-32 relative overflow-hidden">
+  <%# Subtle aurora backdrop %>
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute -top-20 left-1/3 h-96 w-96 rounded-full bg-talent-sky/60 blur-3xl"></div>
+    <div class="absolute -bottom-20 right-1/4 h-96 w-96 rounded-full bg-talent-cream/80 blur-3xl"></div>
+  </div>
 
-    <div class="mt-12 grid lg:grid-cols-12 gap-5 reveal" style="transition-delay: .1s">
-      <%# Dark feature quote card — Eleanor (Customer Care Lead) %>
-      <figure class="lg:col-span-5 rounded-3xl bg-talent-navy text-white p-8 lg:p-10 relative overflow-hidden">
-        <div class="absolute inset-0 bp-grid opacity-30 pointer-events-none"></div>
-        <div class="relative flex flex-col h-full">
-          <svg class="h-6 w-6 text-talent-orange" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v6h6V9H7c0-1.1.9-2 2-2V7zm10 0h-4a2 2 0 0 0-2 2v6h6V9h-2c0-1.1.9-2 2-2V7z"/></svg>
-          <blockquote class="mt-5 text-xl font-display font-semibold leading-snug">
-            "With SnagRadar, everything just syncs automatically to my workflow. It feels like I have an extra team member handling the repetitive stuff for me."
-          </blockquote>
-          <div class="mt-auto pt-8">
-            <div class="flex gap-0.5 text-amber-400">
-              <% 5.times do %><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <%# LEFT: heading + paragraph + checklist %>
+      <div class="lg:col-span-5 reveal">
+        <h2 class="font-display text-5xl sm:text-6xl font-extrabold tracking-tighter leading-[1.02] text-talent-navy">
+          Get your<br>time back
+        </h2>
+        <p class="mt-6 text-lg text-talent-slate leading-relaxed">
+          Focus on the work that matters while routine defect admin happens in the background.
+        </p>
+
+        <ul class="mt-10 space-y-5">
+          <% [
+               "Free your customer-care team from email chases.",
+               "Reclaim hours each week for high-impact site visits.",
+               "Let background jobs handle SLA reminders and routing.",
+               "Spend more time on residents, less on spreadsheets."
+             ].each do |line| %>
+            <li class="flex gap-4 items-start">
+              <span class="flex-shrink-0 mt-1 h-6 w-6 rounded-full bg-talent-navy text-white grid place-items-center">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-talent-navy text-base leading-relaxed"><%= line %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <%# RIGHT: realistic defect-card mockup on a soft gradient backdrop %>
+      <div class="lg:col-span-7 reveal" style="transition-delay: .15s">
+        <div class="relative">
+          <%# Backdrop card with rounded corners %>
+          <div class="absolute -inset-3 sm:-inset-6 rounded-[2.5rem] bg-gradient-to-br from-talent-sky via-white to-talent-cream"></div>
+
+          <%# The defect card %>
+          <div class="relative rounded-2xl bg-white shadow-[0_30px_60px_-20px_rgba(2,32,67,0.25)] ring-1 ring-talent-navy/5 p-8 sm:p-10">
+
+            <%# Title %>
+            <div class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-talent-navy">
+              <span class="font-mono text-base text-talent-muted font-semibold mr-2">HY-2487</span> Leak under kitchen sink
             </div>
-            <figcaption class="mt-4 flex items-center gap-3">
-              <%= image_tag "photos/eleanor-marshall.png", alt: "Eleanor Marshall", class: "h-12 w-12 rounded-full object-cover ring-2 ring-white/20" %>
-              <div>
-                <div class="font-semibold">Eleanor Marshall</div>
-                <div class="text-sm text-white/55">Customer Care Lead, PMC</div>
+
+            <%# Properties %>
+            <div class="mt-6 space-y-3.5 text-sm">
+              <%# Priority row %>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 w-32 text-talent-muted">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span>Priority</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="rounded-lg border border-talent-navy/10 px-3 py-1 text-talent-muted">Low</span>
+                  <span class="rounded-lg border border-talent-navy/10 px-3 py-1 text-talent-muted">Medium</span>
+                  <span class="rounded-lg border-2 border-talent-orange bg-talent-orange/10 text-talent-orange-700 px-3 py-1 font-semibold">High</span>
+                </div>
               </div>
-            </figcaption>
+
+              <%# SLA date row %>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 w-32 text-talent-muted">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span>SLA target</span>
+                </div>
+                <span class="text-talent-navy font-medium">22 May 2026</span>
+              </div>
+
+              <%# Status row %>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 w-32 text-talent-muted">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  <span>Status</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-lg border border-talent-navy/10 px-3 py-1 text-talent-navy font-medium">
+                  <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                  In Progress
+                  <svg class="h-3.5 w-3.5 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+
+              <%# Assignee row %>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 w-32 text-talent-muted">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a4 4 0 0 1-4 4H10a4 4 0 0 1 0-8h4a4 4 0 0 1 4 4z"/><path d="M22 22V13"/></svg>
+                  <span>Assigned</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-lg border border-talent-navy/10 px-2 py-1">
+                  <span class="h-6 w-6 rounded-full bg-talent-orange text-white grid place-items-center text-xs font-bold">R</span>
+                  <span class="text-talent-navy text-sm font-medium">Robson Plumbing</span>
+                  <svg class="h-3.5 w-3.5 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <%# Divider %>
+            <div class="my-6 h-px bg-talent-navy/10"></div>
+
+            <%# Checklist %>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3">
+                <span class="h-5 w-5 rounded bg-talent-navy text-white grid place-items-center">
+                  <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="text-talent-muted line-through">Photos uploaded by site manager</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="h-5 w-5 rounded border-2 border-talent-navy/20"></span>
+                <span class="text-talent-navy">Trade accepted appointment slot</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="h-5 w-5 rounded border-2 border-talent-navy/20"></span>
+                <span class="text-talent-navy">Resident sign-off via magic link</span>
+              </li>
+            </ul>
+
+            <%# Comments tab heading %>
+            <div class="mt-7 border-b border-talent-navy/10 flex gap-6 text-sm">
+              <button class="pb-2 font-semibold text-talent-navy border-b-2 border-talent-orange -mb-px">Comments &amp; Activity</button>
+              <button class="pb-2 text-talent-muted">Files</button>
+              <button class="pb-2 text-talent-muted">Audit</button>
+            </div>
+
+            <%# Comment %>
+            <div class="mt-5 flex gap-3">
+              <span class="h-9 w-9 rounded-full bg-gradient-to-br from-talent-orange to-talent-orange-600 grid place-items-center text-white text-xs font-bold flex-shrink-0">P</span>
+              <div class="flex-1">
+                <p class="text-sm text-talent-navy leading-relaxed">
+                  <a class="text-talent-blue font-semibold">@robson-plumbing</a>
+                  on site Thursday 11:00 — bringing replacement valve and a backup tail piece, all good for resident
+                </p>
+                <div class="mt-2 inline-flex items-center gap-2 rounded-lg bg-talent-mist px-2.5 py-1.5 text-xs font-medium text-talent-navy">
+                  <span class="h-6 w-6 rounded bg-talent-blue grid place-items-center text-white text-[10px] font-bold">PDF</span>
+                  Site_access_notes.pdf
+                  <svg class="h-3 w-3 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <%# Floating accent badge %>
+          <div class="hidden md:flex absolute -top-3 -right-3 items-center gap-1.5 rounded-full bg-talent-orange text-white px-3 py-1.5 text-xs font-semibold shadow-[var(--shadow-glow-orange)]">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping"></span>
+              <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-white"></span>
+            </span>
+            Live
           </div>
         </div>
-      </figure>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <%# Photo testimonial cards (Hedra portraits + TinyPNG compressed) %>
-      <% photos = [
-           { file: "photos/phil-roberts.png",    quote: "Big tap targets, no logins. My trades stopped complaining.", name: "Phil Roberts", role: "Subcontractor, Plumbing" },
-           { file: "photos/daniel-thornton.png", quote: "I log a defect on site with three taps. Game changer.",       name: "Daniel Thornton", role: "Site Manager" },
-           { file: "photos/marisa-kovacs.png",   quote: "The sign-off link replaced our paper forms overnight.",       name: "Marisa Kovacs", role: "Aftercare Manager" }
-         ] %>
-      <% photos.each_with_index do |p, i| %>
-        <figure class="lg:col-span-<%= i == 0 ? '4' : '3' %> relative rounded-3xl overflow-hidden aspect-[3/4] lg:aspect-auto min-h-[28rem] group bg-talent-navy">
-          <%= image_tag p[:file], alt: p[:name], class: "absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-[1.03]" %>
-          <%# Bottom-to-top gradient overlay for legibility %>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-          <figcaption class="absolute bottom-0 inset-x-0 p-6 text-white">
-            <p class="font-semibold text-sm leading-relaxed">"<%= p[:quote] %>"</p>
-            <div class="mt-3 flex items-center justify-between gap-3">
-              <div>
-                <div class="text-sm font-bold"><%= p[:name] %></div>
-                <div class="text-xs text-white/80"><%= p[:role] %></div>
-              </div>
-              <div class="flex gap-0.5 text-amber-400">
-                <% 5.times do %><svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
-              </div>
-            </div>
-          </figcaption>
-        </figure>
-      <% end %>
+<%# ============== TESTIMONIALS (single-card slider, Uniflow style) ============== %>
+<section class="section bg-talent-mist">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8" data-controller="reveal">
+    <div class="text-center reveal">
+      <span class="eyebrow">From the pilot</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight">Customer testimonials</h2>
     </div>
 
+    <% testimonials = [
+         { file: "photos/eleanor-marshall.png", quote: "With SnagRadar, everything just syncs automatically to my workflow. It feels like I have an extra team member handling the repetitive stuff for me.", name: "Eleanor Marshall", role: "Customer Care Lead, PMC" },
+         { file: "photos/daniel-thornton.png",  quote: "I log a defect on site with one photo and three taps. The trade gets it, accepts, books — I see the whole thing from my pocket.",                  name: "Daniel Thornton",  role: "Site Manager, Adur Shoreham" },
+         { file: "photos/marisa-kovacs.png",    quote: "The resident sign-off link is the killer feature. No more chasing paper forms or waiting on a clipboard.",                                          name: "Marisa Kovacs",    role: "Aftercare Manager" },
+         { file: "photos/phil-roberts.png",     quote: "It's the first defect tool my trades didn't complain about. Big tap targets, no logins, no app to install.",                                        name: "Phil Roberts",     role: "Subcontractor, Plumbing" }
+       ] %>
+
+    <div
+      class="mt-12 reveal"
+      data-controller="carousel"
+      data-carousel-auto-value="true"
+      data-carousel-interval-value="8000"
+      style="transition-delay: .1s"
+    >
+      <div class="overflow-hidden rounded-[2rem]">
+        <div class="flex transition-transform duration-700 ease-out" data-carousel-target="track">
+          <% testimonials.each do |t| %>
+            <article data-carousel-target="slide" class="min-w-full">
+              <div class="grid lg:grid-cols-12 bg-white shadow-card overflow-hidden">
+                <%# Portrait %>
+                <div class="lg:col-span-5 relative aspect-[4/5] lg:aspect-auto bg-talent-navy">
+                  <%= image_tag t[:file], alt: t[:name], class: "absolute inset-0 w-full h-full object-cover" %>
+                  <div class="absolute top-5 left-5 h-12 w-12 rounded-2xl bg-talent-orange grid place-items-center text-white shadow-[var(--shadow-glow-orange)]">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v6h6V9H7c0-1.1.9-2 2-2V7zm10 0h-4a2 2 0 0 0-2 2v6h6V9h-2c0-1.1.9-2 2-2V7z"/></svg>
+                  </div>
+                </div>
+                <%# Quote %>
+                <div class="lg:col-span-7 p-8 sm:p-12 lg:p-14 flex flex-col">
+                  <div class="flex gap-1 text-amber-400">
+                    <% 5.times do %><svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
+                  </div>
+                  <blockquote class="mt-6 font-display text-2xl sm:text-3xl font-bold leading-snug tracking-tight text-talent-navy">
+                    &ldquo;<%= t[:quote] %>&rdquo;
+                  </blockquote>
+                  <figcaption class="mt-auto pt-8">
+                    <div class="font-display text-lg font-extrabold text-talent-navy"><%= t[:name] %></div>
+                    <div class="text-sm text-talent-muted"><%= t[:role] %></div>
+                  </figcaption>
+                </div>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Controls: dots + arrows %>
+      <div class="mt-8 flex items-center justify-center gap-6">
+        <button type="button" data-action="carousel#prev" class="h-12 w-12 rounded-full bg-white shadow-soft grid place-items-center text-talent-navy hover:bg-talent-navy hover:text-white transition" aria-label="Previous testimonial">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <% testimonials.each_with_index do |_, i| %>
+            <button
+              type="button"
+              data-action="carousel#go"
+              data-index="<%= i %>"
+              data-carousel-target="dot"
+              class="h-2 rounded-full transition-all <%= i == 0 ? 'w-8 bg-talent-navy' : 'w-2 bg-talent-navy/20' %>"
+              aria-label="Go to testimonial <%= i + 1 %>"
+            ></button>
+          <% end %>
+        </div>
+
+        <button type="button" data-action="carousel#next" class="h-12 w-12 rounded-full bg-talent-navy text-white shadow-soft grid place-items-center hover:bg-talent-orange transition" aria-label="Next testimonial">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ============== CONNECT WITHOUT LIMITS — integrations spider diagram ============== %>
+<section class="bg-white relative overflow-hidden py-24 sm:py-32">
+  <%# Soft ambient backdrop %>
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[36rem] w-[36rem] rounded-full bg-gradient-to-br from-talent-orange/10 via-transparent to-talent-blue/10 blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02] text-talent-navy">Connect without limits</h2>
+      <p class="mt-5 mx-auto max-w-xl text-lg text-talent-slate leading-relaxed">
+        From inbox and calendar to Slack and Stripe, SnagRadar plugs into the tools your customer-care team already uses — no IT ticket required.
+      </p>
+    </div>
+
+    <%# Diagram — large screens show the spider; small screens get a grid fallback %>
+    <div class="relative mt-14 reveal" style="transition-delay: .1s">
+
+      <%# DESKTOP: positioned tiles + SVG lines + central hub %>
+      <div class="hidden lg:block relative h-[560px]">
+        <%# Connection lines layer %>
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1200 560" fill="none" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="grad-orange" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0"   stop-color="#FC5A07" stop-opacity=".15"/>
+              <stop offset=".5"  stop-color="#FC5A07" stop-opacity=".55"/>
+              <stop offset="1"   stop-color="#FC5A07" stop-opacity=".15"/>
+            </linearGradient>
+            <linearGradient id="grad-blue" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0"   stop-color="#0057AE" stop-opacity=".15"/>
+              <stop offset=".5"  stop-color="#0057AE" stop-opacity=".55"/>
+              <stop offset="1"   stop-color="#0057AE" stop-opacity=".15"/>
+            </linearGradient>
+            <linearGradient id="grad-violet" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0"   stop-color="#7c3aed" stop-opacity=".15"/>
+              <stop offset=".5"  stop-color="#7c3aed" stop-opacity=".55"/>
+              <stop offset="1"   stop-color="#7c3aed" stop-opacity=".15"/>
+            </linearGradient>
+          </defs>
+          <%# Left-side connections fan in to (600,280) %>
+          <path d="M 110,100 C 280,140 480,260 600,280" stroke="url(#grad-orange)" stroke-width="2"/>
+          <path d="M 60,260  C 250,265 460,275 600,280"  stroke="url(#grad-blue)"   stroke-width="2"/>
+          <path d="M 110,420 C 280,400 480,310 600,280" stroke="url(#grad-violet)" stroke-width="2"/>
+          <path d="M 230,80  C 340,140 500,240 600,280" stroke="url(#grad-blue)"   stroke-width="2"/>
+          <%# Right-side connections %>
+          <path d="M 1090,100 C 920,140 720,260 600,280" stroke="url(#grad-orange)" stroke-width="2"/>
+          <path d="M 1140,260 C 950,265 740,275 600,280" stroke="url(#grad-violet)" stroke-width="2"/>
+          <path d="M 1090,420 C 920,400 720,310 600,280" stroke="url(#grad-blue)"   stroke-width="2"/>
+          <path d="M 970,80   C 860,140 700,240 600,280" stroke="url(#grad-orange)" stroke-width="2"/>
+        </svg>
+
+        <%# Brand tiles positioned absolutely. Each tile shows a small label outside the white square. %>
+        <% tiles = [
+             { brand: "gmail",           label: "Email intake",      pos: "left-[6%]   top-[12%]" },
+             { brand: "slack",           label: "Slack",             pos: "left-[16%]  top-[2%]"  },
+             { brand: "whatsapp",        label: "WhatsApp",          pos: "left-[2%]   top-[42%]" },
+             { brand: "outlook",         label: "Outlook",           pos: "left-[6%]   bottom-[8%]" },
+
+             { brand: "google-calendar", label: "Calendar",          pos: "right-[6%]  top-[12%]" },
+             { brand: "teams",           label: "MS Teams",          pos: "right-[16%] top-[2%]"  },
+             { brand: "stripe",          label: "Stripe billing",    pos: "right-[2%]  top-[42%]" },
+             { brand: "zapier",          label: "Zapier",            pos: "right-[6%]  bottom-[8%]" }
+           ] %>
+        <% tiles.each_with_index do |t, i| %>
+          <div class="absolute <%= t[:pos] %> group">
+            <div class="h-20 w-20 rounded-2xl bg-white shadow-[0_18px_36px_-12px_rgba(2,32,67,0.18)] ring-1 ring-talent-navy/5 grid place-items-center transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_44px_-12px_rgba(2,32,67,0.28)]">
+              <%= image_tag "icons/brands/#{t[:brand]}.svg", alt: t[:label], class: "h-11 w-11" %>
+            </div>
+            <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 text-xs font-semibold text-talent-muted whitespace-nowrap opacity-0 group-hover:opacity-100 transition"><%= t[:label] %></div>
+          </div>
+        <% end %>
+
+        <%# Central hub — SnagRadar mark with concentric pulse rings %>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div class="relative">
+            <span class="absolute inset-0 m-auto h-56 w-56 rounded-full bg-talent-orange/10 blur-2xl"></span>
+            <%# Three concentric rings with subtle gradient stroke %>
+            <svg class="absolute inset-0 m-auto h-52 w-52" viewBox="0 0 200 200" fill="none">
+              <circle cx="100" cy="100" r="95" stroke="url(#grad-orange)" stroke-width="1"/>
+              <circle cx="100" cy="100" r="72" stroke="url(#grad-blue)"   stroke-width="1"/>
+              <circle cx="100" cy="100" r="50" stroke="url(#grad-violet)" stroke-width="1"/>
+            </svg>
+            <%# Outer ring with brand gradient %>
+            <div class="relative h-36 w-36 rounded-full p-[3px]"
+                 style="background: conic-gradient(from 0deg, #FC5A07, #FF8B47, #FFC57A, #0057AE, #7c3aed, #FC5A07);">
+              <div class="h-full w-full rounded-full bg-white grid place-items-center shadow-[0_20px_50px_-12px_rgba(252,90,7,0.45)]">
+                <%= image_tag "snagradar-icon.png", alt: "SnagRadar", class: "h-20 w-20 object-contain" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# MOBILE / tablet fallback: grid of tiles with the radar hub in the middle row %>
+      <div class="lg:hidden grid grid-cols-3 gap-4 sm:gap-5 max-w-md mx-auto">
+        <% mobile_brands = %w[gmail slack whatsapp outlook google-calendar teams stripe zapier] %>
+        <% mobile_brands.first(4).each do |b| %>
+          <div class="aspect-square rounded-2xl bg-white shadow-soft ring-1 ring-talent-navy/5 grid place-items-center">
+            <%= image_tag "icons/brands/#{b}.svg", alt: b, class: "h-10 w-10" %>
+          </div>
+        <% end %>
+        <%# Center hub %>
+        <div class="aspect-square col-span-1 row-span-1 relative">
+          <div class="absolute inset-0 rounded-full p-[3px]" style="background: conic-gradient(from 0deg, #FC5A07, #FF8B47, #0057AE, #7c3aed, #FC5A07);">
+            <div class="h-full w-full rounded-full bg-white grid place-items-center">
+              <%= image_tag "snagradar-icon.png", alt: "SnagRadar", class: "h-14 w-14 object-contain" %>
+            </div>
+          </div>
+        </div>
+        <% mobile_brands.last(4).each do |b| %>
+          <div class="aspect-square rounded-2xl bg-white shadow-soft ring-1 ring-talent-navy/5 grid place-items-center">
+            <%= image_tag "icons/brands/#{b}.svg", alt: b, class: "h-10 w-10" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Small tagline below diagram %>
+    <div class="mt-10 text-center text-sm text-talent-muted reveal" style="transition-delay: .25s">
+      Plus webhooks, REST API, SSO &amp; more.
+      <%= link_to "See all integrations →", features_path, class: "text-talent-orange font-semibold hover:text-talent-orange-700 transition ml-1" %>
+    </div>
   </div>
 </section>
 
