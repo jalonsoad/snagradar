@@ -1,0 +1,40 @@
+<div class="grid grid-cols-2 gap-4">
+  <%# Big number cards %>
+  <% [
+       { label: "Open defects",     value: 87,  delta: "+5 today",    color: "bg-talent-navy text-white" },
+       { label: "Overdue",          value: 6,   delta: "↓ 4 vs last week", color: "bg-red-100 text-red-700" },
+       { label: "Awaiting sign-off",value: 17,  delta: "92% within 5d", color: "bg-emerald-100 text-emerald-700" },
+       { label: "Avg time to fix",  value: "3.1d", delta: "↓ 0.8d MoM", color: "card-accent-orange text-white" }
+     ].each do |k| %>
+    <div class="rounded-2xl p-5 <%= k[:color] %> shadow-soft relative overflow-hidden">
+      <% if k[:color].include?('card-accent-orange') %>
+        <div class="absolute inset-0 bp-grid opacity-30 pointer-events-none"></div>
+      <% end %>
+      <div class="relative">
+        <div class="text-xs font-semibold uppercase tracking-wide opacity-80"><%= k[:label] %></div>
+        <div class="font-display text-4xl font-bold mt-2"><%= k[:value] %></div>
+        <div class="text-xs font-semibold mt-2 opacity-90"><%= k[:delta] %></div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-span-2 rounded-2xl bg-white shadow-soft border border-talent-navy/5 p-5">
+    <div class="flex items-center justify-between">
+      <div class="text-sm font-semibold">SLA trend — last 6 weeks</div>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="flex items-center gap-1"><span class="dot bg-emerald-500"></span> Met</span>
+        <span class="flex items-center gap-1"><span class="dot bg-red-500"></span> Breached</span>
+      </div>
+    </div>
+    <div class="mt-4 h-32">
+      <svg viewBox="0 0 400 120" class="w-full h-full" preserveAspectRatio="none">
+        <%# Met line %>
+        <polyline points="0,90 70,75 140,60 210,55 280,40 350,30 400,28" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <%# Breached line %>
+        <polyline points="0,40 70,50 140,55 210,72 280,85 350,95 400,98" fill="none" stroke="#DC2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"/>
+        <%# fill %>
+        <polyline points="0,90 70,75 140,60 210,55 280,40 350,30 400,28 400,120 0,120" fill="#16A34A" opacity="0.12"/>
+      </svg>
+    </div>
+  </div>
+</div>

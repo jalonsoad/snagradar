@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SnagRadar — Marketing Theme
+   Uniflow-inspired layout + Talent brand palette
+   ============================================================ */
+
+@theme {
+  /* Brand palette */
+  --color-talent-orange: #FC5A07;
+  --color-talent-orange-50: #FFF1E8;
+  --color-talent-orange-100: #FFE1CD;
+  --color-talent-orange-500: #FC5A07;
+  --color-talent-orange-600: #E54A00;
+  --color-talent-orange-700: #BF3D00;
+
+  --color-talent-blue: #0057AE;
+  --color-talent-blue-50: #EAF4FF;
+  --color-talent-blue-500: #0057AE;
+  --color-talent-blue-600: #004B97;
+
+  --color-talent-navy: #022043;
+  --color-talent-navy-700: #06335E;
+  --color-talent-navy-800: #032A53;
+  --color-talent-navy-900: #02152C;
+
+  --color-talent-white: #FFFFFF;
+  --color-talent-cream: #FFF7F0;
+  --color-talent-sky: #EAF4FF;
+  --color-talent-mist: #F4F7FB;
+  --color-talent-slate: #38506D;
+  --color-talent-muted: #6B7C93;
+
+  --color-talent-success: #16A34A;
+  --color-talent-warning: #F59E0B;
+  --color-talent-danger: #DC2626;
+
+  /* Typography — Sofia Sans throughout (free stand-in for Sofia Pro, à la rocket-saas.io) */
+  --font-display: "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Shadows — soft, layered */
+  --shadow-soft: 0 1px 2px rgba(2, 32, 67, 0.04), 0 8px 24px -8px rgba(2, 32, 67, 0.08);
+  --shadow-card: 0 1px 2px rgba(2, 32, 67, 0.05), 0 16px 40px -12px rgba(2, 32, 67, 0.12);
+  --shadow-glow-orange: 0 12px 22px -6px rgba(252, 90, 7, 0.55);
+  --shadow-glow-navy: 0 12px 22px -6px rgba(2, 32, 67, 0.55);
+  /* Uniflow's signature button drop shadow (translated to orange) */
+  --shadow-btn-primary: 0px 12px 11px rgba(252, 90, 7, 0.45);
+  --shadow-btn-soft: 0px 2px 2.5px rgba(0, 0, 0, 0.2);
+
+  /* Radii */
+  --radius-pill: 9999px;
+  --radius-brand: 1.25rem;
+
+  /* Animations */
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-radar: radar 2.6s ease-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-rise: rise 0.7s ease-out both;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes radar {
+  0% { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Base layer overrides ---- */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-talent-white);
+    color: var(--color-talent-navy);
+  }
+
+  ::selection {
+    background: var(--color-talent-orange);
+    color: var(--color-talent-white);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--color-talent-navy);
+  }
+
+  /* Sofia-Sans throughout, like rocket-saas.io */
+  body, button, input, textarea, select {
+    font-family: var(--font-sans);
+  }
+}
+
+/* ---- Reusable component utilities ---- */
+@layer components {
+  /* Uniflow buttons — sizes from Figma: px-[35px] py-[17px] (lg), py-[12px] (md) */
+  /* Primary: orange gradient with orange glow (Uniflow's purple gradient translated) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-white px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
+    background: linear-gradient(to right, #FC5A07, #FF7A33);
+    box-shadow: var(--shadow-btn-primary);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(to right, #BF3D00, #E54A00);
+  }
+
+  /* Secondary on dark / Get In Touch / Select Plan: solid navy pill */
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
+  }
+  .btn-dark:hover {
+    background: linear-gradient(to right, #FC5A07, #FF7A33);
+  }
+
+  /* Medium height variant (Read More / Select Plan): py-12 */
+  .btn-dark-md {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-[35px] py-[12px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200 shadow-[var(--shadow-btn-soft)];
+  }
+  .btn-dark-md:hover {
+    background: linear-gradient(to right, #FC5A07, #FF7A33);
+  }
+
+  /* White CTA on dark backgrounds (Get Started for Free on header) */
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy px-[35px] py-[17px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200;
+  }
+  .btn-light:hover {
+    background: linear-gradient(to right, #FC5A07, #FF7A33);
+    color: #fff;
+  }
+
+  /* Accent (highlighted pricing CTA) */
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-orange text-white px-[35px] py-[12px] text-[16px] font-medium tracking-[-0.4px] leading-[26.4px] whitespace-nowrap transition-all duration-200 shadow-[var(--shadow-btn-soft)];
+  }
+  .btn-accent:hover {
+    background: #BF3D00;
+  }
+
+  /* Nav link */
+  .nav-link {
+    @apply inline-flex items-center text-white/85 hover:text-white px-3 py-2 text-[15px] font-medium tracking-[-0.2px] transition-colors;
+  }
+
+  /* Legacy aliases — kept as raw CSS so Tailwind doesn't try to @apply a same-layer custom utility */
+  .btn-pill-dark, .btn-pill-orange {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    border-radius: 9999px; padding: 17px 35px;
+    color: #fff; font-weight: 500; font-size: 16px; line-height: 26.4px;
+    letter-spacing: -0.4px; white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .btn-pill-orange { background: linear-gradient(to right, #FC5A07, #FF7A33); box-shadow: var(--shadow-btn-primary); }
+  .btn-pill-orange:hover { background: linear-gradient(to right, #BF3D00, #E54A00); }
+  .btn-pill-dark { background: var(--color-talent-navy); }
+  .btn-pill-dark:hover { background: linear-gradient(to right, #FC5A07, #FF7A33); }
+
+  .btn-pill-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-talent-navy/15 bg-white text-talent-navy px-6 py-3 text-sm font-semibold transition-all duration-200 hover:border-talent-navy;
+  }
+  .btn-pill-ghost {
+    @apply inline-flex items-center gap-2 rounded-full text-talent-navy px-4 py-2 text-sm font-semibold transition-colors duration-200 hover:bg-talent-mist;
+  }
+
+  /* Eyebrow tag */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-talent-orange-50 text-talent-orange-700 px-3 py-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .eyebrow-blue {
+    @apply inline-flex items-center gap-2 rounded-full bg-talent-blue-50 text-talent-blue px-3 py-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-20 sm:py-28;
+  }
+
+  /* Card primitives */
+  .card-surface {
+    @apply rounded-[var(--radius-brand)] bg-white border border-talent-navy/5 shadow-[var(--shadow-soft)];
+  }
+
+  .card-accent-orange {
+    @apply rounded-[var(--radius-brand)] text-talent-white shadow-[var(--shadow-glow-orange)];
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 40%),
+      linear-gradient(135deg, #FC5A07 0%, #FF7A33 100%);
+  }
+
+  /* Uniflow CTA gradient — purple in original, translated to orange/coral for SnagRadar */
+  .cta-gradient {
+    @apply rounded-[2rem] text-white shadow-[var(--shadow-glow-orange)];
+    background:
+      linear-gradient(110deg, #FC5A07 0%, #FF7A33 45%, #FFB07A 100%);
+  }
+
+  /* Hero backdrop gradient (peek behind centered hero image) */
+  .hero-backdrop {
+    background:
+      radial-gradient(60% 70% at 15% 50%, rgba(252, 90, 7, 0.18) 0%, transparent 60%),
+      radial-gradient(60% 70% at 85% 50%, rgba(0, 87, 174, 0.16) 0%, transparent 60%);
+  }
+
+  .card-accent-navy {
+    @apply rounded-[var(--radius-brand)] text-talent-white shadow-[var(--shadow-glow-navy)];
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(252, 90, 7, 0.35) 0%, transparent 50%),
+      linear-gradient(135deg, #022043 0%, #06335E 100%);
+  }
+
+  /* Blueprint grid background */
+  .bp-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .bp-grid-light {
+    background-image:
+      linear-gradient(rgba(2,32,67,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2,32,67,0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Traffic light pill */
+  .sla-green { @apply inline-flex items-center gap-1.5 rounded-full bg-emerald-50 text-emerald-700 px-2.5 py-1 text-xs font-semibold; }
+  .sla-amber { @apply inline-flex items-center gap-1.5 rounded-full bg-amber-50 text-amber-700 px-2.5 py-1 text-xs font-semibold; }
+  .sla-red   { @apply inline-flex items-center gap-1.5 rounded-full bg-red-50 text-red-700 px-2.5 py-1 text-xs font-semibold; }
+
+  /* Status dot with pulse */
+  .dot { @apply inline-block h-2 w-2 rounded-full; }
+
+  /* Underline link */
+  .link-arrow {
+    @apply inline-flex items-center gap-1 font-semibold text-talent-orange hover:text-talent-orange-700 transition-colors;
+  }
+  .link-arrow::after { content: "→"; transition: transform .2s ease; }
+  .link-arrow:hover::after { transform: translateX(4px); }
+
+  /* Reveal-on-scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Marquee container */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}

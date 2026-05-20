@@ -1,0 +1,125 @@
+<% content_for :title, "Contact — SnagRadar" %>
+<% content_for :description, "Book a demo, start a pilot, or get support." %>
+
+<%# ============== HERO ============== %>
+<section class="bg-white">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 pt-36 sm:pt-44 pb-8 text-center" data-controller="reveal">
+    <div class="max-w-2xl mx-auto reveal">
+      <span class="eyebrow">Get in touch</span>
+      <h1 class="mt-4 font-display text-5xl sm:text-6xl font-bold tracking-tighter leading-[1.02]">Let's talk about your sites.</h1>
+      <p class="mt-5 text-lg text-talent-slate leading-relaxed">Book a 20-minute walkthrough, ask a question, or start a pilot. We typically reply within 4 hours during UK working hours.</p>
+    </div>
+  </div>
+</section>
+
+<%# ============== FORM + DETAILS ============== %>
+<section class="bg-white pb-20">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="grid lg:grid-cols-12 gap-10 items-start reveal">
+      <%# Form %>
+      <div class="lg:col-span-7 card-surface p-8 sm:p-10">
+        <%= form_with url: "#", method: :post, class: "space-y-5", local: true do |f| %>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Full name</label>
+              <input type="text" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="Sara Jenkins">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Company</label>
+              <input type="text" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="PMC Customer Care">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Work email</label>
+              <input type="email" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="sara@pmccare.co.uk">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Phone <span class="font-normal text-talent-muted/60">(optional)</span></label>
+              <input type="tel" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="+44 7…">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">I'm interested in</label>
+            <div class="grid sm:grid-cols-3 gap-2">
+              <% ["Book a demo", "Start a pilot", "Talk to sales"].each_with_index do |opt, i| %>
+                <label class="flex items-center justify-center gap-2 rounded-xl border border-talent-navy/10 px-4 py-3 text-sm font-semibold cursor-pointer hover:border-talent-orange transition has-[:checked]:bg-talent-orange has-[:checked]:text-white has-[:checked]:border-talent-orange">
+                  <input type="radio" name="interest" class="sr-only" <%= 'checked' if i == 0 %>>
+                  <%= opt %>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Tell us about your sites</label>
+            <textarea rows="5" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none" placeholder="How many sites? What's your current process? Where does it hurt?"></textarea>
+          </div>
+
+          <label class="flex items-start gap-3 text-sm text-talent-slate">
+            <input type="checkbox" class="mt-0.5 h-4 w-4 rounded border-talent-navy/20 text-talent-orange focus:ring-talent-orange">
+            <span>I agree to be contacted about SnagRadar and have read the <%= link_to "privacy policy", privacy_path, class: "underline" %>.</span>
+          </label>
+
+          <button type="submit" class="btn-pill-orange w-full sm:w-auto px-8 py-4 text-base justify-center">
+            Send message
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        <% end %>
+      </div>
+
+      <%# Sidebar %>
+      <aside class="lg:col-span-5 space-y-4">
+        <div class="card-accent-navy p-7 relative overflow-hidden">
+          <div class="absolute inset-0 bp-grid opacity-40 pointer-events-none"></div>
+          <div class="relative">
+            <div class="text-xs font-semibold uppercase tracking-wider text-white/70">Response promise</div>
+            <div class="mt-3 font-display text-3xl font-bold leading-tight">We reply within<br><span class="text-talent-orange">4 hours</span></div>
+            <p class="mt-3 text-sm text-talent-sky/80 leading-relaxed">UK working hours, Mon–Fri. If you need urgent pilot support, mention "urgent" in your message and we'll triage faster.</p>
+          </div>
+        </div>
+
+        <div class="card-surface p-7 space-y-5">
+          <div class="flex items-start gap-3">
+            <div class="h-11 w-11 rounded-xl bg-talent-orange/15 text-talent-orange-700 grid place-items-center">
+              <%= image_tag "icons/email.svg", alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+            </div>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Sales</div>
+              <a href="mailto:hello@snagradar.co.uk" class="block text-talent-navy font-semibold hover:text-talent-orange transition">hello@snagradar.co.uk</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="h-11 w-11 rounded-xl bg-talent-blue/15 text-talent-blue grid place-items-center">
+              <%= image_tag "icons/whatsapp.svg", alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+            </div>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Support</div>
+              <a href="mailto:support@snagradar.co.uk" class="block text-talent-navy font-semibold hover:text-talent-orange transition">support@snagradar.co.uk</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="h-11 w-11 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">
+              <%= image_tag "icons/home.svg", alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+            </div>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Office</div>
+              <div class="text-talent-navy font-semibold">London, UK</div>
+              <div class="text-sm text-talent-muted">Remote-first · By appointment</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-surface p-7">
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            </span>
+            <div class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Available now</div>
+          </div>
+          <div class="mt-3 text-sm text-talent-slate leading-relaxed">Sara &amp; Jamie usually pick up on chat during 09:00–17:30 GMT.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

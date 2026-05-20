@@ -1,0 +1,52 @@
+<div class="grid grid-cols-2 gap-5 items-end">
+  <%# Phone with signature %>
+  <div class="relative">
+    <div class="mx-auto w-full max-w-[280px] aspect-[9/19] rounded-[2.2rem] bg-talent-navy p-2.5 shadow-card">
+      <div class="h-full w-full rounded-[1.8rem] bg-white overflow-hidden flex flex-col">
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between text-xs">
+          <span class="font-semibold">9:41</span>
+          <div class="flex items-center gap-1 text-talent-navy">
+            <span class="h-1.5 w-1.5 rounded-full bg-talent-navy"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-talent-navy"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-talent-navy"></span>
+          </div>
+        </div>
+        <div class="px-4 py-2 border-b border-talent-navy/5">
+          <div class="text-[10px] uppercase font-semibold text-talent-muted tracking-wider">Sign-off · HY-2487</div>
+          <div class="font-display font-bold text-talent-navy">Plot 14 — Plumbing</div>
+        </div>
+        <div class="px-4 py-3 flex-1 flex flex-col">
+          <div class="text-xs text-talent-muted">Please confirm the work has been completed to your satisfaction.</div>
+          <div class="mt-3 grid grid-cols-2 gap-2">
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-talent-orange/30 to-talent-orange/60"></div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-emerald-200 to-emerald-400/60"></div>
+          </div>
+          <div class="mt-3 rounded-xl border-2 border-dashed border-talent-navy/15 p-3 flex-1 grid place-items-center">
+            <svg class="w-full h-12" viewBox="0 0 200 50" fill="none" stroke="#022043" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5,40 C15,10 30,45 45,20 C60,5 70,40 90,30 C105,22 115,5 130,25 C145,40 160,20 195,30"/>
+            </svg>
+          </div>
+          <button class="mt-3 btn-pill-orange w-full justify-center py-2.5 text-sm">Submit sign-off</button>
+        </div>
+      </div>
+    </div>
+    <div class="absolute -top-3 left-1/2 -translate-x-1/2 h-5 w-20 rounded-b-xl bg-talent-navy"></div>
+  </div>
+
+  <%# Receipt card %>
+  <div class="rounded-2xl bg-white shadow-card border border-talent-navy/5 p-5">
+    <div class="flex items-center gap-2 text-emerald-600">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span class="font-semibold text-sm">Signed off</span>
+    </div>
+    <div class="font-display text-lg font-bold mt-2">HY-2487 closed</div>
+    <div class="text-sm text-talent-muted mt-1">Resident: <span class="text-talent-navy">A. Hartley</span></div>
+    <div class="text-sm text-talent-muted">Signed: <span class="text-talent-navy">14 May 2026, 16:42</span></div>
+    <div class="text-sm text-talent-muted">SLA: <span class="text-emerald-600 font-semibold">Met (2 days early)</span></div>
+
+    <div class="mt-4 pt-4 border-t border-talent-navy/5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">Audit hash</div>
+      <div class="font-mono text-xs text-talent-navy/80 break-all">sha256: a3b2…7d91</div>
+    </div>
+  </div>
+</div>

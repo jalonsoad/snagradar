@@ -1,0 +1,75 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(BASE_URL=\"https://raw.githubusercontent.com/ThibautBaissac/rails_ai_agents/main/37signals_agents\")",
+      "Bash(for file in model-agent crud-agent concerns-agent state-records-agent auth-agent migration-agent test-agent turbo-agent stimulus-agent events-agent multi-tenant-agent jobs-agent mailer-agent caching-agent api-agent refactoring-agent review-agent implement-agent)",
+      "Bash(do echo \"Downloading $file.md...\")",
+      "Bash(curl:*)",
+      "Bash(done)",
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(bin/brakeman:*)",
+      "WebFetch(domain:flowbite.com)",
+      "WebSearch",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign cards dashboard with Flowbite components and inline SVG icons\n\nIntegrate Flowbite \\(CSS CDN + turbo-compatible JS via importmap\\) for\ninteractive UI features like dismissible alerts and tooltips. Add icon\\(\\)\nhelper with 14 inline SVG constants for consistent iconography. Redesign\nall card views with color-coded kanban columns, dark navbar, hover-reveal\ndrag handles, status badges with lock/unlock icons, and Flowbite-styled\nform controls. All existing functionality \\(drag-and-drop, Turbo Streams,\nclose/reopen, CRUD\\) is preserved.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "WebFetch(domain:avohq.io)",
+      "WebFetch(domain:blog.saeloun.com)",
+      "WebFetch(domain:www.bigbinary.com)",
+      "WebFetch(domain:robrace.dev)",
+      "Bash(bin/rubocop:*)",
+      "Bash(git -C /Users/jcalonsov/Projects/RAILS/rails-ai-agents commit -m \"$\\(cat <<''EOF''\nAdd authentication, public landing page, dashboard sidebar, and breadcrumbs\n\nImplement Rails 8 authentication \\(sign in, sign up, password reset\\) with\na public marketing layout, restructured dashboard with sidebar navigation\nand user dropdown, and Flowbite-styled breadcrumbs across all pages.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(python3 -c \"\ncss = open\\(''/Users/jcalonsov/Projects/RAILS/rails-ai-agents/app/assets/builds/tailwind.css''\\).read\\(\\)\nimport re\nfor cls in [''from-blue-600'', ''via-blue-700'', ''to-indigo-800'']:\n    for m in re.finditer\\(r''\\\\.'' + cls.replace\\(''-'', r''\\\\-''\\) + r''[^{]*\\\\{[^}]*\\\\}'', css\\):\n        print\\(m.group\\(\\)\\)\n        print\\(''---''\\)\n\")",
+      "Bash(python3:*)",
+      "Bash(git commit:*)",
+      "Bash(bundle exec ruby:*)",
+      "Bash(find:*)",
+      "Bash(bin/rails runner:*)",
+      "Bash(RAILS_ENV=staging bin/rails runner:*)",
+      "Bash(gtimeout 15 ruby:*)",
+      "Bash(echo:*)"
+    ]
+  },
+  "mcpServers": {
+    "cloudflare-docs": {
+      "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "figma-remote-mcp-server": {
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "flowbite": {
+      "command": "npx",
+      "args": ["-y", "flowbite-mcp"],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "figd_mbplxpzlnQrzO052GthWdlwCSLF7dlEODgWgxNIOOKEN"
+      }
+    },
+    "n8n-mcp": {
+      "command": "npx",
+      "args": ["n8n-mcp"],
+      "env": {
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "LOG_LEVEL": "error",
+        "MCP_MODE": "stdio",
+        "N8N_API_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZjYzOTk4Ny02YThkLTQ5NzAtOTZkMC01OWUzMGU5NDIyMmQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzY4ODE5NjQwLCJleHAiOjE3NzEzNjkyMDB9.ULfAwqDqH_Ba_OuwyjlGR20JGPv41NfOFWH1_wvLBkg",
+        "N8N_API_URL": "https://n8n.clipboost.com/mcp-server/http"
+      }
+    },
+    "postgresql-mcp": {
+      "command": "node",
+      "args": ["/Users/jcalonsov/mcp-servers/postgresql-mcp-server"]
+    },
+    "icons8mcp": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.icons8.com/mcp/",
+        "--header",
+        "Authorization:${AUTH_HEADER}"
+      ],
+      "env": {
+        "AUTH_HEADER": "Bearer 7TwDfwd33vOucj2rrik9bKed7eo9t2MHRaphcnyc"
+      }
+    }
+  }
+}

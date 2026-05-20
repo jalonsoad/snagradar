@@ -1,0 +1,219 @@
+<% content_for :title, "Pricing — SnagRadar" %>
+<% content_for :description, "Transparent pricing for construction defect management. Pilot, team and enterprise plans." %>
+
+<%# ============== HERO ============== %>
+<section class="bg-white">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 pt-36 sm:pt-44 pb-8 text-center" data-controller="reveal">
+    <div class="max-w-2xl mx-auto reveal">
+      <span class="eyebrow">Pricing</span>
+      <h1 class="mt-4 font-display text-5xl sm:text-6xl font-bold tracking-tighter leading-[1.02]">Plans built for sites &amp; aftercare teams.</h1>
+      <p class="mt-5 text-lg text-talent-slate leading-relaxed">Start with a pilot. Upgrade when you're ready. No procurement headaches.</p>
+    </div>
+  </div>
+</section>
+
+<%# ============== PLANS ============== %>
+<section class="bg-white pb-16 sm:pb-24">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="billing reveal">
+    <%# Billing toggle %>
+    <div class="flex justify-center mb-12 reveal">
+      <div class="relative inline-flex items-center gap-1 rounded-full bg-talent-mist p-1">
+        <button type="button"
+                class="rounded-full px-5 py-2 text-sm font-semibold transition text-talent-muted"
+                data-billing-target="monthly"
+                data-period="monthly"
+                data-action="click->billing#set">Monthly</button>
+        <button type="button"
+                class="rounded-full px-5 py-2 text-sm font-semibold transition bg-white shadow-soft text-talent-navy"
+                data-billing-target="yearly"
+                data-period="yearly"
+                data-action="click->billing#set">
+          Yearly
+          <span class="ml-1 inline-flex items-center rounded-full bg-talent-orange/15 text-talent-orange px-1.5 py-0.5 text-[10px] font-bold uppercase">−20%</span>
+        </button>
+      </div>
+    </div>
+
+    <%# 3 plans %>
+    <div class="grid lg:grid-cols-3 gap-6 reveal" style="transition-delay: .1s">
+      <% plans = [
+           { name: "Pilot", tagline: "Two sites, one team, full feature set for 14 days.",
+             monthly: "£0", yearly: "£0", per: "for 14 days",
+             cta: "Start pilot", style: :surface,
+             features: ["Up to 2 sites", "Unlimited internal users", "Unlimited defects", "Mobile contractor portal", "Resident sign-off",
+                        "Traffic-light Radar", "Email support"] },
+           { name: "Team", tagline: "For active customer-care teams and growing portfolios.",
+             monthly: "£199", yearly: "£159", per: "per month",
+             cta: "Choose Team", style: :accent, popular: true,
+             features: ["Up to 10 sites", "Unlimited users", "Unlimited defects + photos",
+                        "AI trade + priority suggestions", "Configurable SLA policies",
+                        "CSV exports + KPI reporting", "Priority email + chat support"] },
+           { name: "Enterprise", tagline: "For multi-region builders and housing associations.",
+             monthly: "Custom", yearly: "Custom", per: "tailored",
+             cta: "Talk to sales", style: :surface,
+             features: ["Unlimited sites", "SSO + custom roles", "Action Mailbox AI intake",
+                        "Webhook integrations", "Dedicated success manager", "SLA guarantee + 24/7 cover",
+                        "Onboarding + training"] }
+         ] %>
+      <% plans.each do |p| %>
+        <% accent = p[:style] == :accent %>
+        <article class="relative <%= accent ? 'card-accent-orange text-white' : 'card-surface' %> p-7 flex flex-col">
+          <% if accent %>
+            <div class="absolute inset-0 bp-grid opacity-25 pointer-events-none rounded-[var(--radius-brand)]"></div>
+          <% end %>
+          <% if p[:popular] %>
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span class="inline-flex items-center gap-1 rounded-full bg-talent-navy text-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider shadow-card">Most popular</span>
+            </div>
+          <% end %>
+
+          <div class="relative">
+            <div class="font-display text-2xl font-bold"><%= p[:name] %></div>
+            <p class="mt-2 text-sm <%= accent ? 'text-white/85' : 'text-talent-slate' %>"><%= p[:tagline] %></p>
+
+            <div class="mt-6 flex items-end gap-1.5">
+              <span class="font-display text-5xl font-bold"
+                    data-billing-target="price"
+                    data-monthly="<%= p[:monthly] %>"
+                    data-yearly="<%= p[:yearly] %>"><%= p[:yearly] %></span>
+              <span class="<%= accent ? 'text-white/80' : 'text-talent-muted' %> pb-2 text-sm"><%= p[:per] %></span>
+            </div>
+
+            <%= link_to p[:cta], contact_path,
+                  class: accent ? "mt-6 w-full inline-flex items-center justify-center rounded-full bg-talent-navy text-white px-5 py-3 text-sm font-semibold hover:bg-talent-navy-700 transition" :
+                                  "mt-6 w-full inline-flex items-center justify-center rounded-full bg-talent-navy text-white px-5 py-3 text-sm font-semibold hover:bg-talent-navy-700 transition" %>
+
+            <div class="<%= accent ? 'border-white/15' : 'border-talent-navy/5' %> border-t mt-7 pt-5"></div>
+            <ul class="space-y-3 text-sm">
+              <% p[:features].each do |feat| %>
+                <li class="flex gap-3">
+                  <span class="flex-shrink-0 mt-0.5 h-5 w-5 rounded-full <%= accent ? 'bg-white/20' : 'bg-talent-orange/15' %> grid place-items-center">
+                    <svg class="h-3 w-3 <%= accent ? 'text-white' : 'text-talent-orange' %>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <span class="<%= accent ? 'text-white/90' : 'text-talent-slate' %>"><%= feat %></span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </article>
+      <% end %>
+    </div>
+
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-talent-muted">
+      <span>All plans include:</span>
+      <span class="flex items-center gap-1.5"><span class="dot bg-emerald-500"></span> Hosted in EU</span>
+      <span class="hidden sm:inline opacity-30">·</span>
+      <span class="flex items-center gap-1.5"><span class="dot bg-emerald-500"></span> Encrypted at rest</span>
+      <span class="hidden sm:inline opacity-30">·</span>
+      <span class="flex items-center gap-1.5"><span class="dot bg-emerald-500"></span> GDPR-friendly</span>
+    </div>
+  </div>
+</section>
+
+<%# ============== COMPARE TABLE ============== %>
+<section class="section bg-talent-mist">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="text-center reveal">
+      <span class="eyebrow-blue">Feature comparison</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight">What's in each plan</h2>
+    </div>
+
+    <div class="mt-12 overflow-hidden rounded-3xl bg-white shadow-card border border-talent-navy/5 reveal" style="transition-delay: .1s">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-talent-navy text-white">
+            <th class="text-left px-6 py-4 font-display font-bold">Feature</th>
+            <th class="px-6 py-4 font-display font-bold">Pilot</th>
+            <th class="px-6 py-4 font-display font-bold bg-talent-orange/95">Team</th>
+            <th class="px-6 py-4 font-display font-bold">Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rows = [
+               { label: "Sites", vals: ["2", "10", "Unlimited"] },
+               { label: "Internal users", vals: ["✓", "✓", "✓"] },
+               { label: "Defects + photos", vals: ["Unlimited", "Unlimited", "Unlimited"] },
+               { label: "Traffic-light Radar", vals: ["✓", "✓", "✓"] },
+               { label: "Mobile contractor portal", vals: ["✓", "✓", "✓"] },
+               { label: "Resident sign-off", vals: ["✓", "✓", "✓"] },
+               { label: "Configurable SLA policies", vals: ["—", "✓", "✓"] },
+               { label: "CSV exports + KPIs", vals: ["—", "✓", "✓"] },
+               { label: "AI trade + priority suggestions", vals: ["—", "✓", "✓"] },
+               { label: "Action Mailbox AI intake", vals: ["—", "—", "✓"] },
+               { label: "Webhooks + API access", vals: ["—", "—", "✓"] },
+               { label: "SSO + custom roles", vals: ["—", "—", "✓"] },
+               { label: "Onboarding + training", vals: ["—", "—", "✓"] },
+               { label: "Support", vals: ["Email", "Priority email + chat", "Dedicated success manager"] }
+             ] %>
+          <% rows.each_with_index do |row, idx| %>
+            <tr class="<%= 'bg-talent-mist/50' if idx.odd? %> border-b border-talent-navy/5 last:border-b-0">
+              <td class="text-left px-6 py-3.5 font-medium text-talent-navy"><%= row[:label] %></td>
+              <% row[:vals].each_with_index do |v, i| %>
+                <td class="text-center px-6 py-3.5 <%= 'bg-talent-orange/5' if i == 1 %>">
+                  <% if v == "✓" %>
+                    <span class="inline-flex h-6 w-6 rounded-full bg-emerald-100 text-emerald-700 items-center justify-center">
+                      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  <% elsif v == "—" %>
+                    <span class="text-talent-muted/40">—</span>
+                  <% else %>
+                    <span class="text-talent-navy font-semibold"><%= v %></span>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%# ============== FAQ ============== %>
+<section class="section bg-white">
+  <div class="mx-auto max-w-4xl px-5 sm:px-8" data-controller="faq reveal">
+    <div class="text-center reveal">
+      <span class="eyebrow">Pricing FAQ</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight">Questions, answered</h2>
+    </div>
+    <div class="mt-12 space-y-3 reveal" style="transition-delay: .1s">
+      <% faqs = [
+           { q: "Is the pilot really free?", a: "Yes. The 14-day pilot is free, full-featured and includes onboarding help. We won't ask for a card." },
+           { q: "What counts as a 'site'?", a: "A site is a development, project or scheme — for example, 'Adur Shoreham'. Plots within that site are unlimited and free." },
+           { q: "Are contractors charged per seat?", a: "No. Contractors access the portal via tokenised links. We don't charge per subcontractor or per resident." },
+           { q: "How do you store photos and signatures?", a: "Active Storage with private object storage. Files are served via signed URLs with short expiry. Signatures are stored as immutable evidence." },
+           { q: "Can I export my data?", a: "Yes — CSV exports are on Team and Enterprise. Raw data export is included on Enterprise. There's no lock-in." },
+           { q: "Do you offer a non-profit / housing association discount?", a: "Yes — talk to us. We've designed SnagRadar partly with housing associations in mind." }
+         ] %>
+      <% faqs.each do |f| %>
+        <div class="rounded-2xl bg-talent-mist" data-faq-target="item">
+          <button class="w-full flex items-center justify-between gap-4 p-5 text-left" data-action="click->faq#toggle">
+            <span class="font-display text-lg font-semibold"><%= f[:q] %></span>
+            <span class="flex-shrink-0 h-8 w-8 rounded-full bg-white grid place-items-center text-talent-orange transition-transform" data-faq-target="icon">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="hidden px-5 pb-5 text-talent-slate leading-relaxed" data-faq-target="body"><%= f[:a] %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ============== CTA ============== %>
+<section class="relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-20">
+    <div class="card-accent-navy relative overflow-hidden p-10 sm:p-14">
+      <div class="absolute inset-0 bp-grid opacity-50 pointer-events-none"></div>
+      <div class="relative grid lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tighter leading-[1.05] text-white">Try SnagRadar on two of your sites, free.</h2>
+          <p class="mt-4 text-lg text-talent-sky/85">14-day pilot, full feature set, no card required.</p>
+        </div>
+        <div class="lg:col-span-4 flex">
+          <%= link_to "Start a pilot", contact_path, class: "btn-pill-orange w-full justify-center text-base py-4" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

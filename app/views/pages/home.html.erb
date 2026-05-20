@@ -1,0 +1,544 @@
+<% content_for :title, "SnagRadar — Defects on the radar. Trades on the move." %>
+<% content_for :description, "Replace spreadsheets, inboxes and WhatsApp with one mobile-first command centre for construction defects, SLAs and resident sign-off." %>
+
+<%# ============== HERO (Uniflow style: centered, white bg, dashboard image below) ============== %>
+<section class="relative bg-white overflow-hidden pt-32 sm:pt-40 lg:pt-44 pb-24 sm:pb-32">
+  <div class="absolute inset-0 hero-backdrop pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-5xl px-5 sm:px-8 text-center" data-controller="reveal">
+    <div class="reveal">
+      <span class="inline-flex items-center gap-2 rounded-full bg-talent-mist text-talent-navy px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-talent-navy/5">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-talent-orange opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-talent-orange"></span>
+        </span>
+        Now in private pilot · Construction aftercare
+      </span>
+
+      <h1 class="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02] text-talent-navy">
+        Defects on the radar.<br>
+        <span class="text-talent-orange">Trades on the move.</span>
+      </h1>
+
+      <p class="mt-6 mx-auto max-w-2xl text-lg sm:text-xl text-talent-slate leading-relaxed">
+        Replace inboxes, spreadsheets and WhatsApp threads with one mobile-first command centre. Track every defect from intake to resident sign-off — with SLAs, evidence and audit trails baked in.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <%= link_to "Book a demo", contact_path, class: "btn-primary" %>
+        <%= link_to "#radar", class: "btn-dark" do %>
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+          See the Radar
+        <% end %>
+      </div>
+    </div>
+
+    <%# Arc of trade icons connecting to a central hub — Uniflow integrations pattern %>
+    <div class="relative mt-16 sm:mt-20 reveal" style="transition-delay: .15s">
+      <svg viewBox="0 0 720 200" class="mx-auto w-full max-w-2xl" aria-hidden="true">
+        <defs>
+          <linearGradient id="arc-grad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#0057AE" stop-opacity=".15"/>
+            <stop offset=".5" stop-color="#FC5A07" stop-opacity=".7"/>
+            <stop offset="1" stop-color="#0057AE" stop-opacity=".15"/>
+          </linearGradient>
+        </defs>
+        <%# Curved lines from each icon to the central hub %>
+        <path d="M60,80 C220,180 280,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
+        <path d="M180,40 C260,140 320,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
+        <path d="M360,20 L360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
+        <path d="M540,40 C460,140 400,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
+        <path d="M660,80 C500,180 440,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
+      </svg>
+      <%# Trade icons positioned absolutely along the arc — Icons8 SVGs in white tiles %>
+      <div class="absolute inset-0">
+        <% trades = [
+             { icon: "icons/plumbing.svg",  tint: "bg-talent-blue/10  text-talent-blue",         pos: "left-[5%]   top-[18%]" },
+             { icon: "icons/lightning.svg", tint: "bg-amber-100       text-amber-600",           pos: "left-[24%]  top-[2%]"  },
+             { icon: "icons/hammer.svg",    tint: "bg-talent-orange-50 text-talent-orange-700",  pos: "left-1/2 -translate-x-1/2 top-[-10%]" },
+             { icon: "icons/tile.svg",      tint: "bg-emerald-100     text-emerald-600",         pos: "right-[24%] top-[2%]"  },
+             { icon: "icons/roller.svg",    tint: "bg-violet-100      text-violet-600",          pos: "right-[5%]  top-[18%]" }
+           ] %>
+        <% trades.each do |t| %>
+          <div class="absolute <%= t[:pos] %> h-16 w-16 rounded-2xl bg-white shadow-card grid place-items-center transition hover:-translate-y-1">
+            <div class="h-11 w-11 rounded-xl <%= t[:tint] %> grid place-items-center">
+              <%= image_tag t[:icon], alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+            </div>
+          </div>
+        <% end %>
+        <%# Central hub: SnagRadar icon %>
+        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 h-20 w-20 rounded-3xl bg-white shadow-[var(--shadow-glow-orange)] grid place-items-center ring-1 ring-talent-navy/5">
+          <%= image_tag "snagradar-icon.png", alt: "", class: "h-14 w-14 object-contain", aria: { hidden: true } %>
+        </div>
+      </div>
+    </div>
+
+    <%# Big centered dashboard image (Uniflow's "screenshot below" pattern) %>
+    <div class="relative mt-20 sm:mt-28 reveal" style="transition-delay: .25s">
+      <%# Gradient peeking from sides %>
+      <div class="absolute -inset-6 -z-10">
+        <div class="absolute inset-y-8 -left-6 w-1/3 rounded-3xl bg-gradient-to-br from-talent-orange/30 to-talent-blue/30 blur-2xl"></div>
+        <div class="absolute inset-y-8 -right-6 w-1/3 rounded-3xl bg-gradient-to-bl from-talent-blue/30 to-talent-orange/30 blur-2xl"></div>
+      </div>
+
+      <div class="relative rounded-3xl bg-talent-navy text-white shadow-[0_30px_60px_-20px_rgba(2,32,67,0.45)] overflow-hidden ring-1 ring-talent-navy/10">
+        <%# Chrome bar %>
+        <div class="px-5 py-3 flex items-center justify-between border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></span>
+          </div>
+          <div class="text-xs font-mono text-white/55">app.snagradar.co.uk/radar</div>
+          <div class="text-xs text-white/40">●●●</div>
+        </div>
+
+        <%# Dashboard body %>
+        <div class="p-6 sm:p-8 bg-white text-talent-navy">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 text-left">
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wider text-talent-muted">Live Radar — Adur Shoreham</div>
+              <div class="font-display text-2xl font-extrabold mt-0.5">14 open defects</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="sla-amber"><span class="dot bg-amber-500"></span> 3 approaching breach</span>
+              <span class="sla-red"><span class="dot bg-red-500"></span> 2 overdue</span>
+            </div>
+          </div>
+
+          <%# KPI grid %>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <% [
+                 { label: "Open",         value: 14,  bg: "bg-talent-navy text-white"       },
+                 { label: "Overdue",      value: 2,   bg: "bg-red-100 text-red-700"         },
+                 { label: "≤48h SLA",     value: 3,   bg: "bg-amber-100 text-amber-700"     },
+                 { label: "Signed off",   value: 22,  bg: "bg-emerald-100 text-emerald-700" }
+               ].each do |k| %>
+              <div class="rounded-2xl p-4 <%= k[:bg] %> text-left">
+                <div class="text-[10px] font-semibold uppercase tracking-wider opacity-80"><%= k[:label] %></div>
+                <div class="font-display text-3xl font-extrabold mt-1"><%= k[:value] %></div>
+              </div>
+            <% end %>
+          </div>
+
+          <%# Defect rows %>
+          <div class="space-y-2 text-left">
+            <% defects = [
+                 { ref: "HY-2487", plot: "Plot 14", trade: "Plumbing",   title: "Leak under sink — kitchen",  sla: :red,   due: "2 days overdue" },
+                 { ref: "HY-2491", plot: "Plot 02", trade: "Electrical", title: "Hallway light flickering",   sla: :amber, due: "Due in 36h" },
+                 { ref: "HY-2495", plot: "Plot 08", trade: "Decorating", title: "Touch-up paint, master bed", sla: :green, due: "On track" }
+               ] %>
+            <% defects.each do |d| %>
+              <div class="flex items-center gap-3 rounded-xl border border-talent-navy/5 bg-white p-3 hover:shadow-soft transition">
+                <div class="h-9 w-9 rounded-lg bg-talent-mist grid place-items-center text-talent-navy flex-shrink-0">
+                  <svg class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l6-6"/><path d="M9 15l9-9 3 3-9 9z"/></svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 text-xs text-talent-muted">
+                    <span class="font-mono"><%= d[:ref] %></span>
+                    <span>·</span><span><%= d[:plot] %></span>
+                    <span>·</span><span><%= d[:trade] %></span>
+                  </div>
+                  <div class="text-sm font-semibold text-talent-navy truncate"><%= d[:title] %></div>
+                </div>
+                <span class="<%= "sla-#{d[:sla]}" %>">
+                  <span class="dot <%= { red: 'bg-red-500', amber: 'bg-amber-500', green: 'bg-emerald-500' }[d[:sla]] %>"></span>
+                  <%= d[:due] %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ============== LOGO STRIP ============== %>
+<section class="bg-white pb-20">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="text-center text-xs font-semibold uppercase tracking-widest text-talent-muted mb-6">
+      Built for builders, housing associations &amp; aftercare teams
+    </div>
+    <div class="marquee overflow-hidden">
+      <div class="flex w-max items-center gap-12 animate-[marquee_38s_linear_infinite]">
+        <% logos = ["Hyde Group", "Adur Homes", "PMC Customer Care", "Northwall Build", "Stonecrest Developments", "Bridgemoor Homes", "Thornsby Group", "Caversham Build"] %>
+        <% (logos + logos).each do |name| %>
+          <div class="flex items-center gap-2 text-talent-navy/50 font-display text-2xl font-extrabold whitespace-nowrap">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+            <%= name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ============== PROBLEM ============== %>
+<section class="section bg-talent-mist relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 reveal">
+        <span class="eyebrow">The problem</span>
+        <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+          Aftercare lives in <span class="line-through text-talent-muted/70">15 places</span>. None of them are accountable.
+        </h2>
+        <p class="mt-6 text-lg text-talent-slate leading-relaxed">
+          Site managers WhatsApp the trade. Customer care emails the resident. Someone copies it into a spreadsheet. Nobody knows what's overdue, who promised what, or where the photos live.
+        </p>
+        <p class="mt-4 text-talent-slate">
+          SnagRadar pulls every defect into one timeline — assignment, photos, appointment, completion, sign-off — so accountability is a column, not a guess.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 reveal" style="transition-delay: .15s">
+        <div class="grid grid-cols-2 gap-4">
+          <% [
+               { icon: "icons/email.svg",       tint: "bg-talent-blue/10  text-talent-blue",    title: "Inbox",        count: "412 unread",  note: "Lost defect threads" },
+               { icon: "icons/whatsapp.svg",    tint: "bg-emerald-100     text-emerald-600",    title: "WhatsApp",     count: "9 groups",    note: "No audit, no SLA" },
+               { icon: "icons/spreadsheet.svg", tint: "bg-amber-100       text-amber-700",      title: "Spreadsheets", count: "v17_final",   note: "Whose copy is right?" },
+               { icon: "icons/journal.svg",     tint: "bg-violet-100      text-violet-600",     title: "Site notebook",count: "Handwritten", note: "Photos on someone's phone" }
+             ].each do |c| %>
+            <div class="card-surface p-5 hover:-translate-y-1 hover:shadow-card transition group">
+              <div class="h-12 w-12 rounded-xl <%= c[:tint] %> grid place-items-center group-hover:scale-110 transition-transform">
+                <%= image_tag c[:icon], alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+              </div>
+              <div class="mt-4 font-display text-lg font-extrabold"><%= c[:title] %></div>
+              <div class="font-mono text-xs text-talent-orange mt-1"><%= c[:count] %></div>
+              <div class="text-sm text-talent-muted mt-2"><%= c[:note] %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mt-4 card-accent-navy p-6 relative overflow-hidden">
+          <div class="absolute inset-0 bp-grid opacity-50 pointer-events-none"></div>
+          <div class="relative flex items-center gap-4">
+            <div class="h-14 w-14 rounded-2xl bg-talent-orange grid place-items-center text-white">
+              <%= image_tag "icons/arrow-right.svg", alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+            </div>
+            <div>
+              <div class="font-display text-xl font-extrabold">One radar. Every defect. Every owner.</div>
+              <div class="text-talent-sky/80 text-sm mt-1">Web for office. Mobile for site. Magic links for residents.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ============== RADAR DASHBOARD (kept — SnagRadar specific) ============== %>
+<section id="radar" class="section bg-white relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="max-w-3xl mx-auto text-center reveal">
+      <span class="eyebrow-blue">The Radar dashboard</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+        Know what's open, who owns it, when it's due, and whether the resident has signed it off.
+      </h2>
+      <p class="mt-6 text-lg text-talent-slate leading-relaxed">
+        A traffic-light operational view designed to be glanced at — not interpreted. Green is healthy, amber is approaching breach, red is overdue.
+      </p>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-12 gap-6 reveal" style="transition-delay: .1s">
+      <div class="lg:col-span-8 relative rounded-3xl bg-talent-mist border border-talent-navy/5 overflow-hidden shadow-card">
+        <div class="px-5 py-3.5 flex items-center justify-between border-b border-talent-navy/5 bg-white/80 backdrop-blur">
+          <div class="flex items-center gap-3">
+            <%= image_tag "snagradar-icon.png", class: "h-7 w-7 object-contain", alt: "" %>
+            <div class="text-sm font-semibold">Live Radar — All sites</div>
+          </div>
+          <div class="hidden sm:flex items-center gap-2 text-xs text-talent-muted">
+            <span class="dot bg-emerald-500 animate-pulse"></span>
+            Updated 4s ago
+          </div>
+        </div>
+
+        <div class="p-5 sm:p-7">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <% [
+                 { label: "Open",        value: 87, accent: "bg-talent-navy text-white"  },
+                 { label: "Overdue",     value: 6,  accent: "bg-red-100 text-red-700"    },
+                 { label: "≤48h to SLA", value: 11, accent: "bg-amber-100 text-amber-700"},
+                 { label: "Signed off",  value: 134,accent: "bg-emerald-100 text-emerald-700"}
+               ].each do |k| %>
+              <div class="rounded-2xl p-4 <%= k[:accent] %>">
+                <div class="text-xs font-semibold uppercase tracking-wide opacity-80"><%= k[:label] %></div>
+                <div class="font-display text-3xl font-extrabold mt-1"><%= k[:value] %></div>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="mt-7">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-sm font-semibold">Open defects by trade</div>
+              <div class="flex items-center gap-3 text-xs text-talent-muted">
+                <span class="flex items-center gap-1"><span class="dot bg-emerald-500"></span> Green</span>
+                <span class="flex items-center gap-1"><span class="dot bg-amber-500"></span> Amber</span>
+                <span class="flex items-center gap-1"><span class="dot bg-red-500"></span> Red</span>
+              </div>
+            </div>
+            <% trades = [
+                 { name: "Plumbing",   g: 12, a: 4, r: 2 },
+                 { name: "Electrical", g: 8,  a: 3, r: 1 },
+                 { name: "Decorating", g: 18, a: 1, r: 0 },
+                 { name: "Carpentry",  g: 7,  a: 2, r: 1 },
+                 { name: "Tiling",     g: 5,  a: 1, r: 2 },
+               ] %>
+            <% trades.each do |t| %>
+              <% total = t[:g] + t[:a] + t[:r] %>
+              <div class="grid grid-cols-12 items-center gap-3 py-2">
+                <div class="col-span-3 text-sm font-medium"><%= t[:name] %></div>
+                <div class="col-span-8 h-7 rounded-full bg-white overflow-hidden flex">
+                  <div class="bg-emerald-400" style="width: <%= 100.0 * t[:g] / total %>%"></div>
+                  <div class="bg-amber-400"   style="width: <%= 100.0 * t[:a] / total %>%"></div>
+                  <div class="bg-red-400"     style="width: <%= 100.0 * t[:r] / total %>%"></div>
+                </div>
+                <div class="col-span-1 text-right text-sm font-semibold text-talent-navy"><%= total %></div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-4 flex flex-col gap-4">
+        <div class="card-accent-orange p-6 relative overflow-hidden">
+          <div class="absolute inset-0 bp-grid opacity-40 pointer-events-none"></div>
+          <div class="relative">
+            <div class="text-xs font-semibold uppercase tracking-wider text-white/80">Awaiting acceptance</div>
+            <div class="font-display text-5xl font-extrabold mt-2">9</div>
+            <p class="mt-2 text-sm text-white/90 leading-relaxed">Trades who haven't replied within 24h are auto-flagged. Nudge them in one click.</p>
+          </div>
+        </div>
+
+        <div class="card-surface p-5">
+          <div class="text-xs font-semibold uppercase tracking-wider text-talent-muted">Awaiting sign-off</div>
+          <div class="flex items-end justify-between mt-2">
+            <div class="font-display text-4xl font-extrabold">17</div>
+            <div class="text-xs text-emerald-600 font-semibold flex items-center gap-1">92% within 5d</div>
+          </div>
+          <div class="mt-3 h-12">
+            <svg viewBox="0 0 200 40" class="w-full h-full" preserveAspectRatio="none">
+              <polyline points="0,32 20,28 40,30 60,22 80,24 100,16 120,18 140,12 160,14 180,8 200,10" fill="none" stroke="#FC5A07" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card-surface p-5">
+          <div class="text-xs font-semibold uppercase tracking-wider text-talent-muted">Time to acceptance</div>
+          <div class="flex items-end gap-2 mt-2">
+            <div class="font-display text-4xl font-extrabold">4.2h</div>
+            <div class="text-xs text-emerald-600 font-semibold pb-1">↓ 38% MoM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ============== TESTIMONIALS (Uniflow style: dark feature card + photo cards) ============== %>
+<section class="section bg-talent-mist">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="text-center reveal">
+      <h2 class="font-display text-4xl sm:text-5xl font-extrabold tracking-tight">Customer testimonials</h2>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-12 gap-5 reveal" style="transition-delay: .1s">
+      <%# Dark feature quote card — Eleanor (Customer Care Lead) %>
+      <figure class="lg:col-span-5 rounded-3xl bg-talent-navy text-white p-8 lg:p-10 relative overflow-hidden">
+        <div class="absolute inset-0 bp-grid opacity-30 pointer-events-none"></div>
+        <div class="relative flex flex-col h-full">
+          <svg class="h-6 w-6 text-talent-orange" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v6h6V9H7c0-1.1.9-2 2-2V7zm10 0h-4a2 2 0 0 0-2 2v6h6V9h-2c0-1.1.9-2 2-2V7z"/></svg>
+          <blockquote class="mt-5 text-xl font-display font-semibold leading-snug">
+            "With SnagRadar, everything just syncs automatically to my workflow. It feels like I have an extra team member handling the repetitive stuff for me."
+          </blockquote>
+          <div class="mt-auto pt-8">
+            <div class="flex gap-0.5 text-amber-400">
+              <% 5.times do %><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
+            </div>
+            <figcaption class="mt-4 flex items-center gap-3">
+              <%= image_tag "photos/eleanor-marshall.png", alt: "Eleanor Marshall", class: "h-12 w-12 rounded-full object-cover ring-2 ring-white/20" %>
+              <div>
+                <div class="font-semibold">Eleanor Marshall</div>
+                <div class="text-sm text-white/55">Customer Care Lead, PMC</div>
+              </div>
+            </figcaption>
+          </div>
+        </div>
+      </figure>
+
+      <%# Photo testimonial cards (Hedra portraits + TinyPNG compressed) %>
+      <% photos = [
+           { file: "photos/phil-roberts.png",    quote: "Big tap targets, no logins. My trades stopped complaining.", name: "Phil Roberts", role: "Subcontractor, Plumbing" },
+           { file: "photos/daniel-thornton.png", quote: "I log a defect on site with three taps. Game changer.",       name: "Daniel Thornton", role: "Site Manager" },
+           { file: "photos/marisa-kovacs.png",   quote: "The sign-off link replaced our paper forms overnight.",       name: "Marisa Kovacs", role: "Aftercare Manager" }
+         ] %>
+      <% photos.each_with_index do |p, i| %>
+        <figure class="lg:col-span-<%= i == 0 ? '4' : '3' %> relative rounded-3xl overflow-hidden aspect-[3/4] lg:aspect-auto min-h-[28rem] group bg-talent-navy">
+          <%= image_tag p[:file], alt: p[:name], class: "absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-[1.03]" %>
+          <%# Bottom-to-top gradient overlay for legibility %>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+          <figcaption class="absolute bottom-0 inset-x-0 p-6 text-white">
+            <p class="font-semibold text-sm leading-relaxed">"<%= p[:quote] %>"</p>
+            <div class="mt-3 flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm font-bold"><%= p[:name] %></div>
+                <div class="text-xs text-white/80"><%= p[:role] %></div>
+              </div>
+              <div class="flex gap-0.5 text-amber-400">
+                <% 5.times do %><svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16,13 18,21 12,17 6,21 8,13 2,9 9,9"/></svg><% end %>
+              </div>
+            </div>
+          </figcaption>
+        </figure>
+      <% end %>
+    </div>
+
+  </div>
+</section>
+
+<%# ============== WORKFLOW (kept) ============== %>
+<section class="section bg-talent-navy text-white relative overflow-hidden">
+  <div class="absolute inset-0 bp-grid opacity-50 pointer-events-none"></div>
+  <div class="absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-talent-orange/15 blur-3xl pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="max-w-3xl reveal">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-white/20">The workflow</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">From resident report to digital sign-off — without leaving the radar.</h2>
+      <p class="mt-5 text-lg text-white/75 leading-relaxed">Five steps. One timeline. Every status, photo and signature stored as immutable evidence.</p>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-5 gap-4 reveal" style="transition-delay: .1s">
+      <% steps = [
+           { num: "01", icon: "icons/home.svg",       title: "Resident reports",   body: "Issue comes in by phone, email or via Hyde / customer-care channel." },
+           { num: "02", icon: "icons/inspection.svg", title: "Care logs defect",   body: "PMC adds plot, trade, photos, Hyde reference and SLA target date." },
+           { num: "03", icon: "icons/handshake.svg",  title: "Trade accepts",      body: "Contractor accepts in one tap. Proposes an appointment from mobile." },
+           { num: "04", icon: "icons/camera.svg",     title: "Work + evidence",    body: "Trade attends, uploads completion photos and any notes." },
+           { num: "05", icon: "icons/signature.svg",  title: "Resident signs off", body: "Tokenised magic link. Digital signature. Defect closes itself." }
+         ] %>
+      <% steps.each_with_index do |s, i| %>
+        <div class="relative rounded-2xl bg-white/5 ring-1 ring-white/10 p-6 hover:bg-white/10 transition group">
+          <% if i < steps.length - 1 %>
+            <svg class="hidden lg:block absolute -right-3 top-12 h-4 w-6 text-talent-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          <% end %>
+          <div class="flex items-center justify-between">
+            <div class="h-11 w-11 rounded-xl bg-talent-orange/15 ring-1 ring-talent-orange/30 grid place-items-center text-talent-orange group-hover:scale-110 transition-transform">
+              <%= image_tag s[:icon], alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+            </div>
+            <div class="font-mono text-xs text-talent-orange font-semibold"><%= s[:num] %></div>
+          </div>
+          <div class="mt-5 font-display text-lg font-extrabold"><%= s[:title] %></div>
+          <p class="mt-2 text-sm text-white/75 leading-relaxed"><%= s[:body] %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ============== FEATURES GRID ============== %>
+<section class="section bg-white">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+    <div class="text-center max-w-2xl mx-auto reveal">
+      <span class="eyebrow">Everything you need</span>
+      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">Defect management without the spreadsheet tax.</h2>
+      <p class="mt-5 text-lg text-talent-slate leading-relaxed">Built around real customer-care workflows, not generic project management.</p>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5 reveal" style="transition-delay: .1s">
+      <% features = [
+           { icon: "icons/inspection.svg", title: "Two-minute defect intake",       body: "Site, plot, trade, priority, Hyde reference, photos. From form to assigned trade in under two minutes." },
+           { icon: "icons/satellite.svg",  title: "Live Radar dashboard",           body: "Traffic-light SLA view. Configurable amber threshold. Filters by site, trade, contractor, status.", accent: true },
+           { icon: "icons/smartphone.svg", title: "Mobile-first contractor portal", body: "Trades accept, book appointments and upload completion photos from a phone — no app install." },
+           { icon: "icons/timer.svg",      title: "SLA timers + auto reminders",    body: "Solid Queue jobs fire reminders before breach. Overdue items escalate to a finishing manager." },
+           { icon: "icons/signature.svg",  title: "Tokenised resident sign-off",    body: "Expiring magic links, captured digital signature, evidence stored against the defect." },
+           { icon: "icons/shield.svg",     title: "Immutable audit timeline",       body: "Every status change, comment, photo and signature is timestamped, attributed and unchangeable." }
+         ] %>
+      <% features.each do |f| %>
+        <% accent = f[:accent] %>
+        <article class="<%= accent ? 'card-accent-orange text-white' : 'card-surface hover:-translate-y-1 hover:shadow-card' %> p-7 relative overflow-hidden transition group">
+          <% if accent %><div class="absolute inset-0 bp-grid opacity-30 pointer-events-none"></div><% end %>
+          <div class="relative">
+            <div class="h-14 w-14 rounded-2xl <%= accent ? 'bg-white/15 ring-1 ring-white/25 text-white' : 'bg-talent-orange-50 text-talent-orange-700' %> grid place-items-center group-hover:scale-110 transition-transform">
+              <%= image_tag f[:icon], alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+            </div>
+            <h3 class="mt-5 font-display text-xl font-extrabold <%= 'text-white' if accent %>"><%= f[:title] %></h3>
+            <p class="mt-2 text-sm leading-relaxed <%= accent ? 'text-white/90' : 'text-talent-slate' %>"><%= f[:body] %></p>
+          </div>
+        </article>
+      <% end %>
+    </div>
+
+    <div class="mt-10 text-center">
+      <%= link_to "Explore the full feature set", features_path, class: "link-arrow text-base" %>
+    </div>
+  </div>
+</section>
+
+<%# ============== FAQ ============== %>
+<section class="section bg-talent-mist">
+  <div class="mx-auto max-w-4xl px-5 sm:px-8" data-controller="reveal faq">
+    <div class="text-center reveal">
+      <h2 class="font-display text-4xl sm:text-5xl font-extrabold tracking-tight">FAQs</h2>
+    </div>
+
+    <div class="mt-12 space-y-3 reveal" style="transition-delay: .1s">
+      <% faqs = [
+           { q: "How is SnagRadar different from a project management tool?",
+             a: "We're built specifically for construction aftercare — defects, SLAs, trade routing, evidence and resident sign-off. Not generic tasks." },
+           { q: "Do my subcontractors need to install an app?",
+             a: "No. The contractor portal is a mobile web experience — they tap a link, accept the defect, book an appointment and upload photos." },
+           { q: "How does the resident sign-off work?",
+             a: "We send the resident a tokenised magic link. They open it on their phone, see the completion photos, draw their signature, and the defect closes." },
+           { q: "Can I customise SLAs by trade or priority?",
+             a: "Yes. Each trade has a default SLA. You can override per-priority or per-site, and configure the amber threshold." },
+           { q: "Is my data secure?",
+             a: "Encrypted in transit and at rest. Role-based access. Contractors only see defects assigned to their company." },
+           { q: "Does it work offline on site?",
+             a: "We use Hotwire to keep the UI snappy, and uploads queue when signal is poor. Full offline mode is on the roadmap." }
+         ] %>
+      <% faqs.each do |f| %>
+        <div class="rounded-2xl bg-white" data-faq-target="item">
+          <button class="w-full flex items-center justify-between gap-4 p-5 text-left" data-action="click->faq#toggle">
+            <span class="font-display text-lg font-semibold"><%= f[:q] %></span>
+            <span class="flex-shrink-0 h-8 w-8 rounded-full bg-talent-mist grid place-items-center text-talent-orange transition-transform" data-faq-target="icon">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="hidden px-5 pb-5 text-talent-slate leading-relaxed" data-faq-target="body"><%= f[:a] %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ============== FINAL CTA (Uniflow gradient card with floating trade icons) ============== %>
+<section class="bg-white pt-12 pb-24">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="relative cta-gradient overflow-hidden px-6 py-16 sm:p-16 lg:p-20 min-h-[460px]">
+      <%# Floating decorative trade icons in white circles, like Uniflow's app icons %>
+      <% float_icons = [
+           { icon: "icons/lightning.svg", tint: "text-amber-500",       pos: "left-[6%]   top-[18%]",   delay: "0s"   },
+           { icon: "icons/plumbing.svg",  tint: "text-talent-blue",     pos: "left-[28%]  top-[8%]",    delay: ".7s"  },
+           { icon: "icons/home.svg",      tint: "text-talent-navy",     pos: "left-[8%]   bottom-[15%]", delay: "1.4s" },
+           { icon: "icons/tile.svg",      tint: "text-emerald-600",     pos: "right-[28%] top-[8%]",    delay: ".4s"  },
+           { icon: "icons/roller.svg",    tint: "text-violet-600",      pos: "right-[6%]  bottom-[18%]", delay: "1.1s" },
+           { icon: "icons/hammer.svg",    tint: "text-talent-orange-700", pos: "right-[8%]  top-[20%]",   delay: "1.8s" }
+         ] %>
+      <% float_icons.each do |fi| %>
+        <div class="absolute <%= fi[:pos] %> h-16 w-16 rounded-full bg-white shadow-[0_12px_28px_-8px_rgba(2,32,67,0.25)] hidden md:grid place-items-center animate-[float_6s_ease-in-out_infinite]" style="animation-delay: <%= fi[:delay] %>;">
+          <%= image_tag fi[:icon], alt: "", class: "h-8 w-8 #{fi[:tint]}", aria: { hidden: true } %>
+        </div>
+      <% end %>
+
+      <div class="relative text-center max-w-3xl mx-auto">
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-[1.02] text-white">Ready to get started?</h2>
+        <p class="mt-5 mx-auto max-w-xl text-lg text-white/90 leading-relaxed">
+          Book a 20-minute walkthrough. We'll show you the radar, log a real defect, and answer everything about pilot pricing.
+        </p>
+        <div class="mt-9 flex justify-center">
+          <%= link_to "Get Started for Free", contact_path, class: "btn-dark" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

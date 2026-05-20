@@ -1,0 +1,30 @@
+<div class="rounded-3xl bg-white shadow-card border border-talent-navy/5 overflow-hidden">
+  <div class="px-5 py-3.5 border-b border-talent-navy/5 bg-talent-mist flex items-center justify-between">
+    <div class="text-sm font-semibold">Activity timeline · HY-2487</div>
+    <span class="text-xs font-mono text-talent-muted">8 events</span>
+  </div>
+  <div class="p-6">
+    <div class="relative space-y-5">
+      <span class="absolute left-3.5 top-2 bottom-2 w-px bg-talent-navy/10"></span>
+      <% events = [
+           { who: "PMC Care",   what: "logged defect",     when_: "Tue 10:14", color: "bg-talent-orange",     icon: "📋" },
+           { who: "System",     what: "auto-assigned to Robson Plumbing", when_: "Tue 10:14", color: "bg-talent-navy",  icon: "🤖" },
+           { who: "Robson",     what: "accepted defect",   when_: "Tue 10:18", color: "bg-emerald-500", icon: "✓" },
+           { who: "Robson",     what: "proposed appointment Thu 11:00", when_: "Tue 10:21", color: "bg-talent-blue", icon: "📅" },
+           { who: "PMC Care",   what: "confirmed appointment", when_: "Tue 11:02", color: "bg-talent-blue", icon: "📅" },
+           { who: "Robson",     what: "uploaded 3 completion photos", when_: "Thu 12:34", color: "bg-talent-orange", icon: "📷" },
+           { who: "Resident",   what: "signed off via magic link", when_: "Thu 16:42", color: "bg-emerald-500", icon: "✍️" },
+           { who: "PMC Care",   what: "closed defect", when_: "Thu 17:01", color: "bg-talent-navy", icon: "🔒" }
+         ] %>
+      <% events.each do |e| %>
+        <div class="relative flex items-start gap-4">
+          <div class="relative z-10 h-7 w-7 rounded-full <%= e[:color] %> text-white grid place-items-center text-xs"><%= e[:icon] %></div>
+          <div class="flex-1 flex items-center justify-between pt-1">
+            <div class="text-sm"><b><%= e[:who] %></b> <span class="text-talent-slate"><%= e[:what] %></span></div>
+            <div class="text-xs text-talent-muted font-mono whitespace-nowrap"><%= e[:when_] %></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

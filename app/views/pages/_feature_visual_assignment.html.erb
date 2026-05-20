@@ -1,0 +1,51 @@
+<div class="relative">
+  <div class="rounded-3xl bg-talent-mist border border-talent-navy/5 p-6 shadow-soft">
+    <%# Email preview %>
+    <div class="rounded-2xl bg-white shadow-soft overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-talent-navy/5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="h-7 w-7 rounded-full bg-talent-orange/15 grid place-items-center text-talent-orange font-bold text-sm">R</div>
+          <div class="text-sm">
+            <div class="font-semibold">Robson Plumbing</div>
+            <div class="text-xs text-talent-muted">notify@snagradar.app</div>
+          </div>
+        </div>
+        <div class="text-xs text-talent-muted">2 min ago</div>
+      </div>
+      <div class="p-5">
+        <div class="font-display text-lg font-bold">New defect assigned — HY-2487</div>
+        <div class="mt-2 text-sm text-talent-slate">A leak under sink defect at <b>Adur Shoreham · Plot 14</b> has been assigned to your team. SLA target: <b>3 days</b>.</div>
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button class="rounded-xl bg-emerald-500 text-white py-2.5 text-sm font-semibold hover:bg-emerald-600 transition">✓ Accept</button>
+          <button class="rounded-xl border border-talent-navy/15 text-talent-navy py-2.5 text-sm font-semibold hover:bg-talent-mist transition">Reject with reason</button>
+        </div>
+        <div class="mt-3 text-xs text-talent-muted text-center">Or open the full defect →</div>
+      </div>
+    </div>
+
+    <%# Status flow %>
+    <div class="mt-5 grid grid-cols-4 gap-2">
+      <% [
+           { label: "Assigned", state: :done },
+           { label: "Accepted", state: :done },
+           { label: "Booked",   state: :active },
+           { label: "Complete", state: :pending }
+         ].each_with_index do |s, i| %>
+        <div class="flex items-center gap-2">
+          <% case s[:state]
+             when :done then dot = "bg-emerald-500"
+             when :active then dot = "bg-talent-orange animate-pulse"
+             else dot = "bg-talent-navy/15"
+             end %>
+          <span class="dot h-2.5 w-2.5 <%= dot %>"></span>
+          <span class="text-xs font-semibold <%= s[:state] == :pending ? 'text-talent-muted' : 'text-talent-navy' %>"><%= s[:label] %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="absolute -top-4 -right-4 hidden md:flex items-center gap-2 bg-talent-orange text-white rounded-full px-3 py-1.5 shadow-[var(--shadow-glow-orange)]">
+    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span class="text-xs font-semibold">Accepted in 4 min</span>
+  </div>
+</div>

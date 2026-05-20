@@ -1,0 +1,145 @@
+<% content_for :title, "Features — SnagRadar" %>
+<% content_for :description, "Every defect, owner, SLA and evidence trail in one operational command centre." %>
+
+<%# ============== HERO ============== %>
+<section class="relative bg-talent-navy text-white overflow-hidden">
+  <div class="absolute inset-0 bp-grid opacity-60 pointer-events-none"></div>
+  <div class="absolute -top-40 -right-20 h-[28rem] w-[28rem] rounded-full bg-talent-orange/25 blur-3xl pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8 pt-36 sm:pt-44 pb-24 sm:pb-32" data-controller="reveal">
+    <div class="max-w-3xl reveal">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-white/20">The product</span>
+      <h1 class="mt-5 font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02]">
+        Every defect.<br>
+        <span class="text-talent-orange">Every owner.</span>
+        <br>One radar.
+      </h1>
+      <p class="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl">
+        SnagRadar is built around the way customer care, site teams and subcontractors actually work — not the way a generic ticketing tool wishes they did.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# ============== SECTIONED FEATURES ============== %>
+<% sections = [
+     {
+       eyebrow: "Intake", id: "intake",
+       title: "Log a defect in under two minutes",
+       body: "From phone, tablet or laptop. Site managers on the ground, customer care behind a desk — same form, same fields, same speed.",
+       points: [
+         "Site → Plot → Trade → Priority — all pre-populated drop-downs",
+         "Active Storage direct upload for camera-first photos",
+         "Hyde / client reference numbers as a first-class field",
+         "Default SLA target dates per trade, overridable per case"
+       ],
+       visual: :intake
+     },
+     {
+       eyebrow: "Assignment", id: "assignment",
+       title: "One-tap routing to the right trade",
+       body: "Assign the defect to a contractor company. They get an email with a tokenised link — no login, no IT ticket.",
+       points: [
+         "Per-trade contractor mappings",
+         "Rules-based default contractor by site + trade",
+         "Auto-nudge after 24 hours of silence",
+         "Acceptance / rejection with reason captured"
+       ],
+       visual: :assignment
+     },
+     {
+       eyebrow: "Appointments", id: "appointments",
+       title: "Appointments that don't slip through cracks",
+       body: "Proposed, confirmed, attended, missed, cancelled — every state on a calendar view and the defect timeline.",
+       points: [
+         "Trade proposes a time slot from mobile",
+         "Customer care confirms or counter-proposes",
+         "Reminder notifications 24h and 2h before",
+         "Calendar export for the office team"
+       ],
+       visual: :appointments
+     },
+     {
+       eyebrow: "Completion + sign-off", id: "signoff",
+       title: "Resident sign-off, digital and locked in",
+       body: "Tokenised magic link. Drawn signature. Photos as evidence. Defect closes itself. No paperwork to chase.",
+       points: [
+         "Expiring sign-off links (no account required)",
+         "Drawn signature stored against the defect",
+         "Completion photos surfaced for resident review",
+         "Customer care can re-open if signature is disputed"
+       ],
+       visual: :signoff
+     },
+     {
+       eyebrow: "Audit + evidence", id: "audit",
+       title: "An immutable timeline you can show a director",
+       body: "Every status change, comment, upload, assignment and signature timestamped, attributed and unchangeable.",
+       points: [
+         "Internal vs. external visibility on comments",
+         "Photos stored privately, served via signed URLs",
+         "Activity events as flexible JSONB for export",
+         "Built-in role-based access control"
+       ],
+       visual: :audit
+     },
+     {
+       eyebrow: "Dashboard + reporting", id: "radar",
+       title: "Operational visibility without running a report",
+       body: "Open, overdue, approaching breach, awaiting acceptance, awaiting sign-off — at a glance. Filters, KPIs, CSV exports.",
+       points: [
+         "Traffic-light SLA by site / trade / contractor",
+         "Average time to acceptance and completion",
+         "Recurring defect detection (phase 3)",
+         "CSV export for management reporting"
+       ],
+       visual: :radar
+     }
+   ] %>
+
+<% sections.each_with_index do |s, i| %>
+  <% bg = i.even? ? "bg-white" : "bg-talent-mist" %>
+  <section id="<%= s[:id] %>" class="section <%= bg %>">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <div class="<%= 'lg:col-span-5' %> <%= 'lg:order-2' if i.odd? %> reveal">
+          <span class="eyebrow"><%= s[:eyebrow] %></span>
+          <h2 class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.05]"><%= s[:title] %></h2>
+          <p class="mt-5 text-lg text-talent-slate leading-relaxed"><%= s[:body] %></p>
+          <ul class="mt-6 space-y-3">
+            <% s[:points].each do |p| %>
+              <li class="flex gap-3 text-talent-slate">
+                <span class="flex-shrink-0 mt-1 h-5 w-5 rounded-full bg-talent-orange/15 grid place-items-center">
+                  <svg class="h-3 w-3 text-talent-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><%= p %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-7 reveal" style="transition-delay: .15s">
+          <%= render "pages/feature_visual_#{s[:visual]}" %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<%# ============== CTA ============== %>
+<section class="relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-20">
+    <div class="card-accent-orange relative overflow-hidden p-10 sm:p-14">
+      <div class="absolute inset-0 bp-grid opacity-25 pointer-events-none"></div>
+      <div class="relative grid lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tighter leading-[1.05]">See it on your sites.</h2>
+          <p class="mt-4 text-lg text-white/90">Book a demo and we'll log a real defect from one of your projects, live.</p>
+        </div>
+        <div class="lg:col-span-4 flex">
+          <%= link_to "Book a demo", contact_path, class: "btn-pill-dark w-full justify-center text-base py-4" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

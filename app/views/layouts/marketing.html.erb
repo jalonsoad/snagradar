@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "SnagRadar — Defects, on the radar." %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="<%= content_for(:description) || 'Construction defect &amp; customer-care platform. Track every snag from intake to resident sign-off — on mobile, in real time.' %>">
+    <meta name="theme-color" content="#022043">
+
+    <meta property="og:title" content="<%= content_for(:title) || 'SnagRadar — Defects, on the radar.' %>">
+    <meta property="og:description" content="<%= content_for(:description) || 'Construction defect &amp; customer-care platform. Track every snag from intake to resident sign-off.' %>">
+    <meta property="og:type" content="website">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon"            href="<%= asset_path('snagradar-icon.png') %>" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="<%= asset_path('snagradar-icon.png') %>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-white text-talent-navy antialiased">
+    <%= render "shared/header" %>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <%= render "shared/footer" %>
+  </body>
+</html>

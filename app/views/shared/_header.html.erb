@@ -1,0 +1,54 @@
+<%# Floating pill nav — Uniflow style. Dark pill on white page bg, logo left, nav center, white CTA right. %>
+<header class="absolute top-0 inset-x-0 z-50 pt-4 sm:pt-6" data-controller="mobile-nav">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="bg-talent-navy text-white rounded-full pl-4 pr-2 py-2 flex items-center justify-between gap-4 shadow-[0_8px_28px_rgba(2,32,67,0.25)] ring-1 ring-white/10">
+      <%# Brand %>
+      <%= link_to root_path, class: "flex items-center shrink-0 group", aria: { label: "SnagRadar — Home" } do %>
+        <div class="bg-white rounded-full pl-2 pr-3 py-1 flex items-center gap-2 -ml-2 transition-transform group-hover:scale-[1.02]">
+          <%= image_tag "snagradar-icon.png", alt: "", class: "h-7 w-7 object-contain", aria: { hidden: true } %>
+          <span class="font-display text-base font-extrabold tracking-tight">
+            <span class="text-talent-navy">Snag</span><span class="text-talent-orange">Radar</span>
+          </span>
+        </div>
+      <% end %>
+
+      <%# Desktop nav %>
+      <nav class="hidden lg:flex items-center gap-1">
+        <%= link_to "Product", features_path, class: "nav-link" %>
+        <%= link_to "Pricing", pricing_path,  class: "nav-link" %>
+        <%= link_to "About",   about_path,    class: "nav-link" %>
+        <%= link_to "Support", contact_path,  class: "nav-link" %>
+      </nav>
+
+      <%# Desktop CTA %>
+      <div class="hidden lg:flex items-center gap-2 shrink-0">
+        <%= link_to "Sign in", "#", class: "nav-link" %>
+        <%= link_to "Book a demo", contact_path, class: "btn-light text-[15px] py-[12px] px-[26px]" %>
+      </div>
+
+      <%# Mobile menu button %>
+      <button
+        type="button"
+        class="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white"
+        data-action="click->mobile-nav#toggle"
+        aria-label="Open menu"
+      >
+        <svg data-mobile-nav-target="iconOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+        <svg data-mobile-nav-target="iconClose" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+
+    <%# Mobile panel %>
+    <div class="lg:hidden hidden mt-2 bg-talent-navy text-white rounded-3xl p-4 shadow-[0_8px_28px_rgba(2,32,67,0.18)]" data-mobile-nav-target="panel">
+      <div class="flex flex-col gap-1">
+        <%= link_to "Product", features_path, class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <%= link_to "Pricing", pricing_path,  class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <%= link_to "About",   about_path,    class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <%= link_to "Support", contact_path,  class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <div class="my-2 h-px bg-white/10"></div>
+        <%= link_to "Sign in", "#", class: "px-4 py-3 rounded-2xl font-medium hover:bg-white/10" %>
+        <%= link_to "Book a demo", contact_path, class: "btn-light w-full mt-2 text-[15px]" %>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,43 @@
+<div class="relative">
+  <div class="rounded-3xl bg-white shadow-card border border-talent-navy/5 overflow-hidden">
+    <div class="px-5 py-3 flex items-center justify-between border-b border-talent-navy/5 bg-talent-mist">
+      <div class="text-sm font-semibold">This week</div>
+      <div class="flex items-center gap-1.5">
+        <button class="h-7 w-7 rounded-full bg-white grid place-items-center text-talent-navy"><svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="h-7 w-7 rounded-full bg-white grid place-items-center text-talent-navy"><svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+    <div class="grid grid-cols-7">
+      <% days = %w[Mon Tue Wed Thu Fri Sat Sun] %>
+      <% days.each_with_index do |d, di| %>
+        <div class="border-r border-talent-navy/5 last:border-r-0">
+          <div class="px-2 py-2 border-b border-talent-navy/5 text-center">
+            <div class="text-xs text-talent-muted"><%= d %></div>
+            <div class="text-sm font-bold mt-0.5 <%= 'text-talent-orange' if di == 2 %>"><%= 12 + di %></div>
+          </div>
+          <div class="p-1.5 min-h-[10rem] space-y-1.5">
+            <% events = case di
+                        when 0 then [{ trade: "Plumbing", plot: "P14", time: "09:00", color: "bg-talent-orange/15 text-talent-orange-700" }]
+                        when 1 then [{ trade: "Decorating", plot: "P02", time: "10:30", color: "bg-talent-blue/15 text-talent-blue" },
+                                     { trade: "Tiling", plot: "P09", time: "14:00", color: "bg-emerald-100 text-emerald-700" }]
+                        when 2 then [{ trade: "Electrical", plot: "P21", time: "08:30", color: "bg-amber-100 text-amber-700" },
+                                     { trade: "Plumbing",  plot: "P14", time: "11:00", color: "bg-talent-orange/15 text-talent-orange-700" },
+                                     { trade: "Carpentry", plot: "P04", time: "15:30", color: "bg-talent-blue/15 text-talent-blue" }]
+                        when 3 then [{ trade: "Decorating", plot: "P18", time: "09:30", color: "bg-talent-blue/15 text-talent-blue" }]
+                        when 4 then [{ trade: "Plumbing",   plot: "P05", time: "10:00", color: "bg-talent-orange/15 text-talent-orange-700" },
+                                     { trade: "Tiling",     plot: "P11", time: "13:00", color: "bg-emerald-100 text-emerald-700" }]
+                        else []
+                        end %>
+            <% events.each do |e| %>
+              <div class="rounded-lg p-1.5 <%= e[:color] %>">
+                <div class="font-mono text-[10px]"><%= e[:time] %></div>
+                <div class="text-[11px] font-semibold leading-tight"><%= e[:trade] %></div>
+                <div class="text-[10px] opacity-80"><%= e[:plot] %></div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<%# Footer — Uniflow style: dark bg, 3 columns (brand+social, quick links, contact) %>
+<footer class="bg-talent-navy text-white">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-20 pb-12">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <%# Brand + description + socials %>
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-3">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-soft">
+            <%= image_tag "snagradar-icon.png", alt: "", class: "h-10 w-10 object-contain", aria: { hidden: true } %>
+          </div>
+          <span class="font-display text-2xl font-extrabold tracking-tight">
+            <span class="text-white">Snag</span><span class="text-talent-orange">Radar</span>
+          </span>
+        </div>
+
+        <p class="mt-6 max-w-md text-white/65 leading-relaxed">
+          A simple, mobile-first platform to manage construction defects from intake to trade completion and resident sign-off.
+        </p>
+
+        <div class="mt-7 flex items-center gap-3">
+          <%# Social icons in solid pill style, matching Uniflow's filled round style %>
+          <a href="#" aria-label="LinkedIn" class="h-11 w-11 rounded-full bg-white/10 grid place-items-center hover:bg-talent-orange transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.5 18V10H6v8h2.5zM7.25 8.75A1.5 1.5 0 1 0 7.25 5.75a1.5 1.5 0 0 0 0 3zM18 18v-4.5c0-2.4-1.3-3.5-3-3.5-1.4 0-2 .8-2.4 1.3V10H10v8h2.5v-4.4c0-.6.4-1.1 1.1-1.1.8 0 1.4.5 1.4 1.1V18H18z"/></svg>
+          </a>
+          <a href="#" aria-label="X / Twitter" class="h-11 w-11 rounded-full bg-white/10 grid place-items-center hover:bg-talent-orange transition">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.53 3H20.5l-6.46 7.38L21.5 21h-6.45l-4.7-6.16L4.96 21H1.99l6.91-7.9L1.5 3h6.6l4.25 5.62L17.53 3zm-1.13 16.2h1.66L6.7 4.7H4.9l11.5 14.5z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="h-11 w-11 rounded-full bg-white/10 grid place-items-center hover:bg-talent-orange transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2c-.2-1.5-1.4-2.6-2.8-2.8C16 4 12 4 12 4s-4 0-6.8.4c-1.5.2-2.7 1.3-2.8 2.8C2 9 2 12 2 12s0 3 .4 4.8c.2 1.5 1.3 2.6 2.8 2.8C8 20 12 20 12 20s4 0 6.8-.4c1.5-.2 2.7-1.3 2.8-2.8.4-1.8.4-4.8.4-4.8s0-3-.4-4.8zM10 15V9l5 3-5 3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="h-11 w-11 rounded-full bg-white/10 grid place-items-center hover:bg-talent-orange transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <%# Quick Links %>
+      <div class="lg:col-span-3">
+        <h4 class="font-display text-lg font-extrabold tracking-tight">Quick Links</h4>
+        <ul class="mt-5 space-y-4 text-white/70">
+          <li><%= link_to "Home",     root_path,     class: "hover:text-talent-orange transition" %></li>
+          <li><%= link_to "Features", features_path, class: "hover:text-talent-orange transition" %></li>
+          <li><%= link_to "About",    about_path,    class: "hover:text-talent-orange transition" %></li>
+          <li><%= link_to "Pricing",  pricing_path,  class: "hover:text-talent-orange transition" %></li>
+          <li><%= link_to "Help and Support", contact_path, class: "hover:text-talent-orange transition" %></li>
+        </ul>
+      </div>
+
+      <%# Contact %>
+      <div class="lg:col-span-4">
+        <h4 class="font-display text-lg font-extrabold tracking-tight">Contact</h4>
+        <ul class="mt-5 space-y-4 text-white/70">
+          <li class="flex items-start gap-3">
+            <span class="mt-0.5 h-6 w-6 rounded-full bg-white/10 grid place-items-center flex-shrink-0">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span>1 Finsbury Avenue,<br>London EC2M 2PF, UK</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="h-6 w-6 rounded-full bg-white/10 grid place-items-center flex-shrink-0">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72a2 2 0 0 1 1.72 2.01z"/></svg>
+            </span>
+            <a href="tel:+442031000000" class="hover:text-talent-orange transition">+44 20 3100 0000</a>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="h-6 w-6 rounded-full bg-white/10 grid place-items-center flex-shrink-0">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+            </span>
+            <a href="mailto:hello@snagradar.co.uk" class="hover:text-talent-orange transition">hello@snagradar.co.uk</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <%# Bottom strip %>
+    <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-white/55">
+      <div>© <%= Date.current.year %> SnagRadar Ltd. All rights reserved.</div>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <%= link_to "Privacy", privacy_path, class: "hover:text-talent-orange transition" %>
+        <%= link_to "Terms",   terms_path,   class: "hover:text-talent-orange transition" %>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+          </span>
+          All systems operational
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
