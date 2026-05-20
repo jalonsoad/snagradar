@@ -1,0 +1,102 @@
+<% content_for :title, "Appointments — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-talent-navy">Appointments</h1>
+      <p class="mt-1 text-talent-slate"><%= @start.strftime("%-d %b") %> – <%= (@start + 6.days).strftime("%-d %b %Y") %> · <%= @counts[:total] %> this week</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= link_to appointments_path(date: (@start - 7.days).to_s), class: "h-10 w-10 grid place-items-center rounded-full bg-white border border-talent-navy/10 text-talent-navy hover:bg-talent-mist transition" do %>
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <% end %>
+      <%= link_to "This week", appointments_path, class: "rounded-full bg-white border border-talent-navy/10 text-talent-navy px-4 py-2 text-sm font-semibold hover:bg-talent-mist transition" %>
+      <%= link_to appointments_path(date: (@start + 7.days).to_s), class: "h-10 w-10 grid place-items-center rounded-full bg-white border border-talent-navy/10 text-talent-navy hover:bg-talent-mist transition" do %>
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Status summary %>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <% [
+         { label: "Confirmed", value: @counts[:confirmed], bg: "bg-emerald-50 text-emerald-700" },
+         { label: "Proposed",  value: @counts[:proposed],  bg: "bg-amber-50 text-amber-700" },
+         { label: "Attended",  value: @counts[:attended],  bg: "bg-talent-navy text-white" },
+         { label: "Total",     value: @counts[:total],     bg: "bg-white border border-talent-navy/10 text-talent-navy" }
+       ].each do |c| %>
+      <div class="rounded-2xl p-4 <%= c[:bg] %>">
+        <div class="text-xs font-semibold uppercase tracking-wide opacity-80"><%= c[:label] %></div>
+        <div class="font-display text-3xl font-extrabold mt-1"><%= c[:value] %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Week calendar — 7 columns, each with day's appointments %>
+  <div class="rounded-2xl bg-white border border-talent-navy/5 overflow-hidden">
+    <div class="grid grid-cols-7">
+      <% (0..6).each do |i| %>
+        <% day = @start + i.days %>
+        <% is_today = day == Date.current %>
+        <div class="border-r border-talent-navy/5 last:border-r-0">
+          <div class="px-3 py-3 border-b border-talent-navy/5 <%= 'bg-talent-orange/5' if is_today %>">
+            <div class="text-[10px] font-semibold uppercase tracking-widest text-talent-muted"><%= day.strftime("%a") %></div>
+            <div class="font-display text-xl font-extrabold mt-0.5 <%= is_today ? 'text-talent-orange' : 'text-talent-navy' %>"><%= day.day %></div>
+          </div>
+          <div class="p-2 min-h-[16rem] space-y-1.5">
+            <% (@by_day[day] || []).each do |appt| %>
+              <% chip_bg, chip_dot = case appt.status
+                                     when "confirmed" then ["bg-emerald-50 border-emerald-200", "bg-emerald-500"]
+                                     when "proposed"  then ["bg-amber-50 border-amber-200",   "bg-amber-500"]
+                                     when "attended"  then ["bg-talent-navy text-white",      "bg-emerald-400"]
+                                     when "missed"    then ["bg-rose-50 border-rose-200",     "bg-rose-500"]
+                                     else ["bg-talent-mist border-talent-navy/10", "bg-talent-muted"]
+                                     end %>
+              <%= link_to defect_path(appt.defect), class: "block rounded-lg border #{chip_bg} px-2 py-1.5 hover:scale-[1.02] transition" do %>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono"><span class="h-1.5 w-1.5 rounded-full <%= chip_dot %>"></span><%= appt.scheduled_at.strftime("%H:%M") %></div>
+                <div class="text-xs font-semibold mt-0.5 truncate"><%= appt.defect.trade&.name %></div>
+                <div class="text-[10px] opacity-75 truncate"><%= appt.defect.plot&.label || appt.defect.site&.name %></div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# List view below %>
+  <% if @appointments.any? %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+      <div class="px-5 py-4 border-b border-talent-navy/5 font-display text-lg font-extrabold">All appointments this week</div>
+      <ul class="divide-y divide-talent-navy/5">
+        <% @appointments.each do |appt| %>
+          <li class="px-5 py-3.5 flex items-center gap-4">
+            <div class="text-center w-14 flex-shrink-0">
+              <div class="text-[10px] font-semibold uppercase tracking-widest text-talent-muted"><%= appt.scheduled_at.strftime("%a") %></div>
+              <div class="font-display text-2xl font-extrabold text-talent-navy"><%= appt.scheduled_at.day %></div>
+              <div class="text-[10px] font-mono text-talent-muted"><%= appt.scheduled_at.strftime("%H:%M") %></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <%= link_to appt.defect.title, defect_path(appt.defect), class: "font-semibold text-talent-navy hover:text-talent-orange transition" %>
+              <div class="text-xs text-talent-muted">
+                <%= appt.defect.site&.name %><% if appt.defect.plot %> · <%= appt.defect.plot.label %><% end %> ·
+                <%= appt.defect.trade&.name %> · <%= appt.defect.contractor_company&.name || "Unassigned" %>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize
+                         <%= appt.status == 'confirmed' ? 'bg-emerald-50 text-emerald-700' :
+                             appt.status == 'proposed'  ? 'bg-amber-50 text-amber-700' :
+                             appt.status == 'attended'  ? 'bg-talent-navy text-white' :
+                             appt.status == 'missed'    ? 'bg-rose-50 text-rose-700' :
+                             'bg-talent-mist text-talent-navy' %>"><%= appt.status %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-12 text-center">
+      <h3 class="font-display text-xl font-extrabold text-talent-navy">No appointments this week</h3>
+      <p class="mt-2 text-talent-muted">Contractors can propose appointments from their tokenised portal.</p>
+    </div>
+  <% end %>
+</div>

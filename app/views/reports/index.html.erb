@@ -1,0 +1,118 @@
+<% content_for :title, "Reports — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-talent-navy">Reports</h1>
+      <p class="mt-1 text-talent-slate">Operational KPIs across <%= Current.organization.name %></p>
+    </div>
+    <%= link_to reports_defects_csv_path, class: "inline-flex items-center gap-2 rounded-full bg-talent-navy text-white px-5 py-2.5 text-sm font-semibold hover:bg-talent-navy-700 transition cursor-pointer" do %>
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export defects CSV
+    <% end %>
+  </div>
+
+  <%# Headline KPIs %>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <% [
+         { label: "Open defects",            value: @kpis[:total_open],            sub: "Currently active" },
+         { label: "Overdue",                 value: @kpis[:total_overdue],         sub: "SLA breached" },
+         { label: "Avg time to acceptance",  value: "#{@kpis[:avg_acceptance_h] || '—'}h", sub: "Assignment → trade accepts" },
+         { label: "Sign-off rate",           value: "#{@kpis[:signoff_rate]}%",    sub: "Completed → signed off" }
+       ].each do |k| %>
+      <div class="rounded-2xl bg-white border border-talent-navy/5 p-5">
+        <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted"><%= k[:label] %></div>
+        <div class="font-display text-4xl font-extrabold mt-2 text-talent-navy"><%= k[:value] %></div>
+        <div class="text-xs text-talent-muted mt-1"><%= k[:sub] %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Open defects by trade — horizontal bar chart %>
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="rounded-2xl bg-white border border-talent-navy/5 p-6">
+      <div class="font-display text-lg font-extrabold mb-4">Open defects by trade</div>
+      <% max = (@by_trade.values.max || 1).to_f %>
+      <% if @by_trade.any? %>
+        <ul class="space-y-3">
+          <% @by_trade.sort_by { |_, n| -n }.each do |name, count| %>
+            <li class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-sm font-medium text-talent-navy truncate"><%= name %></span>
+              <div class="col-span-7 h-3 rounded-full bg-talent-mist overflow-hidden">
+                <div class="h-3 rounded-full bg-talent-orange" style="width: <%= (count / max * 100).to_i %>%"></div>
+              </div>
+              <span class="col-span-1 text-right text-sm font-semibold text-talent-navy"><%= count %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-talent-muted">No open defects right now.</p>
+      <% end %>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-talent-navy/5 p-6">
+      <div class="font-display text-lg font-extrabold mb-4">Open defects by site</div>
+      <% max = (@by_site.values.max || 1).to_f %>
+      <% if @by_site.any? %>
+        <ul class="space-y-3">
+          <% @by_site.sort_by { |_, n| -n }.each do |name, count| %>
+            <li class="grid grid-cols-12 items-center gap-3">
+              <span class="col-span-4 text-sm font-medium text-talent-navy truncate"><%= name %></span>
+              <div class="col-span-7 h-3 rounded-full bg-talent-mist overflow-hidden">
+                <div class="h-3 rounded-full bg-talent-blue" style="width: <%= (count / max * 100).to_i %>%"></div>
+              </div>
+              <span class="col-span-1 text-right text-sm font-semibold text-talent-navy"><%= count %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-talent-muted">No open defects right now.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Two-column: overdue by contractor + recurring defects %>
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="rounded-2xl bg-white border border-talent-navy/5 p-6">
+      <div class="font-display text-lg font-extrabold mb-4">Overdue defects by contractor</div>
+      <% if @overdue_by_contractor.any? %>
+        <ul class="divide-y divide-talent-navy/5">
+          <% @overdue_by_contractor.sort_by { |_, n| -n }.each do |name, count| %>
+            <li class="flex items-center justify-between py-2.5">
+              <span class="text-sm font-medium text-talent-navy"><%= name %></span>
+              <span class="sla-red"><span class="dot bg-red-500"></span> <%= count %> overdue</span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-emerald-700 font-semibold">No overdue defects 🎉</p>
+      <% end %>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-talent-navy/5 p-6">
+      <div class="font-display text-lg font-extrabold mb-4">Recurring defects</div>
+      <p class="text-xs text-talent-muted mb-3">Same trade hit the same plot more than once.</p>
+      <% if @recurring.any? %>
+        <ul class="divide-y divide-talent-navy/5">
+          <% @recurring.each do |r| %>
+            <li class="flex items-center justify-between py-2.5">
+              <div class="text-sm">
+                <span class="font-semibold text-talent-navy"><%= r[:plot].label %></span>
+                <span class="text-talent-muted">· <%= r[:trade].name %></span>
+              </div>
+              <span class="inline-flex items-center rounded-full bg-amber-100 text-amber-700 px-2.5 py-1 text-xs font-semibold"><%= r[:count] %>×</span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-talent-muted">No recurring patterns yet.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Footnote %>
+  <div class="rounded-2xl bg-talent-mist/60 p-4 text-xs text-talent-muted">
+    Avg time to completion: <strong class="text-talent-navy"><%= @kpis[:avg_completion_d] || "—" %> days</strong> ·
+    SLA reminder job runs nightly at 06:00 via Solid Queue.
+  </div>
+</div>

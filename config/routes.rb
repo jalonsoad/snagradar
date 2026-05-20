@@ -27,6 +27,11 @@ Rails.application.routes.draw do
   resources :trades,               except: [:show]
   resources :contractor_companies, except: [:show], path: "contractors"
 
+  resources :appointments,  only: %i[index update destroy]
+  resources :notifications, only: %i[index update]
+  get  "reports",            to: "reports#index", as: :reports
+  get  "reports/defects.csv", to: "reports#defects_csv", as: :reports_defects_csv
+
   # ─── Tokenised contractor portal (no auth) ────────────────────────
   scope "/c/:token", controller: :contractor_portal, as: :contractor_portal do
     get  "",                    action: :show

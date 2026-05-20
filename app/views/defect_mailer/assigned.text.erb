@@ -1,0 +1,15 @@
+SnagRadar — defect assigned
+
+Hi <%= @defect.contractor_company&.name || "team" %>,
+
+A new defect has been assigned: <%= @defect.reference || "##{@defect.id}" %> · <%= @defect.title %>
+At <%= @site&.name %><% if @plot %>, <%= @plot.label %><% end %>.
+
+Trade:        <%= @trade&.name %>
+Priority:     <%= @defect.priority.titleize %>
+SLA target:   <%= @defect.sla_target_date&.strftime("%d %b %Y") %>
+
+Accept and propose an appointment (no login required, link expires in 14 days):
+<%= @token_url %>
+
+— SnagRadar

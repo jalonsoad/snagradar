@@ -1,0 +1,8 @@
+SnagRadar — sign-off needed
+
+The work at <%= @defect.site&.name %><% if @defect.plot %>, <%= @defect.plot.label %><% end %> has been completed.
+
+Please review the completion photos and sign off here (link expires in 21 days):
+<%= @token_url %>
+
+— SnagRadar

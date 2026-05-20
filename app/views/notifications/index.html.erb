@@ -1,0 +1,40 @@
+<% content_for :title, "Notifications — SnagRadar" %>
+
+<div class="max-w-3xl space-y-6">
+  <div>
+    <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Notifications</h1>
+    <p class="mt-1 text-talent-slate"><%= @notifications.size %> recent</p>
+  </div>
+
+  <% if @notifications.any? %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+      <ul class="divide-y divide-talent-navy/5">
+        <% @notifications.each do |n| %>
+          <li class="px-5 py-4 flex items-start gap-4 hover:bg-talent-mist/40 transition <%= 'bg-talent-orange/[0.03]' if n.read_at.nil? %>">
+            <div class="h-10 w-10 rounded-xl bg-talent-orange/10 text-talent-orange grid place-items-center flex-shrink-0">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <% if n.defect %>
+                <%= link_to defect_path(n.defect), class: "font-semibold text-talent-navy hover:text-talent-orange transition" do %>
+                  <%= n.subject || n.event_type.humanize %>
+                <% end %>
+              <% else %>
+                <div class="font-semibold text-talent-navy"><%= n.subject || n.event_type.humanize %></div>
+              <% end %>
+              <% if n.preview.present? %>
+                <p class="mt-1 text-sm text-talent-slate"><%= n.preview %></p>
+              <% end %>
+              <div class="mt-1 text-xs text-talent-muted font-mono"><%= n.created_at.strftime("%d %b · %H:%M") %></div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-12 text-center">
+      <h3 class="font-display text-xl font-extrabold text-talent-navy">You're all caught up</h3>
+      <p class="mt-2 text-talent-muted">New defects, appointments and sign-offs will land here.</p>
+    </div>
+  <% end %>
+</div>

@@ -13,11 +13,11 @@
     <% nav = [
       { name: "Dashboard",    path: dashboard_path,              icon: :grid,    active: controller_path == "dashboards" },
       { name: "Defects",      path: defects_path,                icon: :radar,   active: controller_path == "defects" },
-      { name: "Appointments", path: "#",                         icon: :calendar,active: controller_path == "appointments" },
+      { name: "Appointments", path: appointments_path,           icon: :calendar,active: controller_path == "appointments" },
       { name: "Sites",        path: sites_path,                  icon: :building,active: %w[sites plots].include?(controller_path) },
       { name: "Trades",       path: trades_path,                 icon: :tool,    active: controller_path == "trades" },
       { name: "Contractors",  path: contractor_companies_path,   icon: :users,   active: controller_path == "contractor_companies" },
-      { name: "Reports",      path: "#",                         icon: :chart,   active: false }
+      { name: "Reports",      path: reports_path,                icon: :chart,   active: controller_path == "reports" }
     ] %>
     <% nav.each do |item| %>
       <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-xl transition #{item[:active] ? 'bg-white/10 text-white' : 'text-white/65 hover:bg-white/5 hover:text-white'}" do %>
