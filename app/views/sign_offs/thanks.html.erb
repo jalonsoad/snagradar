@@ -1,0 +1,13 @@
+<% content_for :title, "Thank you — SnagRadar" %>
+
+<div class="rounded-2xl bg-white border border-talent-navy/5 shadow-card p-8 text-center">
+  <div class="mx-auto h-16 w-16 rounded-2xl bg-emerald-100 grid place-items-center text-emerald-600">
+    <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h1 class="mt-4 font-display text-2xl sm:text-3xl font-extrabold text-talent-navy">Thanks <%= @sign_off.signer_name.split.first %></h1>
+  <p class="mt-2 text-talent-slate">Your sign-off has been recorded. Customer care will close the defect.</p>
+
+  <div class="mt-6 inline-flex items-center gap-2 rounded-xl bg-talent-mist px-4 py-2 text-xs text-talent-muted font-mono">
+    Signed <%= @sign_off.signed_at.strftime("%d %b %Y · %H:%M") %>
+  </div>
+</div>

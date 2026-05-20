@@ -13,6 +13,11 @@ class Defect < ApplicationRecord
   has_many_attached :photos
   has_many_attached :completion_photos
 
+  # Real-time updates over Solid Cable
+  after_create_commit  -> { broadcast_dashboard_refresh }
+  after_update_commit  -> { broadcast_dashboard_refresh }
+  after_destroy_commit -> { broadcast_dashboard_refresh }
+
   enum :priority, { low: 0, medium: 1, high: 2, urgent: 3 }, prefix: true
   enum :status, {
     logged:     0,
@@ -58,5 +63,39 @@ class Defect < ApplicationRecord
 
   def overdue?
     sla_target_date.present? && sla_target_date < Date.current && open?
+  end
+
+  # 14-day signed token that lets a contractor act on the defect via
+  # /contractor_portal/defects/:token without logging in.
+  def contractor_token
+    signed_id(expires_in: 14.days, purpose: :contractor)
+  end
+
+  # 21-day signed token for the resident sign-off magic link.
+  def resident_signoff_token
+    signed_id(expires_in: 21.days, purpose: :resident_signoff)
+  end
+
+  private
+
+  def broadcast_dashboard_refresh
+    return if organization_id.blank?
+    Turbo::StreamsChannel.broadcast_replace_to(
+      [:org, organization_id, :dashboard],
+      target:  "dashboard_counts",
+      partial: "dashboards/counts",
+      locals:  { counts: dashboard_counts }
+    )
+  rescue StandardError
+    # never block a write because the stream is down
+  end
+
+  def dashboard_counts
+    {
+      open:       organization.defects.open.count,
+      overdue:    organization.defects.overdue.count,
+      amber:      organization.defects.amber.count,
+      signed_off: organization.defects.signed_off_or_closed.count
+    }
   end
 end

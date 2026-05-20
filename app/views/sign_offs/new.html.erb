@@ -1,0 +1,70 @@
+<% content_for :title, "Sign off — #{@defect.title} — SnagRadar" %>
+
+<div class="rounded-2xl bg-white border border-talent-navy/5 shadow-card p-6 sm:p-8">
+  <div class="text-center">
+    <div class="mx-auto h-14 w-14 rounded-2xl bg-talent-orange/15 grid place-items-center">
+      <svg class="h-7 w-7 text-talent-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7H12v-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18"/></svg>
+    </div>
+    <h1 class="mt-4 font-display text-2xl sm:text-3xl font-extrabold text-talent-navy">Confirm the work has been completed</h1>
+    <p class="mt-2 text-talent-slate">Please review the work and sign below.</p>
+  </div>
+
+  <div class="mt-6 rounded-xl bg-talent-mist/60 p-4">
+    <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted"><%= @defect.reference || "##{@defect.id}" %></div>
+    <div class="mt-1 font-display text-lg font-extrabold text-talent-navy"><%= @defect.title %></div>
+    <div class="text-sm text-talent-slate"><%= @defect.site&.name %><% if @defect.plot %> · <%= @defect.plot.label %><% end %></div>
+  </div>
+
+  <% if @defect.completion_photos.attached? %>
+    <div class="mt-5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">Completion photos</div>
+      <div class="grid grid-cols-3 gap-2">
+        <% @defect.completion_photos.each do |p| %>
+          <%= link_to url_for(p), target: "_blank", rel: "noopener", class: "block aspect-square rounded-xl overflow-hidden bg-talent-mist" do %>
+            <%= image_tag p, class: "w-full h-full object-cover" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if flash.now[:alert].present? %>
+    <div class="mt-5 rounded-xl bg-rose-50 ring-1 ring-rose-200 p-3 text-sm font-medium text-rose-800"><%= flash.now[:alert] %></div>
+  <% end %>
+
+  <%= form_with url: resident_signoff_path(token: params[:token]),
+                local: true, class: "mt-6 space-y-4",
+                data: { controller: "signature-pad" } do %>
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Your name</label>
+      <input type="text" name="sign_off[signer_name]" required autofocus class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="e.g. A. Hartley">
+    </div>
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Email <span class="font-normal normal-case text-talent-muted/60">(optional, for your copy)</span></label>
+      <input type="email" name="sign_off[signer_email]" class="mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" placeholder="you@example.com">
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wide text-talent-muted">Sign below</label>
+      <div class="mt-2 rounded-xl border-2 border-dashed border-talent-navy/15 bg-white touch-none">
+        <canvas
+          data-signature-pad-target="canvas"
+          class="w-full h-40 rounded-xl cursor-crosshair touch-none"
+          height="160"
+        ></canvas>
+      </div>
+      <input type="hidden" name="sign_off[signature_data]" data-signature-pad-target="output">
+      <div class="mt-2 flex justify-between text-xs">
+        <button type="button" data-action="signature-pad#clear" class="text-talent-muted hover:text-talent-navy">Clear signature</button>
+        <span class="text-talent-muted">Draw with your finger or trackpad</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary w-full justify-center cursor-pointer">Submit sign-off →</button>
+
+    <p class="text-xs text-center text-talent-muted">
+      By signing you confirm the work has been completed to your satisfaction.
+      Your signature, name, IP address and timestamp are stored as evidence.
+    </p>
+  <% end %>
+</div>

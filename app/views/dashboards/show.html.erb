@@ -15,21 +15,9 @@
     <% end %>
   </div>
 
-  <%# KPI grid %>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <% [
-         { label: "Open",        value: @counts[:open],       bg: "bg-talent-navy text-white",                   sub: "All active defects" },
-         { label: "Overdue",     value: @counts[:overdue],    bg: "bg-rose-50 text-rose-700",                    sub: "SLA target passed" },
-         { label: "≤48h to SLA", value: @counts[:amber],      bg: "bg-amber-50 text-amber-700",                  sub: "Approaching breach" },
-         { label: "Signed off",  value: @counts[:signed_off], bg: "bg-emerald-50 text-emerald-700",              sub: "Last 30 days" }
-       ].each do |k| %>
-      <div class="rounded-2xl p-5 <%= k[:bg] %> shadow-soft">
-        <div class="text-xs font-semibold uppercase tracking-wide opacity-80"><%= k[:label] %></div>
-        <div class="font-display text-4xl font-extrabold mt-2"><%= k[:value] %></div>
-        <div class="text-xs opacity-75 mt-1"><%= k[:sub] %></div>
-      </div>
-    <% end %>
-  </div>
+  <%# KPI grid — re-rendered live via Turbo Stream over Solid Cable on every defect change %>
+  <%= turbo_stream_from [:org, Current.organization.id, :dashboard] %>
+  <%= render "counts", counts: @counts %>
 
   <%# Two-column: recent defects + appointments %>
   <div class="grid lg:grid-cols-12 gap-4">

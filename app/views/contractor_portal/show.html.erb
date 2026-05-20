@@ -1,0 +1,80 @@
+<% content_for :title, "#{@defect.title} — Contractor portal" %>
+
+<div class="rounded-2xl bg-white border border-talent-navy/5 shadow-card p-6 sm:p-8">
+  <div class="flex items-start justify-between gap-3">
+    <div>
+      <div class="text-xs font-mono text-talent-muted"><%= @defect.reference || "##{@defect.id}" %></div>
+      <h1 class="mt-1 font-display text-2xl sm:text-3xl font-extrabold text-talent-navy"><%= @defect.title %></h1>
+      <p class="mt-1 text-sm text-talent-slate">
+        <%= @defect.site&.name %><% if @defect.plot %> · <%= @defect.plot.label %><% end %> · <%= @defect.trade&.name %>
+      </p>
+    </div>
+    <span class="inline-flex items-center gap-1.5 rounded-full bg-talent-mist px-3 py-1.5 text-xs font-semibold capitalize"><%= @defect.status.tr("_", " ") %></span>
+  </div>
+
+  <% if @defect.description.present? %>
+    <div class="mt-4 rounded-xl bg-talent-mist/60 p-4 text-sm text-talent-navy"><%= simple_format @defect.description %></div>
+  <% end %>
+
+  <%# SLA banner %>
+  <% case @defect.sla_state when :red %>
+    <div class="mt-4 rounded-xl bg-rose-50 ring-1 ring-rose-200 p-3 text-sm font-semibold text-rose-800">
+      ⚠ <%= @defect.days_until_sla.to_i.abs %> days overdue — please prioritise.
+    </div>
+  <% when :amber %>
+    <div class="mt-4 rounded-xl bg-amber-50 ring-1 ring-amber-200 p-3 text-sm font-semibold text-amber-800">
+      Approaching SLA — due in <%= @defect.days_until_sla %> day(s).
+    </div>
+  <% else %>
+    <div class="mt-4 text-sm text-talent-muted">SLA target: <%= @defect.sla_target_date&.strftime("%d %b %Y") || "—" %></div>
+  <% end %>
+
+  <%# Photos %>
+  <% if @defect.photos.attached? %>
+    <div class="mt-5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted mb-2">Resident-reported photos</div>
+      <div class="grid grid-cols-3 gap-2">
+        <% @defect.photos.each do |p| %>
+          <%= link_to url_for(p), target: "_blank", rel: "noopener", class: "block aspect-square rounded-xl overflow-hidden bg-talent-mist" do %>
+            <%= image_tag p, class: "w-full h-full object-cover" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# Action buttons depending on state %>
+  <div class="mt-6 space-y-3">
+    <% case @defect.status %>
+    <% when "assigned", "logged" %>
+      <%= button_to "Accept defect", contractor_portal_accept_path(token: params[:token]), class: "btn-primary w-full justify-center cursor-pointer" %>
+      <%= button_to "Reject (will go back to customer care)", contractor_portal_reject_path(token: params[:token]), class: "inline-flex w-full items-center justify-center rounded-full bg-rose-50 text-rose-700 px-5 py-3 text-sm font-semibold hover:bg-rose-100 transition cursor-pointer" %>
+    <% when "accepted" %>
+      <div class="rounded-xl bg-talent-mist p-4">
+        <div class="text-sm font-semibold text-talent-navy">Propose a visit</div>
+        <%= form_with url: contractor_portal_propose_appointment_path(token: params[:token]), class: "mt-3 flex gap-2" do |f| %>
+          <%= f.datetime_local_field :scheduled_at, required: true, class: "flex-1 rounded-lg border border-talent-navy/10 px-3 py-2 text-sm focus:outline-none focus:border-talent-orange" %>
+          <%= f.submit "Propose", class: "btn-primary cursor-pointer text-sm py-2 px-5" %>
+        <% end %>
+      </div>
+    <% when "booked", "in_progress" %>
+      <%= form_with url: contractor_portal_complete_path(token: params[:token]), multipart: true, class: "rounded-xl bg-talent-mist p-4 space-y-3" do |f| %>
+        <div class="text-sm font-semibold text-talent-navy">Mark complete + upload photos</div>
+        <%= f.file_field :completion_photos, multiple: true, accept: "image/*", capture: "environment", class: "block w-full text-sm" %>
+        <%= f.submit "Mark complete", class: "btn-primary w-full justify-center cursor-pointer" %>
+      <% end %>
+    <% when "completed" %>
+      <div class="rounded-xl bg-emerald-50 ring-1 ring-emerald-200 p-4 text-sm font-medium text-emerald-800">
+        Thanks — the resident will be asked to sign off shortly. You're done with this one.
+      </div>
+    <% when "signed_off", "closed" %>
+      <div class="rounded-xl bg-emerald-50 ring-1 ring-emerald-200 p-4 text-sm font-medium text-emerald-800">
+        Signed off and closed.
+      </div>
+    <% when "rejected" %>
+      <div class="rounded-xl bg-rose-50 ring-1 ring-rose-200 p-4 text-sm font-medium text-rose-800">
+        Marked rejected — customer care has been notified.
+      </div>
+    <% end %>
+  </div>
+</div>

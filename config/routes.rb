@@ -27,6 +27,21 @@ Rails.application.routes.draw do
   resources :trades,               except: [:show]
   resources :contractor_companies, except: [:show], path: "contractors"
 
+  # ─── Tokenised contractor portal (no auth) ────────────────────────
+  scope "/c/:token", controller: :contractor_portal, as: :contractor_portal do
+    get  "",                    action: :show
+    post "accept",              action: :accept,              as: :accept
+    post "reject",              action: :reject,              as: :reject
+    post "propose_appointment", action: :propose_appointment, as: :propose_appointment
+    post "complete",            action: :complete,            as: :complete
+  end
+
+  # ─── Tokenised resident sign-off (no auth) ────────────────────────
+  scope "/s/:token", controller: :sign_offs, as: :resident_signoff do
+    get  "", action: :new
+    post "", action: :create
+  end
+
   # ─── Misc ─────────────────────────────────────────────────────────
   get "up" => "rails/health#show", as: :rails_health_check
 

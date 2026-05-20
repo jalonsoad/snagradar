@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "SnagRadar" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#022043">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <link rel="icon" href="<%= asset_path('snagradar-icon.png') %>" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-talent-mist text-talent-navy antialiased min-h-screen">
+    <header class="bg-white border-b border-talent-navy/5">
+      <div class="mx-auto max-w-3xl px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <%= image_tag "snagradar-icon.png", alt: "", class: "h-8 w-8 object-contain" %>
+          <span class="font-display text-lg font-extrabold tracking-tight">
+            <span class="text-talent-navy">Snag</span><span class="text-talent-orange">Radar</span>
+          </span>
+        </div>
+        <div class="text-xs text-talent-muted">Secure session</div>
+      </div>
+    </header>
+
+    <% if flash[:notice].present? || flash[:alert].present? %>
+      <div class="mx-auto max-w-3xl px-5 pt-4">
+        <% if flash[:notice].present? %>
+          <div class="rounded-xl bg-emerald-50 ring-1 ring-emerald-200 p-3 text-sm font-medium text-emerald-800"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div class="rounded-xl bg-rose-50 ring-1 ring-rose-200 p-3 text-sm font-medium text-rose-800"><%= flash[:alert] %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <main class="mx-auto max-w-3xl px-5 py-8">
+      <%= yield %>
+    </main>
+
+    <footer class="mt-12 mb-8 text-center text-xs text-talent-muted">
+      © <%= Date.current.year %> SnagRadar Ltd · Secure tokenised link
+    </footer>
+  </body>
+</html>
