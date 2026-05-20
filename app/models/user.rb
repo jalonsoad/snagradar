@@ -20,7 +20,10 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email_address,
+            presence:   true,
+            format:     { with: URI::MailTo::EMAIL_REGEXP, message: "doesn't look right" },
+            uniqueness: { case_sensitive: false, message: "is already in use — try signing in instead" }
   validates :name, length: { maximum: 80 }, allow_blank: true
 
   def display_name
