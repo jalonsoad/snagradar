@@ -50,19 +50,19 @@
         <path d="M540,40 C460,140 400,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
         <path d="M660,80 C500,180 440,180 360,180" fill="none" stroke="url(#arc-grad)" stroke-width="1.5"/>
       </svg>
-      <%# Trade icons positioned absolutely along the arc — Icons8 SVGs in white tiles %>
+      <%# Trade icons positioned absolutely along the arc — inline Icons8 SVGs with currentColor %>
       <div class="absolute inset-0">
         <% trades = [
-             { icon: "icons/plumbing.svg",  tint: "bg-talent-blue/10  text-talent-blue",         pos: "left-[5%]   top-[18%]" },
-             { icon: "icons/lightning.svg", tint: "bg-amber-100       text-amber-600",           pos: "left-[24%]  top-[2%]"  },
-             { icon: "icons/hammer.svg",    tint: "bg-talent-orange-50 text-talent-orange-700",  pos: "left-1/2 -translate-x-1/2 top-[-10%]" },
-             { icon: "icons/tile.svg",      tint: "bg-emerald-100     text-emerald-600",         pos: "right-[24%] top-[2%]"  },
-             { icon: "icons/roller.svg",    tint: "bg-violet-100      text-violet-600",          pos: "right-[5%]  top-[18%]" }
+             { name: "plumbing",  tint: "bg-talent-blue/15 text-talent-blue",            pos: "left-[5%]   top-[18%]" },
+             { name: "lightning", tint: "bg-amber-100       text-amber-600",             pos: "left-[24%]  top-[2%]"  },
+             { name: "hammer",    tint: "bg-talent-orange-100 text-talent-orange-700",   pos: "left-1/2 -translate-x-1/2 top-[-10%]" },
+             { name: "tile",      tint: "bg-emerald-100     text-emerald-600",           pos: "right-[24%] top-[2%]"  },
+             { name: "roller",    tint: "bg-violet-100      text-violet-600",            pos: "right-[5%]  top-[18%]" }
            ] %>
         <% trades.each do |t| %>
           <div class="absolute <%= t[:pos] %> h-16 w-16 rounded-2xl bg-white shadow-card grid place-items-center transition hover:-translate-y-1">
             <div class="h-11 w-11 rounded-xl <%= t[:tint] %> grid place-items-center">
-              <%= image_tag t[:icon], alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+              <%= icon t[:name], class: "h-7 w-7" %>
             </div>
           </div>
         <% end %>
@@ -194,14 +194,14 @@
       <div class="lg:col-span-7 reveal" style="transition-delay: .15s">
         <div class="grid grid-cols-2 gap-4">
           <% [
-               { icon: "icons/email.svg",       tint: "bg-talent-blue/10  text-talent-blue",    title: "Inbox",        count: "412 unread",  note: "Lost defect threads" },
-               { icon: "icons/whatsapp.svg",    tint: "bg-emerald-100     text-emerald-600",    title: "WhatsApp",     count: "9 groups",    note: "No audit, no SLA" },
-               { icon: "icons/spreadsheet.svg", tint: "bg-amber-100       text-amber-700",      title: "Spreadsheets", count: "v17_final",   note: "Whose copy is right?" },
-               { icon: "icons/journal.svg",     tint: "bg-violet-100      text-violet-600",     title: "Site notebook",count: "Handwritten", note: "Photos on someone's phone" }
+               { icon: "email",       tint: "bg-talent-blue/15  text-talent-blue",    title: "Inbox",        count: "412 unread",  note: "Lost defect threads" },
+               { icon: "whatsapp",    tint: "bg-emerald-100     text-emerald-600",    title: "WhatsApp",     count: "9 groups",    note: "No audit, no SLA" },
+               { icon: "spreadsheet", tint: "bg-amber-100       text-amber-700",      title: "Spreadsheets", count: "v17_final",   note: "Whose copy is right?" },
+               { icon: "journal",     tint: "bg-violet-100      text-violet-600",     title: "Site notebook",count: "Handwritten", note: "Photos on someone's phone" }
              ].each do |c| %>
             <div class="card-surface p-5 hover:-translate-y-1 hover:shadow-card transition group">
               <div class="h-12 w-12 rounded-xl <%= c[:tint] %> grid place-items-center group-hover:scale-110 transition-transform">
-                <%= image_tag c[:icon], alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+                <%= icon c[:icon], class: "h-6 w-6" %>
               </div>
               <div class="mt-4 font-display text-lg font-extrabold"><%= c[:title] %></div>
               <div class="font-mono text-xs text-talent-orange mt-1"><%= c[:count] %></div>
@@ -214,7 +214,7 @@
           <div class="absolute inset-0 bp-grid opacity-50 pointer-events-none"></div>
           <div class="relative flex items-center gap-4">
             <div class="h-14 w-14 rounded-2xl bg-talent-orange grid place-items-center text-white">
-              <%= image_tag "icons/arrow-right.svg", alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+              <%= icon "arrow-right", class: "h-7 w-7" %>
             </div>
             <div>
               <div class="font-display text-xl font-extrabold">One radar. Every defect. Every owner.</div>
@@ -396,41 +396,45 @@
   </div>
 </section>
 
-<%# ============== WORKFLOW (kept) ============== %>
+<%# ============== WORKFLOW ============== %>
 <section class="section bg-talent-navy text-white relative overflow-hidden">
-  <div class="absolute inset-0 bp-grid opacity-50 pointer-events-none"></div>
-  <div class="absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-talent-orange/15 blur-3xl pointer-events-none"></div>
+  <div class="absolute inset-0 bp-grid opacity-40 pointer-events-none"></div>
+  <%# Layered ambient glow %>
+  <div class="absolute -top-40 right-1/4 h-[28rem] w-[28rem] rounded-full bg-talent-orange/20 blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-40 -left-32 h-[28rem] w-[28rem] rounded-full bg-talent-blue/30 blur-3xl pointer-events-none"></div>
 
   <div class="relative mx-auto max-w-7xl px-5 sm:px-8" data-controller="reveal">
     <div class="max-w-3xl reveal">
-      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-white/20">The workflow</span>
-      <h2 class="mt-4 font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">From resident report to digital sign-off — without leaving the radar.</h2>
-      <p class="mt-5 text-lg text-white/75 leading-relaxed">Five steps. One timeline. Every status, photo and signature stored as immutable evidence.</p>
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-white/20 text-white">The workflow</span>
+      <h2 class="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-white">From resident report to <span class="text-talent-orange">digital sign-off</span> — without leaving the radar.</h2>
+      <p class="mt-5 text-lg text-white/70 leading-relaxed">Five steps. One timeline. Every status, photo and signature stored as immutable evidence.</p>
     </div>
 
-    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-5 gap-4 reveal" style="transition-delay: .1s">
-      <% steps = [
-           { num: "01", icon: "icons/home.svg",       title: "Resident reports",   body: "Issue comes in by phone, email or via Hyde / customer-care channel." },
-           { num: "02", icon: "icons/inspection.svg", title: "Care logs defect",   body: "PMC adds plot, trade, photos, Hyde reference and SLA target date." },
-           { num: "03", icon: "icons/handshake.svg",  title: "Trade accepts",      body: "Contractor accepts in one tap. Proposes an appointment from mobile." },
-           { num: "04", icon: "icons/camera.svg",     title: "Work + evidence",    body: "Trade attends, uploads completion photos and any notes." },
-           { num: "05", icon: "icons/signature.svg",  title: "Resident signs off", body: "Tokenised magic link. Digital signature. Defect closes itself." }
-         ] %>
-      <% steps.each_with_index do |s, i| %>
-        <div class="relative rounded-2xl bg-white/5 ring-1 ring-white/10 p-6 hover:bg-white/10 transition group">
-          <% if i < steps.length - 1 %>
-            <svg class="hidden lg:block absolute -right-3 top-12 h-4 w-6 text-talent-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          <% end %>
-          <div class="flex items-center justify-between">
-            <div class="h-11 w-11 rounded-xl bg-talent-orange/15 ring-1 ring-talent-orange/30 grid place-items-center text-talent-orange group-hover:scale-110 transition-transform">
-              <%= image_tag s[:icon], alt: "", class: "h-6 w-6", aria: { hidden: true } %>
+    <%# Connector line behind cards, desktop only %>
+    <div class="relative mt-14 reveal" style="transition-delay: .1s">
+      <div class="hidden lg:block absolute left-0 right-0 top-[3.5rem] h-px bg-gradient-to-r from-transparent via-talent-orange/40 to-transparent pointer-events-none"></div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <% steps = [
+             { num: "01", icon: "home",       title: "Resident reports",   body: "Issue comes in by phone, email or via Hyde / customer-care channel." },
+             { num: "02", icon: "inspection", title: "Care logs defect",   body: "PMC adds plot, trade, photos, Hyde reference and SLA target date." },
+             { num: "03", icon: "handshake",  title: "Trade accepts",      body: "Contractor accepts in one tap. Proposes an appointment from mobile." },
+             { num: "04", icon: "camera",     title: "Work + evidence",    body: "Trade attends, uploads completion photos and any notes." },
+             { num: "05", icon: "signature",  title: "Resident signs off", body: "Tokenised magic link. Digital signature. Defect closes itself." }
+           ] %>
+        <% steps.each do |s| %>
+          <div class="relative rounded-2xl bg-white/[0.04] ring-1 ring-white/10 backdrop-blur-sm p-6 hover:bg-white/[0.07] hover:ring-talent-orange/30 transition-all group">
+            <%# Icon tile %>
+            <div class="relative h-14 w-14 rounded-2xl bg-gradient-to-br from-talent-orange/25 to-talent-orange/10 ring-1 ring-talent-orange/40 grid place-items-center text-talent-orange group-hover:scale-110 group-hover:shadow-[0_8px_22px_-6px_rgba(252,90,7,0.55)] transition-all">
+              <%= icon s[:icon], class: "h-7 w-7" %>
             </div>
-            <div class="font-mono text-xs text-talent-orange font-semibold"><%= s[:num] %></div>
+            <%# Step number absolute top-right %>
+            <div class="absolute top-5 right-5 font-mono text-[11px] font-bold tracking-widest text-talent-orange/70"><%= s[:num] %></div>
+            <h3 class="mt-5 font-display text-lg font-extrabold text-white"><%= s[:title] %></h3>
+            <p class="mt-2 text-sm text-white/65 leading-relaxed"><%= s[:body] %></p>
           </div>
-          <div class="mt-5 font-display text-lg font-extrabold"><%= s[:title] %></div>
-          <p class="mt-2 text-sm text-white/75 leading-relaxed"><%= s[:body] %></p>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </section>
@@ -446,22 +450,22 @@
 
     <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5 reveal" style="transition-delay: .1s">
       <% features = [
-           { icon: "icons/inspection.svg", title: "Two-minute defect intake",       body: "Site, plot, trade, priority, Hyde reference, photos. From form to assigned trade in under two minutes." },
-           { icon: "icons/satellite.svg",  title: "Live Radar dashboard",           body: "Traffic-light SLA view. Configurable amber threshold. Filters by site, trade, contractor, status.", accent: true },
-           { icon: "icons/smartphone.svg", title: "Mobile-first contractor portal", body: "Trades accept, book appointments and upload completion photos from a phone — no app install." },
-           { icon: "icons/timer.svg",      title: "SLA timers + auto reminders",    body: "Solid Queue jobs fire reminders before breach. Overdue items escalate to a finishing manager." },
-           { icon: "icons/signature.svg",  title: "Tokenised resident sign-off",    body: "Expiring magic links, captured digital signature, evidence stored against the defect." },
-           { icon: "icons/shield.svg",     title: "Immutable audit timeline",       body: "Every status change, comment, photo and signature is timestamped, attributed and unchangeable." }
+           { icon: "inspection", title: "Two-minute defect intake",       body: "Site, plot, trade, priority, Hyde reference, photos. From form to assigned trade in under two minutes." },
+           { icon: "satellite",  title: "Live Radar dashboard",           body: "Traffic-light SLA view. Configurable amber threshold. Filters by site, trade, contractor, status.", accent: true },
+           { icon: "smartphone", title: "Mobile-first contractor portal", body: "Trades accept, book appointments and upload completion photos from a phone — no app install." },
+           { icon: "timer",      title: "SLA timers + auto reminders",    body: "Solid Queue jobs fire reminders before breach. Overdue items escalate to a finishing manager." },
+           { icon: "signature",  title: "Tokenised resident sign-off",    body: "Expiring magic links, captured digital signature, evidence stored against the defect." },
+           { icon: "shield",     title: "Immutable audit timeline",       body: "Every status change, comment, photo and signature is timestamped, attributed and unchangeable." }
          ] %>
       <% features.each do |f| %>
         <% accent = f[:accent] %>
         <article class="<%= accent ? 'card-accent-orange text-white' : 'card-surface hover:-translate-y-1 hover:shadow-card' %> p-7 relative overflow-hidden transition group">
           <% if accent %><div class="absolute inset-0 bp-grid opacity-30 pointer-events-none"></div><% end %>
           <div class="relative">
-            <div class="h-14 w-14 rounded-2xl <%= accent ? 'bg-white/15 ring-1 ring-white/25 text-white' : 'bg-talent-orange-50 text-talent-orange-700' %> grid place-items-center group-hover:scale-110 transition-transform">
-              <%= image_tag f[:icon], alt: "", class: "h-7 w-7", aria: { hidden: true } %>
+            <div class="h-14 w-14 rounded-2xl <%= accent ? 'bg-white/20 ring-1 ring-white/30 text-white' : 'bg-talent-orange-50 text-talent-orange-700' %> grid place-items-center group-hover:scale-110 transition-transform">
+              <%= icon f[:icon], class: "h-7 w-7" %>
             </div>
-            <h3 class="mt-5 font-display text-xl font-extrabold <%= 'text-white' if accent %>"><%= f[:title] %></h3>
+            <h3 class="mt-5 font-display text-xl font-extrabold <%= accent ? 'text-white' : 'text-talent-navy' %>"><%= f[:title] %></h3>
             <p class="mt-2 text-sm leading-relaxed <%= accent ? 'text-white/90' : 'text-talent-slate' %>"><%= f[:body] %></p>
           </div>
         </article>
@@ -517,16 +521,16 @@
     <div class="relative cta-gradient overflow-hidden px-6 py-16 sm:p-16 lg:p-20 min-h-[460px]">
       <%# Floating decorative trade icons in white circles, like Uniflow's app icons %>
       <% float_icons = [
-           { icon: "icons/lightning.svg", tint: "text-amber-500",       pos: "left-[6%]   top-[18%]",   delay: "0s"   },
-           { icon: "icons/plumbing.svg",  tint: "text-talent-blue",     pos: "left-[28%]  top-[8%]",    delay: ".7s"  },
-           { icon: "icons/home.svg",      tint: "text-talent-navy",     pos: "left-[8%]   bottom-[15%]", delay: "1.4s" },
-           { icon: "icons/tile.svg",      tint: "text-emerald-600",     pos: "right-[28%] top-[8%]",    delay: ".4s"  },
-           { icon: "icons/roller.svg",    tint: "text-violet-600",      pos: "right-[6%]  bottom-[18%]", delay: "1.1s" },
-           { icon: "icons/hammer.svg",    tint: "text-talent-orange-700", pos: "right-[8%]  top-[20%]",   delay: "1.8s" }
+           { name: "lightning", tint: "text-amber-500",         pos: "left-[6%]   top-[18%]",    delay: "0s"   },
+           { name: "plumbing",  tint: "text-talent-blue",       pos: "left-[28%]  top-[8%]",     delay: ".7s"  },
+           { name: "home",      tint: "text-talent-navy",       pos: "left-[8%]   bottom-[15%]", delay: "1.4s" },
+           { name: "tile",      tint: "text-emerald-600",       pos: "right-[28%] top-[8%]",     delay: ".4s"  },
+           { name: "roller",    tint: "text-violet-600",        pos: "right-[6%]  bottom-[18%]", delay: "1.1s" },
+           { name: "hammer",    tint: "text-talent-orange-700", pos: "right-[8%]  top-[20%]",    delay: "1.8s" }
          ] %>
       <% float_icons.each do |fi| %>
-        <div class="absolute <%= fi[:pos] %> h-16 w-16 rounded-full bg-white shadow-[0_12px_28px_-8px_rgba(2,32,67,0.25)] hidden md:grid place-items-center animate-[float_6s_ease-in-out_infinite]" style="animation-delay: <%= fi[:delay] %>;">
-          <%= image_tag fi[:icon], alt: "", class: "h-8 w-8 #{fi[:tint]}", aria: { hidden: true } %>
+        <div class="absolute <%= fi[:pos] %> h-16 w-16 rounded-full bg-white shadow-[0_12px_28px_-8px_rgba(2,32,67,0.25)] hidden md:grid place-items-center animate-[float_6s_ease-in-out_infinite] <%= fi[:tint] %>" style="animation-delay: <%= fi[:delay] %>;">
+          <%= icon fi[:name], class: "h-8 w-8" %>
         </div>
       <% end %>
 

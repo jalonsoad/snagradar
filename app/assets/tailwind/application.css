@@ -111,7 +111,8 @@
     color: var(--color-talent-white);
   }
 
-  h1, h2, h3, h4 {
+  /* :where() keeps the colour rule at specificity 0,0,0 so Tailwind text-* utilities win */
+  :where(h1, h2, h3, h4) {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.025em;
