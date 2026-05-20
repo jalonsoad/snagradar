@@ -8,6 +8,25 @@ Rails.application.routes.draw do
   # ─── Authenticated app ────────────────────────────────────────────
   get "dashboard", to: "dashboards#show", as: :dashboard
 
+  resources :defects do
+    member do
+      post :assign
+      post :accept
+      post :reject
+      post :complete
+      post :reopen
+      post :close
+    end
+    resources :comments,     only: [:create]
+    resources :appointments, only: [:create, :update, :destroy]
+  end
+
+  resources :sites do
+    resources :plots, only: [:index, :create, :update, :destroy]
+  end
+  resources :trades,               except: [:show]
+  resources :contractor_companies, except: [:show], path: "contractors"
+
   # ─── Misc ─────────────────────────────────────────────────────────
   get "up" => "rails/health#show", as: :rails_health_check
 

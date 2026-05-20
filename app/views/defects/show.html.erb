@@ -1,0 +1,156 @@
+<% content_for :title, "#{@defect.title} — SnagRadar" %>
+
+<div class="space-y-6">
+  <%# Breadcrumb + actions %>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-3 text-sm">
+        <%= link_to "Defects", defects_path, class: "text-talent-muted hover:text-talent-navy" %>
+        <svg class="h-3 w-3 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="font-mono text-xs text-talent-muted"><%= @defect.reference || "##{@defect.id}" %></span>
+      </div>
+      <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-talent-navy"><%= @defect.title %></h1>
+      <div class="mt-2 flex items-center gap-3 text-sm text-talent-muted">
+        <%= @defect.site&.name %>
+        <% if @defect.plot %><span>·</span><%= @defect.plot.label %><% end %>
+        <span>·</span><%= @defect.trade&.name %>
+        <span>·</span><span class="capitalize">Priority <%= @defect.priority %></span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <% case @defect.sla_state
+         when :red %>
+        <span class="sla-red"><span class="dot bg-red-500"></span> <%= @defect.days_until_sla.to_i.abs %>d overdue</span>
+      <% when :amber %>
+        <span class="sla-amber"><span class="dot bg-amber-500"></span> Due in <%= @defect.days_until_sla %>d</span>
+      <% when :green %>
+        <span class="sla-green"><span class="dot bg-emerald-500"></span> Due in <%= @defect.days_until_sla %>d</span>
+      <% end %>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-talent-mist text-talent-navy px-2.5 py-1 text-xs font-semibold capitalize"><%= @defect.status.tr("_", " ") %></span>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-12 gap-6">
+    <%# Left col: description, photos, activity %>
+    <div class="lg:col-span-8 space-y-6">
+      <% if @defect.description.present? %>
+        <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6">
+          <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Description</div>
+          <p class="mt-3 text-talent-navy leading-relaxed"><%= simple_format @defect.description %></p>
+        </div>
+      <% end %>
+
+      <% if @defect.photos.attached? %>
+        <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6">
+          <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted mb-3">Photos (<%= @defect.photos.size %>)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <% @defect.photos.each do |photo| %>
+              <%= link_to url_for(photo), target: "_blank", rel: "noopener", class: "block aspect-square rounded-xl overflow-hidden bg-talent-mist hover:ring-2 hover:ring-talent-orange transition" do %>
+                <%= image_tag photo.variant(resize_to_fill: [400, 400]).processed, class: "w-full h-full object-cover" rescue image_tag(photo, class: "w-full h-full object-cover") %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Activity timeline %>
+      <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6">
+        <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Activity</div>
+        <div class="mt-5 relative space-y-5">
+          <span class="absolute left-3.5 top-2 bottom-2 w-px bg-talent-navy/10"></span>
+          <% @activity_events.each do |event| %>
+            <div class="relative flex items-start gap-4">
+              <div class="relative z-10 h-7 w-7 rounded-full bg-talent-orange text-white grid place-items-center text-xs shadow-soft">●</div>
+              <div class="flex-1 flex items-start justify-between gap-3 pt-0.5">
+                <div class="text-sm text-talent-slate">
+                  <b class="text-talent-navy"><%= event.actor_label %></b>
+                  <%= event.event_type.tr(".", " ").humanize.downcase %>
+                  <% if event.metadata.present? %>
+                    <span class="text-talent-muted text-xs ml-1">
+                      <% event.metadata.each do |k, v| %>· <%= k %>: <%= v %><% end %>
+                    </span>
+                  <% end %>
+                </div>
+                <div class="text-xs text-talent-muted font-mono whitespace-nowrap"><%= event.created_at.strftime("%d %b %H:%M") %></div>
+              </div>
+            </div>
+          <% end %>
+
+          <%# Comments interleaved %>
+          <% @comments.each do |comment| %>
+            <div class="relative flex items-start gap-4">
+              <div class="relative z-10 h-7 w-7 rounded-full bg-talent-blue text-white grid place-items-center text-xs font-bold shadow-soft"><%= comment.user.initials %></div>
+              <div class="flex-1 pt-0.5">
+                <div class="flex items-center justify-between">
+                  <div class="text-sm font-semibold text-talent-navy"><%= comment.user.display_name %></div>
+                  <div class="text-xs text-talent-muted font-mono"><%= comment.created_at.strftime("%d %b %H:%M") %></div>
+                </div>
+                <p class="mt-1 text-sm text-talent-slate leading-relaxed"><%= simple_format comment.body %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <%# Comment form %>
+        <div class="mt-6 pt-6 border-t border-talent-navy/5">
+          <%= form_with model: @new_comment, url: defect_comments_path(@defect), class: "flex gap-3" do |f| %>
+            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-talent-orange to-talent-orange-600 grid place-items-center text-white text-sm font-bold flex-shrink-0"><%= Current.user.initials %></div>
+            <div class="flex-1 space-y-2">
+              <%= f.text_area :body, rows: 2, placeholder: "Add a note…", class: "block w-full rounded-xl border border-talent-navy/10 px-4 py-2.5 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none" %>
+              <div class="flex justify-end">
+                <%= f.submit "Post comment", class: "btn-primary cursor-pointer text-xs py-2 px-5" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%# Right col: status actions %>
+    <aside class="lg:col-span-4 space-y-4">
+      <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-5">
+        <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted mb-3">Next action</div>
+        <% case @defect.status %>
+        <% when "logged" %>
+          <%= form_with url: assign_defect_path(@defect), class: "space-y-2" do |f| %>
+            <%= f.select :contractor_company_id, Current.organization.contractor_companies.order(:name).map { [_1.name, _1.id] }, { include_blank: "Pick contractor" }, class: "block w-full rounded-xl border border-talent-navy/10 px-3 py-2 text-sm" %>
+            <%= f.submit "Assign", class: "btn-primary w-full justify-center cursor-pointer" %>
+          <% end %>
+        <% when "assigned" %>
+          <%= button_to "Mark as accepted", accept_defect_path(@defect), class: "btn-primary w-full justify-center cursor-pointer" %>
+          <%= button_to "Reject", reject_defect_path(@defect), class: "mt-2 inline-flex w-full items-center justify-center rounded-full bg-rose-50 text-rose-700 px-5 py-3 text-sm font-semibold hover:bg-rose-100 transition" %>
+        <% when "accepted", "booked", "in_progress" %>
+          <%= button_to "Mark complete", complete_defect_path(@defect), class: "btn-primary w-full justify-center cursor-pointer" %>
+        <% when "completed" %>
+          <div class="text-sm text-talent-slate mb-3">Awaiting resident sign-off.</div>
+          <%= button_to "Close defect", close_defect_path(@defect), class: "btn-primary w-full justify-center cursor-pointer" %>
+        <% when "signed_off" %>
+          <%= button_to "Close defect", close_defect_path(@defect), class: "btn-primary w-full justify-center cursor-pointer" %>
+        <% when "closed" %>
+          <div class="text-sm text-emerald-700">Defect closed.</div>
+          <%= button_to "Reopen", reopen_defect_path(@defect), class: "mt-2 inline-flex w-full items-center justify-center rounded-full bg-talent-mist text-talent-navy px-5 py-3 text-sm font-semibold hover:bg-talent-navy/5 transition" %>
+        <% when "rejected" %>
+          <div class="text-sm text-rose-700">Rejected.</div>
+        <% end %>
+      </div>
+
+      <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-5 space-y-3 text-sm">
+        <div>
+          <div class="text-xs text-talent-muted uppercase tracking-wide">Contractor</div>
+          <div class="font-semibold text-talent-navy"><%= @defect.contractor_company&.name || "Not yet assigned" %></div>
+        </div>
+        <div>
+          <div class="text-xs text-talent-muted uppercase tracking-wide">SLA target</div>
+          <div class="font-semibold text-talent-navy"><%= @defect.sla_target_date&.strftime("%d %b %Y") || "—" %></div>
+        </div>
+        <div>
+          <div class="text-xs text-talent-muted uppercase tracking-wide">Logged by</div>
+          <div class="font-semibold text-talent-navy"><%= @defect.reporter&.display_name || "—" %></div>
+        </div>
+      </div>
+
+      <%= link_to "Edit defect", edit_defect_path(@defect), class: "inline-flex w-full items-center justify-center rounded-full bg-white text-talent-navy border border-talent-navy/10 px-5 py-3 text-sm font-semibold hover:bg-talent-mist transition" %>
+    </aside>
+  </div>
+</div>

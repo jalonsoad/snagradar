@@ -9,10 +9,10 @@
       </h1>
       <p class="mt-1 text-talent-slate">Here's what's on the radar today.</p>
     </div>
-    <button class="btn-primary cursor-pointer">
+    <%= link_to new_defect_path, class: "btn-primary cursor-pointer" do %>
       <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       New defect
-    </button>
+    <% end %>
   </div>
 
   <%# KPI grid %>
@@ -39,9 +39,9 @@
         <%= link_to "View all", "#", class: "text-sm font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
       </div>
       <% if @recent_defects.any? %>
-        <ul class="divide-y divide-talent-navy/5">
+        <div class="divide-y divide-talent-navy/5">
           <% @recent_defects.each do |d| %>
-            <li class="px-5 py-3.5 flex items-center gap-3 hover:bg-talent-mist/50 transition">
+            <%= link_to defect_path(d), class: "px-5 py-3.5 flex items-center gap-3 hover:bg-talent-mist/50 transition" do %>
               <div class="h-10 w-10 rounded-xl bg-talent-mist grid place-items-center text-talent-navy flex-shrink-0">
                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
               </div>
@@ -64,9 +64,9 @@
               <% else %>
                 <span class="text-xs text-talent-muted">No SLA</span>
               <% end %>
-            </li>
+            <% end %>
           <% end %>
-        </ul>
+        </div>
       <% else %>
         <div class="p-10 text-center">
           <div class="mx-auto h-14 w-14 rounded-2xl bg-talent-orange/10 text-talent-orange grid place-items-center">
@@ -74,7 +74,7 @@
           </div>
           <h3 class="mt-4 font-display text-lg font-extrabold text-talent-navy">No defects yet</h3>
           <p class="mt-1 text-sm text-talent-muted">Log your first defect to see it on the radar.</p>
-          <button class="btn-primary mt-5 cursor-pointer">Log a defect</button>
+          <%= link_to "Log a defect", new_defect_path, class: "btn-primary mt-5 inline-flex cursor-pointer" %>
         </div>
       <% end %>
     </div>

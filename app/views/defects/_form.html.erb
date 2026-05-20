@@ -1,0 +1,53 @@
+<% input_classes = "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+<% label_classes = "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+
+<%= form_with model: defect, url: (defect.persisted? ? defect_path(defect) : defects_path), multipart: true, class: "space-y-5" do |f| %>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <%= f.label :site_id, "Site", class: label_classes %>
+      <%= f.collection_select :site_id, Current.organization.sites.order(:name), :id, :name, { include_blank: "Select a site" }, class: input_classes %>
+    </div>
+    <div>
+      <%= f.label :plot_id, "Plot", class: label_classes %>
+      <%= f.collection_select :plot_id, Current.organization.plots.order(:plot_number), :id, :label, { include_blank: "Optional" }, class: input_classes %>
+    </div>
+    <div>
+      <%= f.label :trade_id, "Trade", class: label_classes %>
+      <%= f.collection_select :trade_id, Current.organization.trades.order(:name), :id, :name, { include_blank: "Select trade" }, class: input_classes %>
+    </div>
+    <div>
+      <%= f.label :priority, class: label_classes %>
+      <%= f.select :priority, Defect.priorities.keys.map { |p| [p.titleize, p] }, {}, class: input_classes %>
+    </div>
+    <div>
+      <%= f.label :reference, "Client reference", class: label_classes %>
+      <%= f.text_field :reference, class: input_classes, placeholder: "e.g. HY-2487" %>
+    </div>
+    <div>
+      <%= f.label :sla_target_date, "SLA target date", class: label_classes %>
+      <%= f.date_field :sla_target_date, class: input_classes %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :title, class: label_classes %>
+    <%= f.text_field :title, class: input_classes, placeholder: "Short summary, e.g. Leak under kitchen sink", required: true %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Description (optional)", class: label_classes %>
+    <%= f.text_area :description, rows: 4, class: "#{input_classes} resize-none", placeholder: "Anything the trade should know before turning up?" %>
+  </div>
+
+  <div>
+    <%= f.label :photos, "Photos", class: label_classes %>
+    <%= f.file_field :photos, multiple: true, accept: "image/*", class: "mt-2 block w-full text-sm text-talent-slate file:mr-4 file:rounded-full file:border-0 file:bg-talent-navy file:text-white file:px-4 file:py-2 file:font-semibold hover:file:bg-talent-orange transition" %>
+    <p class="mt-2 text-xs text-talent-muted">JPEG / PNG / HEIC up to 10MB each. Camera capture works on mobile.</p>
+  </div>
+
+  <div class="flex gap-3">
+    <%= f.submit (defect.persisted? ? "Save changes" : "Log defect"), class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancel", (defect.persisted? ? defect_path(defect) : defects_path), class: "inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy border border-talent-navy/10 px-7 py-3 text-sm font-semibold hover:bg-talent-mist transition" %>
+  </div>
+<% end %>

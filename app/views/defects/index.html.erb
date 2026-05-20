@@ -1,0 +1,86 @@
+<% content_for :title, "Defects — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-talent-navy">Defects</h1>
+      <p class="mt-1 text-talent-slate"><%= @defects.size %> shown · <%= @counts[:open] %> open across the organisation</p>
+    </div>
+    <%= link_to new_defect_path, class: "btn-primary cursor-pointer" do %>
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Log defect
+    <% end %>
+  </div>
+
+  <%# Filter chips %>
+  <div class="flex flex-wrap gap-2">
+    <% [
+         ["All",        nil,           @counts[:open] + @counts[:signed_off]],
+         ["Open",       "open",        @counts[:open]],
+         ["Overdue",    "overdue",     @counts[:overdue]],
+         ["≤48h SLA",   "amber",       @counts[:amber]],
+         ["Signed off", "signed_off",  @counts[:signed_off]]
+       ].each do |label, filter, count| %>
+      <% active = params[:filter].to_s == filter.to_s %>
+      <%= link_to defects_path(filter: filter), class: "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition #{active ? 'bg-talent-navy text-white' : 'bg-white text-talent-navy hover:bg-talent-mist'}" do %>
+        <%= label %>
+        <span class="<%= active ? 'bg-white/15' : 'bg-talent-mist' %> rounded-full px-2 py-0.5 text-xs"><%= count %></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# Defects table card %>
+  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+    <% if @defects.any? %>
+      <table class="w-full text-sm">
+        <thead class="bg-talent-mist/50 border-b border-talent-navy/5">
+          <tr class="text-left text-xs font-semibold uppercase tracking-wider text-talent-muted">
+            <th class="px-5 py-3">Reference</th>
+            <th class="px-5 py-3">Defect</th>
+            <th class="px-5 py-3">Trade</th>
+            <th class="px-5 py-3">Contractor</th>
+            <th class="px-5 py-3">SLA</th>
+            <th class="px-5 py-3 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-talent-navy/5">
+          <% @defects.each do |d| %>
+            <tr class="hover:bg-talent-mist/40 transition cursor-pointer" onclick="window.location='<%= defect_path(d) %>'">
+              <td class="px-5 py-3.5 font-mono text-xs"><%= d.reference || "##{d.id}" %></td>
+              <td class="px-5 py-3.5">
+                <div class="font-semibold text-talent-navy"><%= d.title %></div>
+                <div class="text-xs text-talent-muted"><%= d.site&.name %> <%= "· #{d.plot.label}" if d.plot %></div>
+              </td>
+              <td class="px-5 py-3.5 text-talent-slate"><%= d.trade&.name %></td>
+              <td class="px-5 py-3.5 text-talent-slate"><%= d.contractor_company&.name || "—" %></td>
+              <td class="px-5 py-3.5">
+                <% case d.sla_state
+                   when :red %>
+                  <span class="sla-red"><span class="dot bg-red-500"></span> <%= d.days_until_sla.to_i.abs %>d overdue</span>
+                <% when :amber %>
+                  <span class="sla-amber"><span class="dot bg-amber-500"></span> Due in <%= d.days_until_sla %>d</span>
+                <% when :green %>
+                  <span class="sla-green"><span class="dot bg-emerald-500"></span> On track</span>
+                <% else %>
+                  <span class="text-xs text-talent-muted">—</span>
+                <% end %>
+              </td>
+              <td class="px-5 py-3.5 text-right">
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-talent-mist text-talent-navy px-2.5 py-1 text-xs font-semibold capitalize"><%= d.status.tr("_", " ") %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="p-12 text-center">
+        <div class="mx-auto h-16 w-16 rounded-2xl bg-talent-orange/10 text-talent-orange grid place-items-center">
+          <%= icon "satellite", class: "h-8 w-8" %>
+        </div>
+        <h3 class="mt-5 font-display text-xl font-extrabold text-talent-navy">No defects yet</h3>
+        <p class="mt-2 text-talent-muted">Log your first defect — it appears on the radar instantly.</p>
+        <%= link_to "Log defect", new_defect_path, class: "btn-primary mt-6 inline-flex cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

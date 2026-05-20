@@ -1,0 +1,59 @@
+<% content_for :title, "#{@site.name} — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-3 text-sm">
+        <%= link_to "Sites", sites_path, class: "text-talent-muted hover:text-talent-navy" %>
+        <svg class="h-3 w-3 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="font-mono text-xs text-talent-muted"><%= @site.reference || "##{@site.id}" %></span>
+      </div>
+      <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-talent-navy"><%= @site.name %></h1>
+      <p class="mt-1 text-talent-slate"><%= @site.address %></p>
+    </div>
+    <%= link_to "Edit", edit_site_path(@site), class: "inline-flex items-center justify-center rounded-full bg-white text-talent-navy border border-talent-navy/10 px-5 py-2 text-sm font-semibold hover:bg-talent-mist transition" %>
+  </div>
+
+  <div class="grid sm:grid-cols-3 gap-4">
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Plots</div>
+      <div class="font-display text-3xl font-extrabold mt-1"><%= @site.plots.size %></div>
+    </div>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Open defects</div>
+      <div class="font-display text-3xl font-extrabold mt-1"><%= @open_defects_count %></div>
+    </div>
+    <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-5">
+      <div class="text-xs font-semibold uppercase tracking-wide text-talent-muted">Status</div>
+      <div class="mt-2 capitalize font-semibold text-talent-navy"><%= @site.status %></div>
+    </div>
+  </div>
+
+  <%# Plots section %>
+  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft">
+    <div class="px-5 py-4 border-b border-talent-navy/5 flex items-center justify-between">
+      <div class="font-display text-lg font-extrabold">Plots</div>
+      <%= form_with url: site_plots_path(@site), class: "flex items-center gap-2" do |f| %>
+        <%= f.fields_for :plot do |pf| %>
+          <%= pf.text_field :plot_number, placeholder: "Plot #", class: "rounded-lg border border-talent-navy/10 px-3 py-1.5 text-sm w-24 focus:outline-none focus:border-talent-orange" %>
+        <% end %>
+        <%= f.submit "Add", class: "btn-primary text-xs py-1.5 px-4 cursor-pointer" %>
+      <% end %>
+    </div>
+    <% if @plots.any? %>
+      <ul class="divide-y divide-talent-navy/5">
+        <% @plots.each do |plot| %>
+          <li class="px-5 py-3 flex items-center justify-between">
+            <div>
+              <div class="font-semibold text-talent-navy"><%= plot.label %></div>
+              <% if plot.address.present? %><div class="text-xs text-talent-muted"><%= plot.address %></div><% end %>
+            </div>
+            <%= button_to "Remove", site_plot_path(@site, plot), method: :delete, class: "text-xs text-rose-600 hover:text-rose-700", data: { turbo_confirm: "Remove plot #{plot.label}?" } %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="p-8 text-center text-sm text-talent-muted">No plots yet — add the first one above.</div>
+    <% end %>
+  </div>
+</div>

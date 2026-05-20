@@ -1,0 +1,27 @@
+<% input_classes = "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+<% label_classes = "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
+
+<%= form_with model: site, url: (site.persisted? ? site_path(site) : sites_path), class: "space-y-5" do |f| %>
+  <div>
+    <%= f.label :name, class: label_classes %>
+    <%= f.text_field :name, class: input_classes, placeholder: "e.g. Adur Shoreham", required: true, autofocus: true %>
+  </div>
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <%= f.label :reference, "Client reference", class: label_classes %>
+      <%= f.text_field :reference, class: input_classes, placeholder: "e.g. HYD-ADUR" %>
+    </div>
+    <div>
+      <%= f.label :status, class: label_classes %>
+      <%= f.select :status, Site.statuses.keys.map { |s| [s.titleize, s] }, {}, class: input_classes %>
+    </div>
+  </div>
+  <div>
+    <%= f.label :address, class: label_classes %>
+    <%= f.text_field :address, class: input_classes %>
+  </div>
+  <div class="flex gap-3">
+    <%= f.submit (site.persisted? ? "Save" : "Add site"), class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancel", sites_path, class: "inline-flex items-center justify-center rounded-full bg-white text-talent-navy border border-talent-navy/10 px-7 py-3 text-sm font-semibold hover:bg-talent-mist transition" %>
+  </div>
+<% end %>

@@ -17,10 +17,10 @@
 
     <%# Right cluster %>
     <div class="flex items-center gap-2 sm:gap-3">
-      <button class="hidden sm:inline-flex items-center gap-2 rounded-full border border-talent-navy/10 bg-white px-3 py-1.5 text-xs font-semibold text-talent-navy hover:bg-talent-mist transition">
+      <%= link_to new_defect_path, class: "hidden sm:inline-flex items-center gap-2 rounded-full border border-talent-navy/10 bg-white px-3 py-1.5 text-xs font-semibold text-talent-navy hover:bg-talent-mist transition" do %>
         <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New defect
-      </button>
+      <% end %>
 
       <button class="relative h-9 w-9 grid place-items-center rounded-full hover:bg-talent-mist transition" aria-label="Notifications">
         <svg class="h-5 w-5 text-talent-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>

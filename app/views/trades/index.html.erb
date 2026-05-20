@@ -1,0 +1,38 @@
+<% content_for :title, "Trades — SnagRadar" %>
+
+<div class="space-y-6">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Trades</h1>
+      <p class="mt-1 text-talent-slate">Drives default SLA windows and routing.</p>
+    </div>
+    <%= link_to new_trade_path, class: "btn-primary cursor-pointer" do %>
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add trade
+    <% end %>
+  </div>
+
+  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-talent-mist/50 border-b border-talent-navy/5">
+        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-talent-muted">
+          <th class="px-5 py-3">Trade</th>
+          <th class="px-5 py-3">Default SLA (days)</th>
+          <th class="px-5 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-talent-navy/5">
+        <% @trades.each do |t| %>
+          <tr class="hover:bg-talent-mist/40 transition">
+            <td class="px-5 py-3.5 font-semibold text-talent-navy"><%= t.name %></td>
+            <td class="px-5 py-3.5 text-talent-slate"><%= t.default_sla_days %></td>
+            <td class="px-5 py-3.5 text-right space-x-3">
+              <%= link_to "Edit", edit_trade_path(t), class: "text-talent-orange hover:text-talent-orange-700 font-semibold" %>
+              <%= button_to "Remove", trade_path(t), method: :delete, class: "text-rose-600 hover:text-rose-700 inline", data: { turbo_confirm: "Remove #{t.name}?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

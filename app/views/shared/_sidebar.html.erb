@@ -11,13 +11,13 @@
 
   <nav class="flex-1 px-3 py-2 space-y-0.5 text-sm">
     <% nav = [
-      { name: "Dashboard",  path: dashboard_path,  icon: :grid,    active: controller_path == "dashboards" },
-      { name: "Defects",    path: "#",             icon: :radar,   active: false },
-      { name: "Appointments", path: "#",           icon: :calendar,active: false },
-      { name: "Sites",      path: "#",             icon: :building,active: false },
-      { name: "Trades",     path: "#",             icon: :tool,    active: false },
-      { name: "Contractors",path: "#",             icon: :users,   active: false },
-      { name: "Reports",    path: "#",             icon: :chart,   active: false }
+      { name: "Dashboard",    path: dashboard_path,              icon: :grid,    active: controller_path == "dashboards" },
+      { name: "Defects",      path: defects_path,                icon: :radar,   active: controller_path == "defects" },
+      { name: "Appointments", path: "#",                         icon: :calendar,active: controller_path == "appointments" },
+      { name: "Sites",        path: sites_path,                  icon: :building,active: %w[sites plots].include?(controller_path) },
+      { name: "Trades",       path: trades_path,                 icon: :tool,    active: controller_path == "trades" },
+      { name: "Contractors",  path: contractor_companies_path,   icon: :users,   active: controller_path == "contractor_companies" },
+      { name: "Reports",      path: "#",                         icon: :chart,   active: false }
     ] %>
     <% nav.each do |item| %>
       <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-xl transition #{item[:active] ? 'bg-white/10 text-white' : 'text-white/65 hover:bg-white/5 hover:text-white'}" do %>

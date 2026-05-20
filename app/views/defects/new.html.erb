@@ -1,0 +1,16 @@
+<% content_for :title, "New defect — SnagRadar" %>
+
+<div class="max-w-3xl mx-auto">
+  <div class="flex items-center gap-3 text-sm">
+    <%= link_to "Defects", defects_path, class: "text-talent-muted hover:text-talent-navy" %>
+    <svg class="h-3 w-3 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="font-semibold text-talent-navy">New defect</span>
+  </div>
+
+  <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-talent-navy">Log a defect</h1>
+  <p class="mt-1 text-talent-slate">Two minutes max — site, plot, trade, priority, photos. The SLA target date defaults from the trade.</p>
+
+  <div class="mt-8 rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6 sm:p-8">
+    <%= render "form", defect: @defect %>
+  </div>
+</div>
