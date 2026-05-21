@@ -1,0 +1,40 @@
+<%# Used by both:
+      - invitations/index.html.erb (inside the Flowbite modal)
+      - invitations/new.html.erb   (legacy standalone page) %>
+<%# Explicit id so the modal's external Send button can submit this form
+    via the form="..." attribute (form_with doesn't auto-set id). %>
+<%= form_with model: invitation, url: invitations_path,
+      id: dom_id(invitation), class: "space-y-5" do |f| %>
+  <% if invitation.errors.any? %>
+    <div class="rounded-lg bg-rose-50 border border-rose-200 p-3 text-sm">
+      <div class="font-medium text-rose-800 mb-1">Please fix the highlighted fields:</div>
+      <ul class="list-disc list-inside text-xs text-rose-700">
+        <% invitation.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :email_address, "Email address", class: "block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide" %>
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </span>
+      <%= f.email_field :email_address, required: true, autofocus: true, placeholder: "sara@company.com",
+            class: "block w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :name, "Their name", class: "block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide" %>
+    <%= f.text_field :name, placeholder: "Sara Jenkins (optional)",
+          class: "block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+  </div>
+
+  <div>
+    <%= f.label :role, class: "block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide" %>
+    <%= f.select :role, User.roles.keys.map { |r| [ r.tr("_", " ").titleize, r ] }, {},
+          class: "block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+    <p class="mt-1.5 text-xs text-gray-500">Admins can invite and remove users. Care Coordinators can log defects and manage everything except settings.</p>
+  </div>
+<% end %>

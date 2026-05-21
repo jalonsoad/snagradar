@@ -63,8 +63,14 @@
 
   <div>
     <%= f.label :photos, "Photos", class: label_classes %>
-    <%= f.file_field :photos, multiple: true, accept: "image/*", class: "mt-2 block w-full text-sm text-talent-slate file:mr-4 file:rounded-full file:border-0 file:bg-talent-navy file:text-white file:px-4 file:py-2 file:font-semibold hover:file:bg-talent-orange transition" %>
-    <p class="mt-2 text-xs text-talent-muted">JPEG / PNG / HEIC up to 10MB each. Camera capture works on mobile.</p>
+    <label for="defect_photos" class="mt-2 flex flex-col items-center justify-center w-full h-32 rounded-lg border-2 border-gray-200 border-dashed cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-talent-orange/40 transition">
+      <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+        <svg class="mb-2 h-6 w-6 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="text-sm text-gray-600"><span class="font-medium text-talent-navy">Click to upload</span> or drag and drop</p>
+        <p class="mt-0.5 text-xs text-gray-500">JPEG / PNG / HEIC up to 10 MB each · camera capture works on mobile</p>
+      </div>
+      <%= f.file_field :photos, multiple: true, accept: "image/*", capture: "environment", class: "hidden" %>
+    </label>
   </div>
 
   <div class="flex gap-2 pt-2">

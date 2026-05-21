@@ -1,0 +1,29 @@
+<%# Wrapped in an id so the controller can turbo_stream.replace it on submit,
+    which clears the textarea without reloading the page or scrolling. %>
+<div id="testpage_message_compose">
+  <%= form_with url: testpage_messages_path, scope: :testpage_message, class: "space-y-3" do |f| %>
+    <div>
+      <%= f.text_area :body, rows: 3, placeholder: "Anything — a status, a heads-up, a question…",
+            maxlength: 280, required: true,
+            class: "block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none" %>
+      <p class="mt-1 text-xs text-gray-500">Max 280 characters. Auto-cleans to last 20 entries.</p>
+    </div>
+
+    <fieldset>
+      <legend class="block mb-1.5 text-xs font-medium text-gray-700 uppercase tracking-wide">Kind</legend>
+      <div class="grid grid-cols-4 gap-2">
+        <% [["info", "blue"], ["success", "emerald"], ["warning", "amber"], ["danger", "rose"]].each_with_index do |(k, _tone), i| %>
+          <label class="flex items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-2 py-1.5 text-xs cursor-pointer hover:bg-gray-50 transition has-[input:checked]:border-talent-orange has-[input:checked]:bg-talent-orange-50">
+            <input type="radio" name="testpage_message[kind]" value="<%= k %>" <%= "checked" if i.zero? %>
+                   class="h-3.5 w-3.5 border-gray-300 text-talent-orange focus:ring-talent-orange">
+            <span class="capitalize text-talent-navy"><%= k %></span>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <div class="flex items-center justify-end">
+      <%= f.submit "Broadcast", class: "inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition" %>
+    </div>
+  <% end %>
+</div>

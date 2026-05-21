@@ -74,7 +74,7 @@ class DefectClassifier
     end
 
     top = scores.max_by { |_, score| score }
-    return [nil, 0] if top.nil? || top.last.zero?
+    return [ nil, 0 ] if top.nil? || top.last.zero?
     top
   end
 end

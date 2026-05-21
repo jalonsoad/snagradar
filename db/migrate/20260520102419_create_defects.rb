@@ -23,13 +23,13 @@ class CreateDefects < ActiveRecord::Migration[8.1]
     end
 
     # Operational indexes
-    add_index :defects, [:organization_id, :status]
-    add_index :defects, [:organization_id, :sla_target_date]
-    add_index :defects, [:site_id, :status]
-    add_index :defects, [:contractor_company_id, :status]
+    add_index :defects, [ :organization_id, :status ]
+    add_index :defects, [ :organization_id, :sla_target_date ]
+    add_index :defects, [ :site_id, :status ]
+    add_index :defects, [ :contractor_company_id, :status ]
 
     # Partial indexes for the most common dashboard queries
-    add_index :defects, [:organization_id, :id], where: "status < 7", name: "idx_defects_open"
-    add_index :defects, [:organization_id, :sla_target_date], where: "status < 7", name: "idx_defects_open_by_sla"
+    add_index :defects, [ :organization_id, :id ], where: "status < 7", name: "idx_defects_open"
+    add_index :defects, [ :organization_id, :sla_target_date ], where: "status < 7", name: "idx_defects_open_by_sla"
   end
 end

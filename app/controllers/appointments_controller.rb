@@ -8,7 +8,7 @@ class AppointmentsController < AuthenticatedController
 
     @appointments = Current.organization.appointments
       .where(scheduled_at: @start..@end)
-      .includes(defect: [:site, :plot, :trade, :contractor_company])
+      .includes(defect: [ :site, :plot, :trade, :contractor_company ])
       .order(:scheduled_at)
     @by_day = @appointments.group_by { |a| a.scheduled_at.to_date }
     @counts = {
@@ -68,7 +68,7 @@ class AppointmentsController < AuthenticatedController
   end
 
   def appointment_params
-    params.expect(appointment: [:scheduled_at, :ends_at, :status, :notes])
+    params.expect(appointment: [ :scheduled_at, :ends_at, :status, :notes ])
   end
 
   def parse_anchor

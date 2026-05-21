@@ -15,6 +15,6 @@ class CommentsController < AuthenticatedController
   private
 
   def comment_params
-    params.expect(comment: [:body, :visibility])
+    params.expect(comment: [ :body, :visibility ])
   end
 end

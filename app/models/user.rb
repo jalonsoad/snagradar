@@ -2,6 +2,13 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_fill: [ 96, 96 ]
+    attachable.variant :small, resize_to_fill: [ 32, 32 ]
+  end
+
+  validate :acceptable_avatar
+
   belongs_to :organization, optional: true   # internal users belong to an org; contractor users belong via membership
   has_many   :contractor_memberships, dependent: :destroy
   has_many   :contractor_companies, through: :contractor_memberships
@@ -37,5 +44,13 @@ class User < ApplicationRecord
 
   def contractor?
     contractor_memberships.exists?
+  end
+
+  private
+
+  def acceptable_avatar
+    return unless avatar.attached?
+    errors.add(:avatar, "must be a PNG, JPEG, or WebP") unless avatar.content_type.in?(%w[image/png image/jpeg image/webp])
+    errors.add(:avatar, "must be 5 MB or smaller")       if avatar.byte_size > 5.megabytes
   end
 end

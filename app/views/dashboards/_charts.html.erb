@@ -1,0 +1,234 @@
+<%# Geckoboard-style operational charts for the complaints manager.
+    Rendered via the chart Stimulus controller (ApexCharts).
+    All series come from @chart computed in DashboardsController. %>
+<%
+  brand_orange  = "#FC5A07"
+  brand_navy    = "#022043"
+  brand_blue    = "#0057AE"
+  c_emerald     = "#10B981"
+  c_amber       = "#F59E0B"
+  c_rose        = "#F43F5E"
+  c_violet      = "#8B5CF6"
+  c_teal        = "#14B8A6"
+  c_slate       = "#94A3B8"
+
+  intake_opts = {
+    chart: { type: "area", height: 290, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false }, zoom: { enabled: false } },
+    colors: [brand_orange, c_emerald],
+    series: [
+      { name: "Logged",   data: chart[:intake_data] },
+      { name: "Resolved", data: chart[:closed_data] }
+    ],
+    xaxis: { categories: chart[:categories], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+    yaxis: { labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+    stroke: { curve: "smooth", width: 2 },
+    fill:   { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
+    dataLabels: { enabled: false },
+    grid: { borderColor: "#E2E8F0", strokeDashArray: 4, padding: { left: 8, right: 8 } },
+    legend: { position: "top", horizontalAlign: "right", fontSize: "12px", labels: { colors: "#334155" }, markers: { width: 8, height: 8, radius: 4 } }
+  }
+
+  sla_opts = {
+    chart: { type: "radialBar", height: 290, fontFamily: "Sofia Sans, ui-sans-serif", sparkline: { enabled: false } },
+    series: [chart[:sla_pct]],
+    labels: ["Within SLA"],
+    colors: [chart[:sla_pct] >= 90 ? c_emerald : chart[:sla_pct] >= 75 ? c_amber : c_rose],
+    plotOptions: {
+      radialBar: {
+        hollow: { size: "62%" },
+        track:  { background: "#F1F5F9", strokeWidth: "100%" },
+        dataLabels: {
+          name:  { fontSize: "12px", color: "#64748B", offsetY: -10 },
+          value: { fontSize: "32px", color: brand_navy, fontWeight: 600, offsetY: 4 }
+        }
+      }
+    },
+    stroke: { lineCap: "round" }
+  }
+
+  donut_colors  = [c_slate, brand_blue, c_violet, c_teal, c_amber, c_emerald, c_emerald, brand_navy, c_rose]
+  status_total  = chart[:status_series].sum
+  donut_opts = {
+    chart: { type: "donut", height: 240, fontFamily: "Sofia Sans, ui-sans-serif" },
+    series: chart[:status_series],
+    labels: chart[:status_labels].map { |s| s.tr("_", " ").capitalize },
+    colors: donut_colors,
+    stroke: { width: 0 },
+    dataLabels: { enabled: false },
+    legend: { show: false },
+    plotOptions: {
+      pie: {
+        donut: {
+          size: "70%",
+          labels: {
+            show: true,
+            name:  { show: true, fontSize: "11px", color: "#64748B", offsetY: -4 },
+            value: { show: true, fontSize: "22px", color: brand_navy, fontWeight: 600, offsetY: 6 },
+            total: { show: true, label: "Total", color: "#64748B", fontSize: "11px" }
+          }
+        }
+      }
+    }
+  }
+
+  trade_opts = {
+    chart: { type: "bar", height: 320, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false } },
+    colors: [brand_navy],
+    series: [{ name: "Open", data: chart[:trade_data] }],
+    xaxis: { categories: chart[:trade_labels], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+    yaxis: { labels: { style: { colors: "#334155", fontSize: "12px" } } },
+    plotOptions: { bar: { horizontal: true, borderRadius: 6, borderRadiusApplication: "end", barHeight: "65%" } },
+    dataLabels: { enabled: false },
+    grid: { borderColor: "#E2E8F0", strokeDashArray: 4 },
+    legend: { show: false }
+  }
+%>
+
+<div class="space-y-4">
+  <%# Section header %>
+  <div class="flex items-baseline justify-between flex-wrap gap-2">
+    <h2 class="text-lg font-semibold text-talent-navy">Operations</h2>
+    <div class="text-xs text-gray-500">Last 14 days · auto-updated when defects change</div>
+  </div>
+
+  <%# Row A: intake/resolved trend (2/3) + SLA compliance gauge (1/3) %>
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+    <%# Activity trend %>
+    <div class="xl:col-span-2 bg-white border border-gray-200 rounded-lg p-5">
+      <div class="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Activity — logged vs resolved</h3>
+          <div class="mt-2 flex items-baseline gap-3">
+            <span class="text-3xl font-semibold text-talent-navy"><%= chart[:intake_data].sum %></span>
+            <span class="text-xs text-gray-500">logged · <span class="font-semibold text-emerald-700"><%= chart[:closed_data].sum %></span> resolved</span>
+          </div>
+          <% if chart[:backlog].positive? %>
+            <p class="mt-1 text-xs text-rose-700">Backlog grew by <%= chart[:backlog] %> in the window.</p>
+          <% elsif chart[:backlog].zero? %>
+            <p class="mt-1 text-xs text-gray-500">Holding even — keeping up with intake.</p>
+          <% else %>
+            <p class="mt-1 text-xs text-emerald-700">Burned down <%= chart[:backlog].abs %> defects in the window.</p>
+          <% end %>
+        </div>
+        <button data-dropdown-toggle="dash-activity-menu" data-dropdown-placement="bottom-end"
+                class="h-8 w-8 rounded-lg grid place-items-center hover:bg-gray-100 text-gray-500 cursor-pointer" type="button" aria-label="Options">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+        </button>
+        <div id="dash-activity-menu" class="z-50 hidden w-44 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+          <ul class="py-1 text-sm text-talent-navy">
+            <li><%= link_to "View all defects", defects_path, class: "block px-4 py-2 hover:bg-gray-50" %></li>
+            <li><%= link_to "Export CSV",       reports_defects_csv_path, class: "block px-4 py-2 hover:bg-gray-50" %></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-4" data-controller="chart" data-chart-options-value="<%= intake_opts.to_json %>"></div>
+    </div>
+
+    <%# SLA compliance gauge + sub-metrics %>
+    <div class="bg-white border border-gray-200 rounded-lg p-5 flex flex-col">
+      <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">SLA compliance</h3>
+      <% if chart[:total_done].positive? %>
+        <div data-controller="chart" data-chart-options-value="<%= sla_opts.to_json %>"></div>
+        <div class="grid grid-cols-2 gap-3 mt-2 text-center">
+          <div class="rounded-lg bg-gray-50 border border-gray-100 p-2.5">
+            <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Avg resolution</div>
+            <div class="mt-0.5 text-base font-semibold text-talent-navy"><%= chart[:avg_hours] ? "#{chart[:avg_hours]}h" : "—" %></div>
+          </div>
+          <div class="rounded-lg bg-gray-50 border border-gray-100 p-2.5">
+            <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Resolved</div>
+            <div class="mt-0.5 text-base font-semibold text-talent-navy"><%= chart[:total_done] %></div>
+          </div>
+        </div>
+      <% else %>
+        <div class="flex-1 grid place-items-center text-center px-4 py-8">
+          <div>
+            <div class="mx-auto h-10 w-10 rounded-full bg-gray-100 text-gray-400 grid place-items-center">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            </div>
+            <p class="mt-3 text-sm font-medium text-talent-navy">Not enough data yet</p>
+            <p class="mt-1 text-xs text-gray-500">Sign off your first defects to start tracking compliance.</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Row B: enriched status breakdown (1/2) + by-trade (1/2) %>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <%# Status breakdown — donut + per-status list with counts + % bars %>
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Status breakdown</h3>
+          <p class="text-xs text-gray-500 mt-0.5">All defects across every site</p>
+        </div>
+        <span class="text-xs text-gray-500"><span class="font-semibold text-talent-navy"><%= status_total %></span> total</span>
+      </div>
+
+      <% if status_total.positive? %>
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 items-center">
+          <%# Compact donut (2/5) %>
+          <div class="sm:col-span-2" data-controller="chart" data-chart-options-value="<%= donut_opts.to_json %>"></div>
+
+          <%# Per-status list with bars (3/5) %>
+          <ul class="sm:col-span-3 space-y-2">
+            <% chart[:status_labels].zip(chart[:status_series], donut_colors).sort_by { |_, n, _| -n }.first(6).each do |label, n, color| %>
+              <% pct = ((n.to_f / status_total) * 100).round %>
+              <li class="grid grid-cols-12 items-center gap-2 text-xs">
+                <span class="col-span-4 flex items-center gap-1.5 text-talent-navy">
+                  <span class="h-2 w-2 rounded-sm flex-shrink-0" style="background-color: <%= color %>;"></span>
+                  <span class="font-medium capitalize truncate"><%= label.tr("_", " ") %></span>
+                </span>
+                <div class="col-span-6 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                  <div class="h-1.5 rounded-full" style="width: <%= pct %>%; background-color: <%= color %>;"></div>
+                </div>
+                <span class="col-span-2 text-right tabular-nums">
+                  <span class="font-semibold text-talent-navy"><%= n %></span>
+                  <span class="text-gray-400">·<%= pct %>%</span>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <%# Footer summary chips %>
+        <div class="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
+          <% open_n      = chart[:status_labels].zip(chart[:status_series]).reject { |s, _| %w[signed_off closed rejected].include?(s) }.sum { |_, n| n } %>
+          <% resolved_n  = chart[:status_labels].zip(chart[:status_series]).select { |s, _| %w[signed_off closed].include?(s) }.sum { |_, n| n } %>
+          <% rejected_n  = chart[:status_labels].zip(chart[:status_series]).select { |s, _| s == "rejected" }.sum { |_, n| n } %>
+          <div>
+            <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Open</div>
+            <div class="mt-0.5 text-lg font-semibold text-talent-navy"><%= open_n %></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Resolved</div>
+            <div class="mt-0.5 text-lg font-semibold text-emerald-700"><%= resolved_n %></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Rejected</div>
+            <div class="mt-0.5 text-lg font-semibold text-rose-700"><%= rejected_n %></div>
+          </div>
+        </div>
+      <% else %>
+        <div class="mt-2 grid place-items-center text-center py-10 text-sm text-gray-500">No defects logged yet.</div>
+      <% end %>
+    </div>
+
+    <%# By-trade %>
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Open defects by trade</h3>
+          <p class="text-xs text-gray-500 mt-0.5">Top 6 — sorted by volume</p>
+        </div>
+        <%= link_to trades_path, class: "text-xs font-medium text-talent-orange hover:text-talent-orange-700" do %>Manage trades →<% end %>
+      </div>
+      <% if chart[:trade_data].any? %>
+        <div class="mt-2" data-controller="chart" data-chart-options-value="<%= trade_opts.to_json %>"></div>
+      <% else %>
+        <div class="mt-4 grid place-items-center text-center py-10 text-sm text-gray-500">No open defects right now.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

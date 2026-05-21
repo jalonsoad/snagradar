@@ -29,6 +29,6 @@ class PlotsController < AuthenticatedController
   end
 
   def plot_params
-    params.expect(plot: [:plot_number, :address])
+    params.expect(plot: [ :plot_number, :address ])
   end
 end

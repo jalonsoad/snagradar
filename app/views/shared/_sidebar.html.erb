@@ -1,55 +1,118 @@
-<aside class="hidden lg:flex w-64 flex-col bg-talent-navy text-white">
-  <div class="px-6 py-6 flex items-center gap-2.5">
-    <%= image_tag "snagradar-icon.png", alt: "", class: "h-9 w-9 object-contain bg-white rounded-lg p-1" %>
-    <div class="leading-tight">
-      <div class="font-display text-lg font-extrabold tracking-tight">
-        <span class="text-white">Snag</span><span class="text-talent-orange">Radar</span>
+<%# Fixed left sidebar (Flowbite shell pattern).
+    Hidden + translated off-screen on mobile, slides in via data-drawer-toggle
+    from the topbar hamburger. On md+ it's permanently visible to the left of
+    the main content (which uses md:ml-64 to make room). %>
+<aside id="sidebar-default" tabindex="-1" aria-label="Sidebar"
+       class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0">
+  <div class="overflow-y-auto py-5 px-3 h-full bg-white">
+
+    <%# Mobile-only search (md+ has it in the topbar) %>
+    <%= form_with url: search_path, method: :get, class: "md:hidden mb-3" do |f| %>
+      <label for="sidebar-search" class="sr-only">Search</label>
+      <div class="relative">
+        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none text-gray-400">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <%= f.search_field :q, id: "sidebar-search", placeholder: "Search…",
+              class: "bg-gray-50 border border-gray-200 text-talent-navy text-sm rounded-lg focus:ring-2 focus:ring-talent-orange/20 focus:border-talent-orange block w-full pl-10 p-2" %>
       </div>
-      <div class="text-[10px] uppercase tracking-widest text-white/40 truncate"><%= Current.organization&.name %></div>
-    </div>
-  </div>
+    <% end %>
 
-  <nav class="flex-1 px-3 py-2 space-y-0.5 text-sm">
-    <% nav = [
-      { name: "Dashboard",    path: dashboard_path,              icon: :grid,    active: controller_path == "dashboards" },
-      { name: "Defects",      path: defects_path,                icon: :radar,   active: controller_path == "defects" },
-      { name: "Appointments", path: appointments_path,           icon: :calendar,active: controller_path == "appointments" },
-      { name: "Sites",        path: sites_path,                  icon: :building,active: %w[sites plots].include?(controller_path) },
-      { name: "Trades",       path: trades_path,                 icon: :tool,    active: controller_path == "trades" },
-      { name: "Contractors",  path: contractor_companies_path,   icon: :users,   active: controller_path == "contractor_companies" },
-      { name: "Reports",      path: reports_path,                icon: :chart,   active: controller_path == "reports" }
-    ] %>
-    <% nav.each do |item| %>
-      <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-lg transition #{item[:active] ? 'bg-white/10 text-white' : 'text-white/65 hover:bg-white/5 hover:text-white'}" do %>
-        <% case item[:icon] %>
-        <% when :grid %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        <% when :radar %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
-        <% when :calendar %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <% when :building %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
-        <% when :tool %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>
-        <% when :users %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <% when :chart %>
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <% end %>
-        <span class="font-medium"><%= item[:name] %></span>
+    <%# Primary nav %>
+    <%
+      primary_nav = [
+        { name: "Dashboard",    path: dashboard_path,            icon: :grid,     active: controller_path == "dashboards" },
+        { name: "Defects",      path: defects_path,              icon: :radar,    active: controller_path == "defects", badge: Current.organization&.defects&.open&.count.to_i },
+        { name: "Appointments", path: appointments_path,         icon: :calendar, active: controller_path == "appointments" },
+        { name: "Reports",      path: reports_path,              icon: :chart,    active: controller_path == "reports" }
+      ]
+
+      settings_nav = [
+        { name: "Sites",        path: sites_path,                icon: :building, active: %w[sites plots].include?(controller_path) },
+        { name: "Trades",       path: trades_path,               icon: :tool,     active: controller_path == "trades" },
+        { name: "Contractors",  path: contractor_companies_path, icon: :users,    active: controller_path == "contractor_companies" },
+        { name: "Team",         path: invitations_path,          icon: :team,     active: controller_path == "invitations" }
+      ]
+    %>
+
+    <ul class="space-y-1">
+      <% primary_nav.each do |item| %>
+        <li>
+          <%= link_to item[:path],
+                class: "flex items-center p-2 text-sm font-medium rounded-lg transition group #{item[:active] ? 'bg-talent-orange-50 text-talent-orange-700' : 'text-gray-700 hover:bg-gray-100 hover:text-talent-navy'}" do %>
+            <span class="<%= item[:active] ? 'text-talent-orange' : 'text-gray-500 group-hover:text-talent-navy' %>">
+              <% case item[:icon]
+                 when :grid %>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              <% when :radar %>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+              <% when :calendar %>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <% when :chart %>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <% end %>
+            </span>
+            <span class="ml-3 flex-1 whitespace-nowrap"><%= item[:name] %></span>
+            <% if item[:badge].to_i.positive? %>
+              <span class="inline-flex items-center justify-center w-5 h-5 text-[10px] font-semibold rounded-full bg-talent-orange text-white"><%= item[:badge] %></span>
+            <% end %>
+          <% end %>
+        </li>
       <% end %>
-    <% end %>
-  </nav>
 
-  <div class="px-3 py-4 border-t border-white/10">
-    <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg text-white/65 hover:bg-white/5 hover:text-white transition" do %>
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span class="text-sm font-medium">Settings</span>
-    <% end %>
-    <%= link_to session_path, data: { turbo_method: :delete }, class: "flex items-center gap-3 px-3 py-2 rounded-lg text-white/65 hover:bg-white/5 hover:text-white transition" do %>
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      <span class="text-sm font-medium">Sign out</span>
-    <% end %>
+      <%# Collapsible "Manage" group %>
+      <li>
+        <button type="button" data-collapse-toggle="dropdown-manage"
+                class="flex items-center w-full p-2 text-sm font-medium text-gray-700 rounded-lg transition group hover:bg-gray-100 hover:text-talent-navy cursor-pointer">
+          <span class="text-gray-500 group-hover:text-talent-navy">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+          </span>
+          <span class="flex-1 ml-3 text-left">Manage</span>
+          <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul id="dropdown-manage" class="<%= settings_nav.any? { |i| i[:active] } ? '' : 'hidden' %> py-1 space-y-1">
+          <% settings_nav.each do |item| %>
+            <li>
+              <%= link_to item[:path],
+                    class: "flex items-center w-full p-2 pl-11 text-sm font-medium rounded-lg transition #{item[:active] ? 'bg-talent-orange-50 text-talent-orange-700' : 'text-gray-700 hover:bg-gray-100 hover:text-talent-navy'}" do %>
+                <%= item[:name] %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+
+    <%# Footer group: Docs, Components playground, Help %>
+    <ul class="pt-4 mt-4 space-y-1 border-t border-gray-200">
+      <li>
+        <%= link_to testpage_path,
+              class: "flex items-center p-2 text-sm font-medium text-gray-700 rounded-lg transition hover:bg-gray-100 hover:text-talent-navy group" do %>
+          <span class="text-gray-500 group-hover:text-talent-navy">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </span>
+          <span class="ml-3">Component playground</span>
+        <% end %>
+      </li>
+      <li>
+        <a href="https://flowbite.com/docs/" target="_blank" rel="noopener"
+           class="flex items-center p-2 text-sm font-medium text-gray-700 rounded-lg transition hover:bg-gray-100 hover:text-talent-navy group">
+          <span class="text-gray-500 group-hover:text-talent-navy">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          <span class="ml-3">Docs</span>
+        </a>
+      </li>
+      <li>
+        <a href="#"
+           class="flex items-center p-2 text-sm font-medium text-gray-700 rounded-lg transition hover:bg-gray-100 hover:text-talent-navy group">
+          <span class="text-gray-500 group-hover:text-talent-navy">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <span class="ml-3">Help</span>
+        </a>
+      </li>
+    </ul>
   </div>
+
 </aside>

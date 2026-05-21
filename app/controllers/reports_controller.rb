@@ -46,8 +46,10 @@ class ReportsController < AuthenticatedController
     accepted    = org.defects.where.not(assigned_at: nil, accepted_at: nil)
     completed   = org.defects.where.not(assigned_at: nil, completed_at: nil)
 
-    avg_acceptance_h = accepted.pick("AVG(EXTRACT(EPOCH FROM (accepted_at - assigned_at)) / 3600)")
-    avg_completion_d = completed.pick("AVG(EXTRACT(EPOCH FROM (completed_at - assigned_at)) / 86400)")
+    # Wrap raw SQL in Arel.sql so Rails 8 doesn't flag it as unsafe input.
+    # No user data is interpolated — these are hard-coded aggregates.
+    avg_acceptance_h = accepted.pick(Arel.sql("AVG(EXTRACT(EPOCH FROM (accepted_at - assigned_at)) / 3600)"))
+    avg_completion_d = completed.pick(Arel.sql("AVG(EXTRACT(EPOCH FROM (completed_at - assigned_at)) / 86400)"))
     signed_off_rate  = begin
       total = org.defects.where.not(completed_at: nil).count.to_f
       total.zero? ? 0 : (org.defects.signed_off_or_closed.count / total * 100)

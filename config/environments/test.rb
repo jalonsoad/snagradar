@@ -50,4 +50,15 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # ─── Bullet — fail tests on N+1 ─────────────────────────────────────
+  # If a future change introduces an N+1, the suite breaks fast.
+  config.after_initialize do
+    Bullet.enable     = true
+    Bullet.bullet_logger = true
+    Bullet.raise      = true   # 💥 N+1 in tests = exception
+    Bullet.n_plus_one_query_enable     = true
+    Bullet.unused_eager_loading_enable = true
+    Bullet.counter_cache_enable        = true
+  end
 end

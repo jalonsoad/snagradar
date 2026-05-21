@@ -2,7 +2,7 @@ require "test_helper"
 
 class MarketingPagesTest < ActionDispatch::IntegrationTest
   test "all public pages render without auth" do
-    [root_path, features_path, pricing_path, about_path, contact_path, privacy_path, terms_path].each do |path|
+    [ root_path, features_path, pricing_path, about_path, contact_path, privacy_path, terms_path ].each do |path|
       get path
       assert_response :success, "#{path} did not return 200"
     end

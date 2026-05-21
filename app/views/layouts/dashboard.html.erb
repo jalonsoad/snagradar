@@ -18,34 +18,38 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-50 text-talent-navy antialiased min-h-screen">
-    <div class="flex min-h-screen">
-      <%= render "shared/sidebar" %>
+  <body class="antialiased bg-gray-50 text-talent-navy min-h-screen">
+    <%# Flowbite application shell:
+        1. Fixed top navbar (full width, z-50)
+        2. Fixed left sidebar (pt-14 so it sits below the nav)
+        3. Main content with md:ml-64 pt-20 offset %>
 
-      <div class="flex-1 flex flex-col min-w-0">
-        <%= render "shared/topbar" %>
+    <%= render "shared/topbar" %>
+    <%= render "shared/sidebar" %>
 
-        <% if flash[:notice].present? || flash[:alert].present? %>
-          <div class="px-6 lg:px-10 pt-4">
-            <% if flash[:notice].present? %>
-              <div class="rounded-xl bg-emerald-50 ring-1 ring-emerald-200 p-3 flex items-center gap-3 text-sm" role="status">
-                <svg class="h-5 w-5 text-emerald-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                <div class="font-medium text-emerald-800"><%= flash[:notice] %></div>
-              </div>
-            <% end %>
-            <% if flash[:alert].present? %>
-              <div class="rounded-xl bg-rose-50 ring-1 ring-rose-200 p-3 flex items-center gap-3 text-sm" role="alert">
-                <svg class="h-5 w-5 text-rose-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <div class="font-medium text-rose-800"><%= flash[:alert] %></div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+    <%# Global confirm dialog — Turbo.setConfirmMethod routes every
+        data-turbo-confirm through this modal instead of window.confirm(). %>
+    <%= render "shared/confirm_modal" %>
 
-        <main class="flex-1 px-6 lg:px-10 py-8">
-          <%= yield %>
-        </main>
-      </div>
-    </div>
+    <main class="p-4 md:ml-64 pt-20">
+      <% if flash[:notice].present? || flash[:alert].present? %>
+        <div class="mb-4">
+          <% if flash[:notice].present? %>
+            <div class="rounded-lg bg-emerald-50 border border-emerald-200 p-3 flex items-center gap-3 text-sm" role="status">
+              <svg class="h-5 w-5 text-emerald-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <div class="font-medium text-emerald-800"><%= flash[:notice] %></div>
+            </div>
+          <% end %>
+          <% if flash[:alert].present? %>
+            <div class="rounded-lg bg-rose-50 border border-rose-200 p-3 flex items-center gap-3 text-sm" role="alert">
+              <svg class="h-5 w-5 text-rose-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <div class="font-medium text-rose-800"><%= flash[:alert] %></div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

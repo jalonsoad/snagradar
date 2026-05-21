@@ -81,7 +81,7 @@ class Defect < ApplicationRecord
   def broadcast_dashboard_refresh
     return if organization_id.blank?
     Turbo::StreamsChannel.broadcast_replace_to(
-      [:org, organization_id, :dashboard],
+      [ :org, organization_id, :dashboard ],
       target:  "dashboard_counts",
       partial: "dashboards/counts",
       locals:  { counts: dashboard_counts }

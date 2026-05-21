@@ -23,7 +23,7 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   unless is_choice
     # `!` makes the colour win over base utilities regardless of cascade order
     extra_classes = "!border-rose-500 !ring-2 !ring-rose-100 focus:!border-rose-500 focus:!ring-rose-200"
-    element["class"] = [element["class"], extra_classes].compact.join(" ")
+    element["class"] = [ element["class"], extra_classes ].compact.join(" ")
     element["aria-invalid"] = "true"
   end
 

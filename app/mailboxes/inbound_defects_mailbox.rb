@@ -58,22 +58,26 @@ class InboundDefectsMailbox < ApplicationMailbox
   def resolve_site_and_plot
     # defects+adur-14@acme.snagradar.dev → ["adur", "14"]
     sub_address = mail.recipients.lazy.map { |a| a.to_s[/\+([^@]+)@/, 1] }.find(&:present?)
-    return [nil, nil] unless sub_address
+    return [ nil, nil ] unless sub_address
 
     site_hint, plot_hint = sub_address.split("-", 2).map(&:strip)
-    site = organization.sites.where("LOWER(name) LIKE ?", "%#{site_hint.downcase}%").first ||
+    # sanitize_sql_like escapes %/_ so a malicious sub-address can't widen the
+    # match. The ? bind param already prevents SQL injection — this is defense
+    # against pattern injection.
+    needle = "%#{ActiveRecord::Base.sanitize_sql_like(site_hint.downcase)}%"
+    site = organization.sites.where("LOWER(name) LIKE ?", needle).first ||
            organization.sites.find_by(reference: site_hint)
     plot = site&.plots&.find_by(plot_number: plot_hint) if plot_hint && site
-    [site, plot]
+    [ site, plot ]
   end
 
   def default_sla(suggestion)
     days = case suggestion[:priority]
-           when "urgent" then 1
-           when "high"   then 2
-           when "medium" then 5
-           else 7
-           end
+    when "urgent" then 1
+    when "high"   then 2
+    when "medium" then 5
+    else 7
+    end
     days.days.from_now.to_date
   end
 

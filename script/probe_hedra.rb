@@ -14,7 +14,7 @@ def get(url, api_key)
   req["X-API-Key"] = api_key
   req["Accept"] = "application/json"
   res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
-  [res.code, res.body]
+  [ res.code, res.body ]
 end
 
 puts "── GET /models ──"

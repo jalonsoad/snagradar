@@ -12,6 +12,6 @@ class CreateSlaPolicies < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :sla_policies, [:organization_id, :priority]
+    add_index :sla_policies, [ :organization_id, :priority ]
   end
 end

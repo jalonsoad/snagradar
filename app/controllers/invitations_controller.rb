@@ -3,7 +3,9 @@ class InvitationsController < AuthenticatedController
   allow_unauthenticated_access only: %i[show update]
   skip_before_action :require_organization,   only: %i[show update]
   skip_before_action :set_current_organization, only: %i[show update]
-  layout "auth", only: %i[show update]
+  # Tokenised accept flow (show/update) uses the marketing/auth split-panel
+  # layout. Everything else inherits the authenticated dashboard layout.
+  layout :resolve_layout
 
   def index
     @pending  = Current.organization.invitations.pending.order(created_at: :desc)
@@ -77,6 +79,10 @@ class InvitationsController < AuthenticatedController
   end
 
   def invitation_params
-    params.expect(invitation: [:email_address, :name, :role])
+    params.expect(invitation: [ :email_address, :name, :role ])
+  end
+
+  def resolve_layout
+    action_name.in?(%w[show update]) ? "auth" : "dashboard"
   end
 end

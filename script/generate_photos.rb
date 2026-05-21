@@ -71,9 +71,9 @@ SHOT_LIST = {
 def http_json(method, url, api_key, body = nil)
   uri = URI(url)
   req = case method
-        when :get  then Net::HTTP::Get.new(uri)
-        when :post then Net::HTTP::Post.new(uri)
-        end
+  when :get  then Net::HTTP::Get.new(uri)
+  when :post then Net::HTTP::Post.new(uri)
+  end
   req["X-API-Key"] = api_key
   req["Accept"]    = "application/json"
   if body
@@ -81,7 +81,7 @@ def http_json(method, url, api_key, body = nil)
     req.body = body.to_json
   end
   res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, read_timeout: 60) { |h| h.request(req) }
-  [res.code.to_i, (JSON.parse(res.body) rescue res.body)]
+  [ res.code.to_i, (JSON.parse(res.body) rescue res.body) ]
 end
 
 def hedra_post(path, body)
@@ -169,7 +169,7 @@ def tinify_compress!(path)
 end
 
 # ---- main ---------------------------------------------------------------
-targets = ARGV.empty? || ARGV == ["all"] ? SHOT_LIST.keys : ARGV
+targets = ARGV.empty? || ARGV == [ "all" ] ? SHOT_LIST.keys : ARGV
 targets.each do |key|
   shot = SHOT_LIST[key]
   unless shot

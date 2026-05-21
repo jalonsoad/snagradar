@@ -25,18 +25,18 @@ class OnboardingsController < ApplicationController
   private
 
   def onboarding_params
-    params.expect(organization: [:name])
+    params.expect(organization: [ :name ])
   end
 
   DEFAULT_TRADES = [
-    ["Plumbing",   3],
-    ["Electrical", 2],
-    ["Carpentry",  5],
-    ["Decorating", 7],
-    ["Tiling",     5],
-    ["Roofing",    7],
-    ["Glazing",    5],
-    ["General",    7]
+    [ "Plumbing",   3 ],
+    [ "Electrical", 2 ],
+    [ "Carpentry",  5 ],
+    [ "Decorating", 7 ],
+    [ "Tiling",     5 ],
+    [ "Roofing",    7 ],
+    [ "Glazing",    5 ],
+    [ "General",    7 ]
   ].freeze
 
   def seed_default_trades(org)

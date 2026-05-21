@@ -1,44 +1,25 @@
 <% content_for :title, "Invite teammate — SnagRadar" %>
 
-<div class="max-w-xl">
-  <div class="flex items-center gap-3 text-sm">
-    <%= link_to "Team", invitations_path, class: "text-talent-muted hover:text-talent-navy" %>
-    <svg class="h-3 w-3 text-talent-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    <span class="font-semibold text-talent-navy">New invitation</span>
-  </div>
+<div class="max-w-xl mx-auto">
+  <nav class="flex items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
+    <%= link_to "Team", invitations_path, class: "hover:text-talent-navy transition" %>
+    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="font-medium text-talent-navy">Invite teammate</span>
+  </nav>
 
-  <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-talent-navy">Invite a teammate</h1>
-  <p class="mt-1 text-talent-slate">They'll get an email with a magic link to set their password (link expires in 14 days).</p>
+  <h1 class="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-talent-navy">Invite a teammate</h1>
+  <p class="mt-1 text-sm text-gray-500">They'll get an email with a magic link to set their password (link expires in 14 days).</p>
 
-  <div class="mt-6 rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6 sm:p-8">
-    <% if flash.now[:alert].present? %>
-      <div class="mb-5 rounded-xl bg-rose-50 ring-1 ring-rose-200 p-3 text-sm font-medium text-rose-800"><%= flash.now[:alert] %></div>
-    <% end %>
+  <div class="mt-6 rounded-lg bg-white border border-gray-200 p-6 sm:p-8">
+    <%= render "form", invitation: @invitation %>
 
-    <%= form_with model: @invitation, url: invitations_path, class: "space-y-5" do |f| %>
-      <div>
-        <%= f.label :email_address, "Email address", class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
-        <%= f.email_field :email_address, required: true, autofocus: true, placeholder: "sara@company.com",
-              class: "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
-      </div>
-
-      <div>
-        <%= f.label :name, "Their name (optional)", class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
-        <%= f.text_field :name, placeholder: "Sara Jenkins",
-              class: "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
-      </div>
-
-      <div>
-        <%= f.label :role, class: "block text-xs font-semibold uppercase tracking-wide text-talent-muted" %>
-        <%= f.select :role, User.roles.keys.map { |r| [r.tr("_", " ").titleize, r] }, {},
-              class: "mt-2 w-full rounded-xl border border-talent-navy/10 px-4 py-3 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
-        <p class="mt-2 text-xs text-talent-muted">Admins can invite and remove users. Care Coordinators can log defects and manage everything except settings.</p>
-      </div>
-
-      <div class="flex gap-3">
-        <%= f.submit "Send invitation", class: "btn-primary cursor-pointer" %>
-        <%= link_to "Cancel", invitations_path, class: "inline-flex items-center justify-center rounded-full bg-white text-talent-navy border border-talent-navy/10 px-7 py-3 text-sm font-semibold hover:bg-talent-mist transition" %>
-      </div>
-    <% end %>
+    <div class="mt-6 pt-6 border-t border-gray-100 flex gap-2">
+      <button type="submit" form="<%= dom_id(@invitation) %>"
+              class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">
+        Send invitation
+      </button>
+      <%= link_to "Cancel", invitations_path,
+            class: "inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 transition" %>
+    </div>
   </div>
 </div>

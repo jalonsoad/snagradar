@@ -28,6 +28,9 @@
   <%# ─── KPI grid ─────────────────────────────────────────────── %>
   <%= render "counts", counts: @counts %>
 
+  <%# ─── Operational charts (Geckoboard-style) ───────────────── %>
+  <%= render "charts", chart: @chart %>
+
   <%# ─── Two-column main area ────────────────────────────────── %>
   <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
@@ -86,43 +89,6 @@
         <% end %>
       </div>
 
-      <%# By-trade breakdown bar chart %>
-      <% by_trade_counts = Current.organization.defects.open.joins(:trade).group("trades.name").count %>
-      <div class="bg-white border border-gray-200 rounded-lg p-5">
-        <div class="flex items-center justify-between mb-5">
-          <div>
-            <h3 class="text-lg font-semibold text-talent-navy">Open defects by trade</h3>
-            <p class="text-xs text-gray-500">Across every site</p>
-          </div>
-          <button data-dropdown-toggle="trade-chart-menu" data-dropdown-placement="bottom-end"
-                  class="h-8 w-8 rounded-lg grid place-items-center hover:bg-gray-100 text-gray-500 cursor-pointer" aria-label="Options">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-          </button>
-          <div id="trade-chart-menu" class="z-50 hidden w-44 bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <ul class="py-1 text-sm">
-              <li><%= link_to "All sites",      reports_path,                  class: "block px-4 py-2 text-talent-navy hover:bg-gray-50 transition" %></li>
-              <li><%= link_to "Export CSV",     reports_defects_csv_path,      class: "block px-4 py-2 text-talent-navy hover:bg-gray-50 transition" %></li>
-            </ul>
-          </div>
-        </div>
-
-        <% if by_trade_counts.any? %>
-          <% max = by_trade_counts.values.max.to_f %>
-          <ul class="space-y-3">
-            <% by_trade_counts.sort_by { |_, n| -n }.each do |name, count| %>
-              <li class="grid grid-cols-12 items-center gap-3">
-                <span class="col-span-3 text-sm font-medium text-talent-navy truncate"><%= name %></span>
-                <div class="col-span-8 h-2.5 rounded-full bg-gray-100 overflow-hidden">
-                  <div class="h-2.5 rounded-full bg-talent-orange" style="width: <%= (count / max * 100).to_i %>%"></div>
-                </div>
-                <span class="col-span-1 text-right text-sm font-semibold text-talent-navy"><%= count %></span>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-sm text-gray-500">No open defects right now.</p>
-        <% end %>
-      </div>
     </div>
 
     <%# RIGHT (1/3) — Awaiting acceptance + upcoming appointments %>

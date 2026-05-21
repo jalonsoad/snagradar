@@ -12,6 +12,6 @@ class CreateAppointments < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :appointments, [:organization_id, :scheduled_at]
+    add_index :appointments, [ :organization_id, :scheduled_at ]
   end
 end

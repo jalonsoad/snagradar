@@ -45,6 +45,6 @@ class SitesController < AuthenticatedController
   end
 
   def site_params
-    params.expect(site: [:name, :reference, :address, :status])
+    params.expect(site: [ :name, :reference, :address, :status ])
   end
 end

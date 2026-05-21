@@ -37,6 +37,6 @@ class ContractorCompaniesController < AuthenticatedController
   end
 
   def company_params
-    params.expect(contractor_company: [:name, :contact_email, :phone, :trade_id])
+    params.expect(contractor_company: [ :name, :contact_email, :phone, :trade_id ])
   end
 end

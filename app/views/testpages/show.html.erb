@@ -207,21 +207,20 @@
         </div>
       </div>
 
-      <%# Password with show/hide (data-attribute toggle via Flowbite) %>
-      <div>
+      <%# Password with real show/hide eye toggle (password_visibility_controller) %>
+      <div data-controller="password-visibility">
         <label for="tp-password" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Password</label>
         <div class="relative">
-          <input type="password" id="tp-password" placeholder="••••••••"
+          <input data-password-visibility-target="input"
+                 type="password" id="tp-password" placeholder="••••••••" autocomplete="new-password"
                  class="block w-full rounded-lg border border-gray-200 bg-white pl-3 pr-10 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
-          <button type="button" data-popover-target="tp-pw-hint" data-popover-trigger="hover"
-                  class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-talent-navy cursor-pointer">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <button type="button" data-action="password-visibility#toggle"
+                  class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-talent-navy cursor-pointer" aria-label="Toggle password visibility">
+            <svg data-password-visibility-target="iconShow" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg data-password-visibility-target="iconHide" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.06 10.06 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           </button>
-          <div data-popover id="tp-pw-hint" role="tooltip"
-               class="absolute z-10 invisible inline-block w-48 text-xs text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0">
-            <div class="p-3">At least 8 characters, mix of letters &amp; numbers.</div>
-          </div>
         </div>
+        <p class="mt-1 text-xs text-gray-500">At least 8 characters, mix of letters &amp; numbers.</p>
       </div>
 
       <%# Search with leading icon + suffix kbd %>
@@ -273,12 +272,17 @@
         <p class="mt-1 text-xs text-gray-500"><span id="tp-notes-count">0</span> / 500 characters</p>
       </div>
 
-      <%# File upload %>
+      <%# File upload — Flowbite dropzone pattern (drag-and-drop or click) %>
       <div class="sm:col-span-2">
-        <label for="tp-photos" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Photos</label>
-        <input type="file" id="tp-photos" multiple accept="image/*"
-               class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-talent-orange file:text-white hover:file:bg-talent-orange-600 cursor-pointer">
-        <p class="mt-1 text-xs text-gray-500">PNG, JPG up to 10 MB.</p>
+        <label class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Photos</label>
+        <label for="tp-photos" class="flex flex-col items-center justify-center w-full h-32 rounded-lg border-2 border-gray-200 border-dashed cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-talent-orange/40 transition">
+          <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+            <svg class="mb-2 h-6 w-6 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p class="text-sm text-gray-600"><span class="font-medium text-talent-navy">Click to upload</span> or drag and drop</p>
+            <p class="mt-0.5 text-xs text-gray-500">PNG, JPG up to 10 MB</p>
+          </div>
+          <input type="file" id="tp-photos" multiple accept="image/*" class="hidden">
+        </label>
       </div>
 
       <%# Range %>
@@ -350,6 +354,1534 @@
         <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">Save</button>
       </div>
     </form>
+  </section>
+
+  <%# ── 8. Charts (ApexCharts via Flowbite chart pattern) ──── %>
+  <% chart_brand   = "#FC5A07" %>
+  <% chart_navy    = "#022043" %>
+  <% chart_blue    = "#0057AE" %>
+  <% chart_emerald = "#10B981" %>
+  <% chart_amber   = "#F59E0B" %>
+  <% chart_rose    = "#F43F5E" %>
+
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-6">
+      <h2 class="text-lg font-semibold text-talent-navy">8 · Charts</h2>
+      <p class="text-sm text-gray-500">Flowbite chart components are ApexCharts under the hood. Rendered via a Stimulus controller (data-controller="chart") so they tear down cleanly on Turbo navigation.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <%# ─── Area chart ──────────────────────────────────────── %>
+      <% area_opts = {
+        chart: { type: "area", height: 280, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false }, zoom: { enabled: false } },
+        colors: [chart_brand, chart_blue],
+        series: [
+          { name: "Defects logged",   data: [12, 18, 14, 22, 28, 24, 31] },
+          { name: "Defects resolved", data: [8,  14, 11, 19, 21, 23, 27] }
+        ],
+        xaxis: { categories: %w[Mon Tue Wed Thu Fri Sat Sun], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        yaxis: { labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        stroke: { curve: "smooth", width: 2 },
+        fill:   { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
+        dataLabels: { enabled: false },
+        grid: { borderColor: "#E2E8F0", strokeDashArray: 4, padding: { left: 8, right: 8 } },
+        legend: { position: "top", horizontalAlign: "right", fontSize: "12px", labels: { colors: "#334155" }, markers: { width: 8, height: 8, radius: 4 } },
+        tooltip: { theme: "light" }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Activity this week</h3>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-3xl font-semibold text-talent-navy">149</span>
+              <span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
+                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+                12.4%
+              </span>
+            </div>
+          </div>
+          <button data-dropdown-toggle="chart-area-menu" data-dropdown-placement="bottom-end"
+                  class="h-8 w-8 rounded-lg grid place-items-center hover:bg-gray-100 text-gray-500 cursor-pointer" type="button" aria-label="Options">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+          </button>
+          <div id="chart-area-menu" class="z-50 hidden w-40 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+            <ul class="py-1 text-sm">
+              <li><a class="block px-4 py-2 text-talent-navy hover:bg-gray-50" href="#">Last 7 days</a></li>
+              <li><a class="block px-4 py-2 text-talent-navy hover:bg-gray-50" href="#">Last 30 days</a></li>
+              <li><a class="block px-4 py-2 text-talent-navy hover:bg-gray-50" href="#">Export CSV</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-4" data-controller="chart" data-chart-options-value="<%= area_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Column chart ────────────────────────────────────── %>
+      <% column_opts = {
+        chart: { type: "bar", height: 280, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false } },
+        colors: [chart_brand],
+        series: [{ name: "Defects logged", data: [22, 29, 18, 34, 41, 28, 31] }],
+        xaxis: { categories: %w[Mon Tue Wed Thu Fri Sat Sun], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        yaxis: { labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        plotOptions: { bar: { borderRadius: 6, borderRadiusApplication: "end", columnWidth: "55%" } },
+        dataLabels: { enabled: false },
+        grid: { borderColor: "#E2E8F0", strokeDashArray: 4, padding: { left: 8, right: 8 } },
+        legend: { show: false },
+        tooltip: { theme: "light" }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Defects logged per day</h3>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-3xl font-semibold text-talent-navy">203</span>
+              <span class="text-xs text-gray-500">last 7 days</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" data-controller="chart" data-chart-options-value="<%= column_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Horizontal bar — defects by trade ──────────────── %>
+      <% bar_opts = {
+        chart: { type: "bar", height: 320, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false } },
+        colors: [chart_navy],
+        series: [{ name: "Open", data: [38, 24, 22, 17, 14, 11, 9, 6] }],
+        xaxis: { categories: ["Plumbing", "Electrical", "Carpentry", "Decoration", "Plastering", "Tiling", "Roofing", "Glazing"], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        yaxis: { labels: { style: { colors: "#334155", fontSize: "12px" } } },
+        plotOptions: { bar: { horizontal: true, borderRadius: 6, borderRadiusApplication: "end", barHeight: "65%" } },
+        dataLabels: { enabled: false },
+        grid: { borderColor: "#E2E8F0", strokeDashArray: 4 },
+        legend: { show: false }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Open defects by trade</h3>
+          <span class="inline-flex items-center justify-center rounded-full bg-gray-100 text-gray-600 px-2 py-0.5 text-xs font-medium">141 total</span>
+        </div>
+        <div data-controller="chart" data-chart-options-value="<%= bar_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Donut — status breakdown ────────────────────────── %>
+      <% donut_opts = {
+        chart: { type: "donut", height: 320, fontFamily: "Sofia Sans, ui-sans-serif" },
+        series: [42, 28, 16, 11, 3],
+        labels: ["Logged", "In progress", "Completed", "Signed off", "Rejected"],
+        colors: [chart_blue, chart_amber, chart_emerald, chart_brand, chart_rose],
+        stroke: { width: 0 },
+        dataLabels: { enabled: false },
+        legend: { position: "bottom", fontSize: "12px", labels: { colors: "#334155" }, markers: { width: 8, height: 8, radius: 4 } },
+        plotOptions: {
+          pie: {
+            donut: {
+              size: "68%",
+              labels: {
+                show: true,
+                name:  { show: true, fontSize: "12px", color: "#64748B", offsetY: -8 },
+                value: { show: true, fontSize: "28px", color: "#022043", fontWeight: 600, offsetY: 4 },
+                total: { show: true, label: "Total", color: "#64748B", fontSize: "12px" }
+              }
+            }
+          }
+        }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Status breakdown</h3>
+          <button data-dropdown-toggle="chart-donut-menu" data-dropdown-placement="bottom-end"
+                  class="h-8 w-8 rounded-lg grid place-items-center hover:bg-gray-100 text-gray-500 cursor-pointer" type="button" aria-label="Options">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+          </button>
+          <div id="chart-donut-menu" class="z-50 hidden w-40 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+            <ul class="py-1 text-sm">
+              <li><a class="block px-4 py-2 text-talent-navy hover:bg-gray-50" href="#">All sites</a></li>
+              <li><a class="block px-4 py-2 text-talent-navy hover:bg-gray-50" href="#">Only mine</a></li>
+            </ul>
+          </div>
+        </div>
+        <div data-controller="chart" data-chart-options-value="<%= donut_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Radial — SLA compliance ─────────────────────────── %>
+      <% radial_opts = {
+        chart: { type: "radialBar", height: 320, fontFamily: "Sofia Sans, ui-sans-serif", sparkline: { enabled: false } },
+        series: [86],
+        labels: ["Compliance"],
+        colors: [chart_emerald],
+        plotOptions: {
+          radialBar: {
+            hollow: { size: "60%" },
+            track:  { background: "#F1F5F9", strokeWidth: "100%" },
+            dataLabels: {
+              name:  { fontSize: "12px", color: "#64748B", offsetY: -10 },
+              value: { fontSize: "32px", color: "#022043", fontWeight: 600, offsetY: 4 }
+            }
+          }
+        },
+        stroke: { lineCap: "round" }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">SLA compliance</h3>
+          <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5 text-xs font-medium">
+            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            On target
+          </span>
+        </div>
+        <div data-controller="chart" data-chart-options-value="<%= radial_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Line + multiple series ──────────────────────────── %>
+      <% line_opts = {
+        chart: { type: "line", height: 320, fontFamily: "Sofia Sans, ui-sans-serif", toolbar: { show: false } },
+        colors: [chart_brand, chart_navy, chart_blue],
+        series: [
+          { name: "Q1", data: [44, 55, 41, 67, 22, 43, 21, 49, 56, 41, 67, 47] },
+          { name: "Q2", data: [13, 23, 20, 8, 13, 27, 41, 33, 18, 26, 14, 29] },
+          { name: "Q3", data: [11, 17, 15, 15, 21, 14, 19, 22, 27, 19, 31, 21] }
+        ],
+        xaxis: { categories: %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec], axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        yaxis: { labels: { style: { colors: "#64748B", fontSize: "11px" } } },
+        stroke: { curve: "smooth", width: 2 },
+        markers: { size: 0, hover: { size: 5 } },
+        dataLabels: { enabled: false },
+        grid: { borderColor: "#E2E8F0", strokeDashArray: 4 },
+        legend: { position: "top", horizontalAlign: "right", fontSize: "12px", labels: { colors: "#334155" }, markers: { width: 8, height: 8, radius: 4 } }
+      } %>
+      <div class="bg-white border border-gray-200 rounded-lg p-5 lg:col-span-2">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Defects trend by quarter</h3>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-3xl font-semibold text-talent-navy">1,284</span>
+              <span class="text-xs text-gray-500">total this year</span>
+            </div>
+          </div>
+          <div class="hidden sm:flex items-center gap-1 text-xs">
+            <button class="px-2.5 py-1 rounded-md text-talent-navy bg-gray-100 font-medium cursor-pointer">Year</button>
+            <button class="px-2.5 py-1 rounded-md text-gray-500 hover:bg-gray-50 cursor-pointer">Quarter</button>
+            <button class="px-2.5 py-1 rounded-md text-gray-500 hover:bg-gray-50 cursor-pointer">Month</button>
+          </div>
+        </div>
+        <div class="mt-4" data-controller="chart" data-chart-options-value="<%= line_opts.to_json %>"></div>
+      </div>
+
+      <%# ─── Sparkline KPI cards ─────────────────────────────── %>
+      <% [
+        { label: "Defects logged",   value: "203", change: "+12%",  tone: "emerald", series: [12,18,14,22,28,24,31], color: chart_emerald },
+        { label: "Avg resolution",   value: "2.4d", change: "−8%",  tone: "emerald", series: [3.2,3.1,2.9,2.8,2.7,2.5,2.4], color: chart_brand },
+        { label: "Overdue",          value: "14",   change: "+3",   tone: "rose",    series: [9,10,11,11,12,13,14], color: chart_rose },
+        { label: "Sign-off rate",    value: "91%",  change: "+1.2", tone: "emerald", series: [86,87,88,89,89,90,91], color: chart_blue }
+      ].each_with_index do |card, i| %>
+        <% spark_opts = {
+          chart: { type: "area", height: 60, sparkline: { enabled: true } },
+          colors: [card[:color]],
+          series: [{ data: card[:series] }],
+          stroke: { curve: "smooth", width: 2 },
+          fill:   { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.35, opacityTo: 0.05 } },
+          tooltip: { fixed: { enabled: false }, x: { show: false }, marker: { show: false } }
+        } %>
+        <div class="bg-white border border-gray-200 rounded-lg p-5 <%= 'lg:col-span-1' %>">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= card[:label] %></div>
+              <div class="mt-1 flex items-baseline gap-2">
+                <span class="text-2xl font-semibold text-talent-navy"><%= card[:value] %></span>
+                <span class="text-xs font-medium text-<%= card[:tone] %>-700"><%= card[:change] %></span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2" data-controller="chart" data-chart-options-value="<%= spark_opts.to_json %>"></div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# ── 9. Confirmation modal (destructive action) ──────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">9 · Confirmation modal</h2>
+      <p class="text-sm text-gray-500">A small centred modal for confirming destructive actions — Flowbite's standard pattern.</p>
+    </header>
+
+    <button data-modal-target="tp-confirm-modal" data-modal-toggle="tp-confirm-modal" type="button"
+            class="inline-flex items-center gap-2 rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 cursor-pointer transition">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+      Delete account
+    </button>
+
+    <div id="tp-confirm-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-lg border border-gray-200">
+          <button type="button" data-modal-hide="tp-confirm-modal"
+                  class="absolute top-3 end-3 text-gray-400 bg-transparent hover:bg-gray-100 hover:text-talent-navy rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center cursor-pointer transition" aria-label="Close">
+            <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+          </button>
+          <div class="p-6 text-center">
+            <div class="mx-auto mb-4 h-12 w-12 rounded-full bg-rose-50 text-rose-600 grid place-items-center">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold text-talent-navy">Delete this account?</h3>
+            <p class="mb-5 text-sm text-gray-500">This will permanently remove the user and all their open defects. This cannot be undone.</p>
+            <div class="flex items-center justify-center gap-2">
+              <button type="button" data-modal-hide="tp-confirm-modal"
+                      class="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Cancel</button>
+              <button type="button" data-modal-hide="tp-confirm-modal"
+                      class="rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 cursor-pointer transition">Yes, delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 10. Form in modal ──────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">10 · Form in modal</h2>
+      <p class="text-sm text-gray-500">A larger modal hosting a multi-field form — useful for quick create flows without leaving the page.</p>
+    </header>
+
+    <button data-modal-target="tp-form-modal" data-modal-toggle="tp-form-modal" type="button"
+            class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">
+      <%= icon "plus", class: "h-4 w-4" %>
+      Log defect (modal)
+    </button>
+
+    <div id="tp-form-modal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow-lg border border-gray-200">
+
+          <div class="flex items-center justify-between p-5 border-b border-gray-200">
+            <div>
+              <h3 class="text-lg font-semibold text-talent-navy">Log a new defect</h3>
+              <p class="text-xs text-gray-500 mt-0.5">Fill in the essentials — SLA target auto-populates from the trade.</p>
+            </div>
+            <button type="button" data-modal-hide="tp-form-modal"
+                    class="text-gray-400 bg-transparent hover:bg-gray-100 hover:text-talent-navy rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center cursor-pointer transition" aria-label="Close">
+              <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+            </button>
+          </div>
+
+          <form class="p-5 grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label for="tpm-title" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Title</label>
+              <input type="text" id="tpm-title" placeholder="Leaking kitchen tap"
+                     class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+            </div>
+            <div>
+              <label for="tpm-site" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Site</label>
+              <select id="tpm-site" class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+                <option>Adur Apartments</option><option>Marina Quarter</option><option>Cedar Court</option>
+              </select>
+            </div>
+            <div>
+              <label for="tpm-plot" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Plot</label>
+              <input type="text" id="tpm-plot" placeholder="Plot 14"
+                     class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+            </div>
+            <div>
+              <label for="tpm-trade" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Trade</label>
+              <select id="tpm-trade" class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+                <option>Plumbing</option><option>Electrical</option><option>Carpentry</option><option>Decoration</option>
+              </select>
+            </div>
+            <div>
+              <label for="tpm-sla" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">SLA target</label>
+              <input type="date" id="tpm-sla"
+                     class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+            </div>
+            <fieldset class="sm:col-span-2">
+              <legend class="block mb-2 text-xs font-medium text-gray-700 uppercase tracking-wide">Priority</legend>
+              <div class="grid grid-cols-4 gap-2">
+                <% %w[low medium high urgent].each_with_index do |level, i| %>
+                  <label class="flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 transition has-[input:checked]:border-talent-orange has-[input:checked]:bg-talent-orange-50">
+                    <input type="radio" name="tpm-priority" value="<%= level %>" <%= "checked" if i == 1 %>
+                           class="h-4 w-4 border-gray-300 text-talent-orange focus:ring-talent-orange">
+                    <span class="capitalize text-talent-navy"><%= level %></span>
+                  </label>
+                <% end %>
+              </div>
+            </fieldset>
+            <div class="sm:col-span-2">
+              <label for="tpm-notes" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Notes</label>
+              <textarea id="tpm-notes" rows="3" placeholder="Anything the contractor should know on site…"
+                        class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none"></textarea>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Photos</label>
+              <label for="tpm-photos" class="flex flex-col items-center justify-center w-full h-28 rounded-lg border-2 border-gray-200 border-dashed cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-talent-orange/40 transition">
+                <div class="flex flex-col items-center justify-center pt-4 pb-5 text-center">
+                  <svg class="mb-1.5 h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p class="text-sm text-gray-600"><span class="font-medium text-talent-navy">Click to upload</span> or drag and drop</p>
+                  <p class="mt-0.5 text-xs text-gray-500">PNG, JPG up to 10 MB</p>
+                </div>
+                <input type="file" id="tpm-photos" multiple accept="image/*" class="hidden">
+              </label>
+            </div>
+          </form>
+
+          <div class="flex items-center justify-end gap-2 p-4 border-t border-gray-200">
+            <button type="button" data-modal-hide="tp-form-modal"
+                    class="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Cancel</button>
+            <button type="button" data-modal-hide="tp-form-modal"
+                    class="rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">Save defect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 11. Toasts ──────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">11 · Toasts</h2>
+      <p class="text-sm text-gray-500">Static inline toasts (one per variant) — each dismisses via Flowbite's <code class="px-1 py-0.5 bg-gray-100 rounded text-xs font-mono">data-dismiss-target</code>. Click any × to confirm dismiss works.</p>
+    </header>
+
+    <div class="space-y-3 max-w-md">
+
+      <%# Success %>
+      <div id="tp-toast-success" role="alert"
+           class="flex items-center w-full p-4 text-talent-navy bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-emerald-600 bg-emerald-100 rounded-lg">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="ms-3 text-sm font-medium">Defect signed off successfully.</div>
+        <button type="button" data-dismiss-target="#tp-toast-success" aria-label="Close"
+                class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-talent-navy rounded-lg focus:ring-2 focus:ring-gray-200 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 cursor-pointer transition">
+          <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+        </button>
+      </div>
+
+      <%# Info %>
+      <div id="tp-toast-info" role="alert"
+           class="flex items-center w-full p-4 text-talent-navy bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-talent-blue bg-blue-50 rounded-lg">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="ms-3 text-sm font-medium">Contractor accepted the job — visit booked for Friday.</div>
+        <button type="button" data-dismiss-target="#tp-toast-info" aria-label="Close"
+                class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-talent-navy rounded-lg focus:ring-2 focus:ring-gray-200 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 cursor-pointer transition">
+          <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+        </button>
+      </div>
+
+      <%# Warning %>
+      <div id="tp-toast-warning" role="alert"
+           class="flex items-center w-full p-4 text-talent-navy bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-amber-600 bg-amber-100 rounded-lg">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="ms-3 text-sm font-medium">SLA breach in under 24 hours — review escalations.</div>
+        <button type="button" data-dismiss-target="#tp-toast-warning" aria-label="Close"
+                class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-talent-navy rounded-lg focus:ring-2 focus:ring-gray-200 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 cursor-pointer transition">
+          <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+        </button>
+      </div>
+
+      <%# Danger / error %>
+      <div id="tp-toast-danger" role="alert"
+           class="flex items-center w-full p-4 text-talent-navy bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-rose-600 bg-rose-100 rounded-lg">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="ms-3 text-sm font-medium">Sign-off failed — please re-capture the resident signature.</div>
+        <button type="button" data-dismiss-target="#tp-toast-danger" aria-label="Close"
+                class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-talent-navy rounded-lg focus:ring-2 focus:ring-gray-200 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 cursor-pointer transition">
+          <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+        </button>
+      </div>
+
+      <%# Richer toast with avatar + actions %>
+      <div id="tp-toast-message" role="alert"
+           class="w-full p-4 text-talent-navy bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="flex items-center mb-3">
+          <span class="mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide">Message</span>
+          <button type="button" data-dismiss-target="#tp-toast-message" aria-label="Close"
+                  class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-talent-navy rounded-lg focus:ring-2 focus:ring-gray-200 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-7 w-7 cursor-pointer transition">
+            <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+          </button>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 rounded-full bg-talent-orange text-white text-sm font-bold">SJ</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold">Sara Jenkins</div>
+            <div class="text-xs text-gray-500 mt-0.5">"The plumber is on site — should be done in an hour."</div>
+            <div class="mt-2 flex gap-2">
+              <button class="rounded-md bg-talent-orange px-3 py-1 text-xs font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">Reply</button>
+              <button class="rounded-md border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Dismiss</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-5 text-xs text-gray-500">Production toasts typically appear fixed in a corner; the same markup works inside <code class="px-1 py-0.5 bg-gray-100 rounded text-xs font-mono">fixed bottom-5 end-5 z-40</code> wrapped via a Turbo Stream from controllers.</p>
+  </section>
+
+  <%# ── 12. Calendar (datepicker + month grid) ─────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">12 · Calendar</h2>
+      <p class="text-sm text-gray-500">Flowbite inline datepicker (left) and a month-grid event calendar (right) — same Sofia Sans, same palette.</p>
+    </header>
+
+    <div class="grid lg:grid-cols-5 gap-6">
+
+      <%# Flowbite inline datepicker (1/5) %>
+      <div class="lg:col-span-2">
+        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Datepicker</h3>
+        <div class="rounded-lg border border-gray-200 p-1 bg-white">
+          <div inline-datepicker data-date="<%= Date.current.iso8601 %>"></div>
+        </div>
+
+        <div class="mt-4">
+          <label for="tp-datepicker-input" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Pick a date</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+              <%= icon "calendar", class: "h-4 w-4" %>
+            </span>
+            <input id="tp-datepicker-input" datepicker datepicker-autohide datepicker-format="dd / mm / yyyy" type="text" placeholder="dd / mm / yyyy"
+                   class="block w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+          </div>
+        </div>
+      </div>
+
+      <%# Month-grid event calendar (4/5) — month controlled by ?testpage_month=YYYY-MM %>
+      <%
+        anchor         = @calendar_anchor
+        today          = Date.current
+        first_of_month = anchor.beginning_of_month
+        start_offset   = first_of_month.wday                # 0=Sun
+        days_in_month  = anchor.end_of_month.day
+        prev_month     = (first_of_month - 1.month).strftime("%Y-%m")
+        next_month     = (first_of_month + 1.month).strftime("%Y-%m")
+        events = {
+          first_of_month + 2  => [{ title: "Plumbing snag · Plot 14", tone: "talent-orange" }],
+          first_of_month + 4  => [{ title: "Joinery visit · Plot 7",  tone: "talent-blue"   }],
+          first_of_month + 9  => [{ title: "Electrical sign-off",     tone: "emerald"        },
+                                  { title: "Resident walkthrough",    tone: "talent-orange" }],
+          first_of_month + 14 => [{ title: "SLA review · all sites",  tone: "amber"          }],
+          first_of_month + 18 => [{ title: "PMC quarterly review",    tone: "talent-blue"    }],
+          first_of_month + 22 => [{ title: "Final inspection · Adur", tone: "talent-orange" }]
+        }
+        events[today] = (events[today] || []) + [{ title: "Daily standup", tone: "talent-navy" }] if today.between?(first_of_month, anchor.end_of_month)
+      %>
+      <div class="lg:col-span-3" id="testpage-calendar">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wide">Month view</h3>
+          <div class="flex items-center gap-1.5">
+            <%= link_to testpage_path(testpage_month: prev_month, anchor: "testpage-calendar"),
+                  class: "h-7 w-7 grid place-items-center rounded-md border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:text-talent-navy cursor-pointer transition",
+                  aria: { label: "Previous month" } do %>
+              <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <% end %>
+            <%= link_to testpage_path(anchor: "testpage-calendar"),
+                  class: "text-sm font-semibold text-talent-navy px-2 min-w-[10ch] text-center hover:text-talent-orange transition",
+                  title: "Jump to today" do %>
+              <%= anchor.strftime("%B %Y") %>
+            <% end %>
+            <%= link_to testpage_path(testpage_month: next_month, anchor: "testpage-calendar"),
+                  class: "h-7 w-7 grid place-items-center rounded-md border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:text-talent-navy cursor-pointer transition",
+                  aria: { label: "Next month" } do %>
+              <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-gray-200 overflow-hidden">
+          <%# Weekday header %>
+          <div class="grid grid-cols-7 text-[10px] font-semibold uppercase tracking-widest text-gray-500 bg-gray-50 border-b border-gray-200">
+            <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |wd| %>
+              <div class="px-2 py-2 text-center"><%= wd %></div>
+            <% end %>
+          </div>
+
+          <%# Day grid %>
+          <div class="grid grid-cols-7 grid-rows-[repeat(6,minmax(80px,1fr))] divide-x divide-y divide-gray-100 bg-gray-50">
+            <% start_offset.times do %>
+              <div class="bg-gray-50/40"></div>
+            <% end %>
+            <% (1..days_in_month).each do |day| %>
+              <% date = first_of_month + (day - 1) %>
+              <% is_today = (date == today) %>
+              <% day_events = events[date] || [] %>
+              <div class="bg-white p-1.5 text-left overflow-hidden">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="<%= is_today ? 'inline-flex items-center justify-center h-5 w-5 rounded-full bg-talent-orange text-white text-[11px] font-semibold' : 'text-[11px] font-medium text-gray-500' %>"><%= day %></span>
+                  <% if day_events.size > 1 %>
+                    <span class="text-[9px] text-gray-400 font-mono">+<%= day_events.size %></span>
+                  <% end %>
+                </div>
+                <% day_events.first(2).each do |evt| %>
+                  <div class="mb-1 px-1.5 py-0.5 rounded text-[10px] font-medium leading-tight bg-<%= evt[:tone] %>/10 text-<%= evt[:tone] %>-700 truncate">
+                    <%= evt[:title] %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+            <% trailing = (start_offset + days_in_month) % 7 %>
+            <% (trailing.zero? ? 0 : 7 - trailing).times do %>
+              <div class="bg-gray-50/40"></div>
+            <% end %>
+          </div>
+        </div>
+
+        <%# Legend %>
+        <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-gray-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-talent-orange"></span>Defects</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-talent-blue"></span>Visits</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-emerald-500"></span>Sign-offs</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-amber-500"></span>Reviews</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 13. Kanban board — Flowbite application UI pattern ─── %>
+  <%
+    # Column data shaped after Flowbite's official kanban demo:
+    # https://flowbite.com/application-ui/demo/pages/kanban/
+    avatars = {
+      "SJ" => { initials: "SJ", bg: "bg-talent-orange" },
+      "TM" => { initials: "TM", bg: "bg-talent-blue"   },
+      "AK" => { initials: "AK", bg: "bg-talent-navy"   },
+      "EM" => { initials: "EM", bg: "bg-emerald-500"   },
+      "RP" => { initials: "RP", bg: "bg-violet-500"    }
+    }
+
+    kanban_columns = [
+      { key: "todo",        title: "To do",       accent: "bg-talent-orange",
+        cards: [
+          { ref: "SNG-218", title: "Re-design the landing page", description: "Update hero illustration + tighten CTA copy. Mobile breakpoint needs a second pass.",
+            tags: [{ label: "Design",    tone: "purple" }, { label: "Marketing", tone: "pink"  }],
+            assignees: %w[SJ TM AK], comments: 2, attachments: 3, due: "Apr 22" },
+          { ref: "SNG-217", title: "Plot 7 plumbing snag list", description: "Resident provided five items at handover walkthrough — needs trade assignment by Tuesday.",
+            tags: [{ label: "Plumbing",  tone: "blue"   }, { label: "Sprint",    tone: "amber" }],
+            assignees: %w[AK SJ], comments: 4, attachments: 1, due: "Apr 18" },
+          { ref: "SNG-214", title: "Sign-off email template refresh", description: "Bring the resident sign-off mailer in line with the new dashboard typography.",
+            tags: [{ label: "Email",     tone: "teal"   }],
+            assignees: %w[EM], comments: 0, attachments: 0, due: "Apr 25" }
+        ] },
+      { key: "in_progress", title: "In progress", accent: "bg-amber-500",
+        cards: [
+          { ref: "SNG-205", title: "Build the SLA breach dashboard", description: "Red/amber/green KPIs + drill-through table. Should respect the org's working-day calendar.",
+            cover: "navy",
+            tags: [{ label: "Reports",   tone: "indigo" }, { label: "Feature",   tone: "emerald" }],
+            assignees: %w[TM SJ AK RP], comments: 7, attachments: 4, due: "Apr 19" },
+          { ref: "SNG-203", title: "Contractor portal rate limiting", description: "Tokenised contractor links currently lack throttling — needs Rack::Attack rules tuned for /c/:token.",
+            tags: [{ label: "Security",  tone: "rose"   }],
+            assignees: %w[AK], comments: 3, attachments: 2, due: "today" }
+        ] },
+      { key: "done",        title: "Done",        accent: "bg-emerald-500",
+        cards: [
+          { ref: "SNG-189", title: "Email intake mailbox (Action Mailbox)", description: "Inbound defects+adur-14@acme parses subject, body, photos, runs the classifier and creates the Defect.",
+            cover: "orange",
+            tags: [{ label: "Mailbox",   tone: "blue"   }, { label: "Done",      tone: "emerald" }],
+            assignees: %w[SJ TM], comments: 6, attachments: 5, due: "Apr 14" },
+          { ref: "SNG-185", title: "Solid Queue recurring SLA check", description: "Nightly job flags amber + red defects and notifies the right team channel.",
+            tags: [{ label: "Backend",   tone: "indigo" }],
+            assignees: %w[AK RP], comments: 1, attachments: 0, due: "Apr 12" },
+          { ref: "SNG-180", title: "Onboarding wizard", description: "3-step setup: org, first site, first contractor invite.",
+            tags: [{ label: "Onboarding", tone: "pink" }],
+            assignees: %w[SJ], comments: 0, attachments: 0, due: "Apr 10" }
+        ] }
+    ]
+  %>
+
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <%# Top header %>
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">13 · Kanban board</h2>
+      <p class="text-sm text-gray-500 mt-1">Mirrors Flowbite's official Kanban demo — toolbar, three status columns, rich cards (cover image, colored tag chips, avatar stack, due + attachments + comments), drag-and-drop between columns.</p>
+    </header>
+
+    <%# Toolbar — matches the Flowbite kanban demo top bar %>
+    <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3 mb-5 pb-5 border-b border-gray-200">
+      <div class="flex items-center gap-2">
+        <button data-modal-target="tp-form-modal" data-modal-toggle="tp-form-modal" type="button"
+                class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">
+          <%= icon "plus", class: "h-4 w-4" %>
+          Add new task
+        </button>
+        <button data-dropdown-toggle="kanban-actions-menu" data-dropdown-placement="bottom-start" type="button"
+                class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">
+          Actions
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="kanban-actions-menu" class="z-50 hidden w-48 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+          <ul class="py-1 text-sm text-talent-navy">
+            <li><a class="block px-4 py-2 hover:bg-gray-50" href="#">Reset board</a></li>
+            <li><a class="block px-4 py-2 hover:bg-gray-50" href="#">Export to CSV</a></li>
+            <li class="border-t border-gray-100"><a class="block px-4 py-2 text-rose-600 hover:bg-rose-50" href="#">Archive all done</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <%# Search %>
+        <div class="relative flex-1 xl:w-72">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+            <%= icon "search", class: "h-4 w-4" %>
+          </span>
+          <input type="search" placeholder="Search tasks…"
+                 class="block w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+        </div>
+        <%# Filter dropdown %>
+        <button data-dropdown-toggle="kanban-filter-menu" data-dropdown-placement="bottom-end" type="button"
+                class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">
+          <%= icon "filter", class: "h-4 w-4" %>
+          Filter
+        </button>
+        <div id="kanban-filter-menu" class="z-50 hidden w-56 bg-white rounded-lg border border-gray-200 shadow-lg p-3">
+          <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Priority</h6>
+          <div class="space-y-1.5">
+            <% %w[High Medium Low Lowest].each_with_index do |level, i| %>
+              <label class="flex items-center gap-2 text-sm text-talent-navy cursor-pointer">
+                <input type="checkbox" <%= "checked" if i.zero? %> class="h-4 w-4 rounded border-gray-300 text-talent-orange focus:ring-talent-orange">
+                <%= level %>
+              </label>
+            <% end %>
+          </div>
+          <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mt-3 mb-2">Type</h6>
+          <div class="space-y-1.5">
+            <% %w[Issue Feature Sprint Milestone].each_with_index do |t, i| %>
+              <label class="flex items-center gap-2 text-sm text-talent-navy cursor-pointer">
+                <input type="checkbox" <%= "checked" if i == 2 %> class="h-4 w-4 rounded border-gray-300 text-talent-orange focus:ring-talent-orange">
+                <%= t %>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <%# View toggle (Board / List) %>
+        <div class="inline-flex rounded-lg border border-gray-200 bg-white overflow-hidden">
+          <button class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-talent-navy bg-gray-50 border-r border-gray-200 cursor-pointer">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            Board
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 cursor-pointer">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List
+          </button>
+        </div>
+
+        <%# Assignee stack %>
+        <div class="hidden xl:flex items-center -space-x-2 pl-2 ml-1 border-l border-gray-200">
+          <% %w[SJ TM AK EM].each_with_index do |i, idx| %>
+            <% bg = %w[bg-talent-orange bg-talent-blue bg-talent-navy bg-emerald-500][idx] %>
+            <span class="inline-flex items-center justify-center h-7 w-7 rounded-full <%= bg %> ring-2 ring-white text-[10px] font-semibold text-white"><%= i %></span>
+          <% end %>
+          <button class="inline-flex items-center justify-center h-7 w-7 rounded-full bg-white ring-2 ring-white border border-dashed border-gray-300 text-gray-500 hover:bg-gray-50 cursor-pointer" aria-label="Invite teammate">
+            <%= icon "plus", class: "h-3 w-3" %>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%# Columns %>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" data-controller="kanban">
+      <% kanban_columns.each do |col| %>
+        <div class="bg-gray-50 rounded-lg border border-gray-200 flex flex-col">
+          <%# Column header %>
+          <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full <%= col[:accent] %>"></span>
+              <h3 class="text-sm font-semibold text-talent-navy"><%= col[:title] %></h3>
+              <span class="inline-flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 px-2 min-w-[22px] h-5 text-[11px] font-semibold"><%= col[:cards].size %></span>
+            </div>
+            <div class="flex items-center gap-1">
+              <button class="h-7 w-7 grid place-items-center rounded-md text-gray-400 hover:bg-gray-200 hover:text-talent-navy cursor-pointer transition" aria-label="Add card">
+                <%= icon "plus", class: "h-3.5 w-3.5" %>
+              </button>
+              <button class="h-7 w-7 grid place-items-center rounded-md text-gray-400 hover:bg-gray-200 hover:text-talent-navy cursor-pointer transition" aria-label="Column actions">
+                <%= icon "more", class: "h-3.5 w-3.5" %>
+              </button>
+            </div>
+          </div>
+
+          <%# Cards container — Sortable target %>
+          <div class="p-3 space-y-3 flex-1 min-h-[260px]"
+               data-kanban-target="column" data-column-key="<%= col[:key] %>">
+            <% col[:cards].each do |card| %>
+              <article data-card-id="<%= card[:ref] %>"
+                       class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-talent-orange/40 hover:shadow-sm transition cursor-grab active:cursor-grabbing">
+
+                <%# Optional cover image / banner %>
+                <% if card[:cover] %>
+                  <div class="h-24 relative overflow-hidden">
+                    <% case card[:cover]
+                       when "navy" %>
+                      <div class="absolute inset-0" style="background: linear-gradient(135deg, #022043 0%, #06335E 100%);"></div>
+                      <svg class="absolute inset-0 w-full h-full opacity-20 text-white" viewBox="0 0 200 80" preserveAspectRatio="none"><path d="M0 60 C40 30 80 70 120 40 S180 50 200 30 L200 80 L0 80 Z" fill="currentColor"/></svg>
+                    <% when "orange" %>
+                      <div class="absolute inset-0" style="background: linear-gradient(135deg, #FC5A07 0%, #FF7A33 100%);"></div>
+                      <svg class="absolute inset-0 w-full h-full opacity-25 text-white" viewBox="0 0 200 80" preserveAspectRatio="none"><circle cx="40" cy="40" r="30" fill="currentColor"/><circle cx="150" cy="60" r="40" fill="currentColor"/></svg>
+                    <% end %>
+                    <span class="absolute top-2 left-2 inline-flex items-center text-[10px] font-mono text-white/90 bg-black/20 backdrop-blur-sm px-1.5 py-0.5 rounded">
+                      <%= card[:ref] %>
+                    </span>
+                  </div>
+                <% end %>
+
+                <div class="p-4">
+                  <%# Header row: ref (if no cover) + actions %>
+                  <% unless card[:cover] %>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                      <span class="inline-flex items-center text-[10px] font-mono text-gray-500"><%= card[:ref] %></span>
+                      <button class="h-6 w-6 grid place-items-center rounded text-gray-400 hover:bg-gray-100 hover:text-talent-navy cursor-pointer" aria-label="Card actions">
+                        <%= icon "more", class: "h-3 w-3" %>
+                      </button>
+                    </div>
+                  <% end %>
+
+                  <%# Title + description %>
+                  <h4 class="text-base font-semibold text-talent-navy leading-snug mb-1.5"><%= card[:title] %></h4>
+                  <p class="text-sm text-gray-500 leading-relaxed mb-3 line-clamp-2"><%= card[:description] %></p>
+
+                  <%# Tag chips %>
+                  <div class="flex flex-wrap gap-1.5 mb-4">
+                    <% card[:tags].each do |tag| %>
+                      <% tone = tag[:tone] %>
+                      <span class="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-md
+                                   bg-<%= tone %>-100 text-<%= tone %>-700">
+                        <span class="h-1.5 w-1.5 rounded-full bg-<%= tone %>-500"></span>
+                        <%= tag[:label] %>
+                      </span>
+                    <% end %>
+                  </div>
+
+                  <%# Footer: avatar stack on left, meta on right %>
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex -space-x-1.5">
+                      <% card[:assignees].first(4).each do |key| %>
+                        <% a = avatars[key] %>
+                        <span class="inline-flex items-center justify-center h-6 w-6 rounded-full <%= a[:bg] %> ring-2 ring-white text-[10px] font-semibold text-white" title="<%= a[:initials] %>"><%= a[:initials] %></span>
+                      <% end %>
+                      <% if card[:assignees].size > 4 %>
+                        <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-100 ring-2 ring-white text-[10px] font-semibold text-gray-600">+<%= card[:assignees].size - 4 %></span>
+                      <% end %>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <% if card[:due].present? %>
+                        <span class="inline-flex items-center gap-1 font-medium <%= card[:due] == 'today' ? 'text-rose-600' : 'text-gray-500' %>" title="Due">
+                          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                          <%= card[:due] %>
+                        </span>
+                      <% end %>
+                      <% if card[:comments] > 0 %>
+                        <span class="inline-flex items-center gap-1" title="Comments">
+                          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                          <%= card[:comments] %>
+                        </span>
+                      <% end %>
+                      <% if card[:attachments] > 0 %>
+                        <span class="inline-flex items-center gap-1" title="Attachments">
+                          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                          <%= card[:attachments] %>
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            <% end %>
+
+            <%# Add new card — full-width ghost button at the end of each column %>
+            <button class="w-full text-sm font-medium text-gray-500 hover:text-talent-navy hover:bg-white border border-dashed border-gray-300 hover:border-talent-orange/40 rounded-lg py-2.5 transition cursor-pointer flex items-center justify-center gap-1.5">
+              <%= icon "plus", class: "h-4 w-4" %>
+              Add task
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# ── 16. Stepper / Wizard ────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">16 · Stepper</h2>
+      <p class="text-sm text-gray-500">Horizontal numbered steps. Past steps show a check, current step is highlighted, future steps are muted.</p>
+    </header>
+
+    <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base">
+      <% [
+        { n: 1, label: "Site",        sub: "Pick location",   state: :done },
+        { n: 2, label: "Trade",       sub: "Match contractor", state: :done },
+        { n: 3, label: "Defect",      sub: "Describe + photos", state: :current },
+        { n: 4, label: "Review",      sub: "SLA + assign",     state: :upcoming },
+        { n: 5, label: "Confirm",     sub: "Notify resident",  state: :upcoming }
+      ].each_with_index do |s, i| %>
+        <li class="flex items-center <%= 'md:w-full' if i < 4 %> <%= 'sm:after:content-[""] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-4 xl:after:mx-6' if i < 4 %>
+                   <%= 'text-talent-orange' if s[:state] == :current %>
+                   <%= 'text-emerald-700'   if s[:state] == :done %>">
+          <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
+            <span class="me-2 flex items-center justify-center w-6 h-6 rounded-full
+                         <%= 'bg-emerald-100 text-emerald-700' if s[:state] == :done %>
+                         <%= 'bg-talent-orange text-white'      if s[:state] == :current %>
+                         <%= 'bg-gray-100 text-gray-500'        if s[:state] == :upcoming %>">
+              <% if s[:state] == :done %>
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <% else %>
+                <span class="text-xs font-semibold"><%= s[:n] %></span>
+              <% end %>
+            </span>
+            <span class="hidden sm:flex flex-col items-start leading-tight">
+              <span><%= s[:label] %></span>
+              <span class="text-[10px] font-normal text-gray-400 uppercase tracking-wide"><%= s[:sub] %></span>
+            </span>
+          </span>
+        </li>
+      <% end %>
+    </ol>
+
+    <div class="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
+      <button class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">
+        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="text-xs text-gray-500">Step 3 of 5</span>
+      <button class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">
+        Continue
+        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <%# ── 17. Skeleton loaders ────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">17 · Skeleton loaders</h2>
+      <p class="text-sm text-gray-500">Placeholder shimmer while data loads. Three patterns: card, list, table row.</p>
+    </header>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <%# Card skeleton %>
+      <div class="rounded-lg border border-gray-200 p-5 animate-pulse">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-full bg-gray-200"></div>
+          <div class="flex-1 space-y-1.5">
+            <div class="h-3 w-3/4 bg-gray-200 rounded"></div>
+            <div class="h-2 w-1/2 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+        <div class="mt-5 space-y-2">
+          <div class="h-2.5 bg-gray-200 rounded"></div>
+          <div class="h-2.5 bg-gray-200 rounded"></div>
+          <div class="h-2.5 w-5/6 bg-gray-200 rounded"></div>
+        </div>
+        <div class="mt-5 flex gap-2">
+          <div class="h-8 w-20 bg-gray-200 rounded-lg"></div>
+          <div class="h-8 w-16 bg-gray-100 rounded-lg"></div>
+        </div>
+      </div>
+
+      <%# List skeleton %>
+      <div class="rounded-lg border border-gray-200 divide-y divide-gray-100 animate-pulse">
+        <% 4.times do %>
+          <div class="flex items-center gap-3 p-4">
+            <div class="h-8 w-8 rounded-full bg-gray-200"></div>
+            <div class="flex-1 space-y-1.5">
+              <div class="h-2.5 w-3/4 bg-gray-200 rounded"></div>
+              <div class="h-2 w-1/3 bg-gray-100 rounded"></div>
+            </div>
+            <div class="h-6 w-12 bg-gray-100 rounded-full"></div>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Table-row skeleton %>
+      <div class="rounded-lg border border-gray-200 overflow-hidden animate-pulse">
+        <div class="grid grid-cols-12 gap-3 bg-gray-50 border-b border-gray-200 px-4 py-3">
+          <div class="col-span-4 h-2 bg-gray-200 rounded"></div>
+          <div class="col-span-3 h-2 bg-gray-200 rounded"></div>
+          <div class="col-span-3 h-2 bg-gray-200 rounded"></div>
+          <div class="col-span-2 h-2 bg-gray-200 rounded"></div>
+        </div>
+        <% 5.times do %>
+          <div class="grid grid-cols-12 gap-3 px-4 py-3 border-b border-gray-100 last:border-0">
+            <div class="col-span-4 h-3 bg-gray-200 rounded"></div>
+            <div class="col-span-3 h-3 bg-gray-100 rounded"></div>
+            <div class="col-span-3 h-3 bg-gray-100 rounded"></div>
+            <div class="col-span-2 h-3 bg-gray-200 rounded"></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 18. Progress bars ───────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">18 · Progress</h2>
+      <p class="text-sm text-gray-500">Linear bars at different sizes and tones, plus a stepped multi-segment example.</p>
+    </header>
+
+    <div class="space-y-5 max-w-2xl">
+      <% [
+        { label: "Plot sign-off",      pct: 85, tone: "talent-orange" },
+        { label: "Plumbing trade",     pct: 62, tone: "talent-blue"   },
+        { label: "Electrical trade",   pct: 34, tone: "amber"          },
+        { label: "Outstanding snags",  pct: 12, tone: "rose"           }
+      ].each do |bar| %>
+        <div>
+          <div class="flex items-center justify-between mb-1 text-sm">
+            <span class="font-medium text-talent-navy"><%= bar[:label] %></span>
+            <span class="text-gray-500"><%= bar[:pct] %>%</span>
+          </div>
+          <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-2.5 rounded-full bg-<%= bar[:tone] %>" style="width: <%= bar[:pct] %>%"></div>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Stacked / segmented progress %>
+      <div>
+        <div class="flex items-center justify-between mb-1 text-sm">
+          <span class="font-medium text-talent-navy">Defect mix (this week)</span>
+          <span class="text-gray-500">100%</span>
+        </div>
+        <div class="flex w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div class="bg-emerald-500" style="width: 42%" title="Resolved"></div>
+          <div class="bg-amber-500"   style="width: 28%" title="In progress"></div>
+          <div class="bg-talent-blue" style="width: 18%" title="Logged"></div>
+          <div class="bg-rose-500"    style="width: 12%" title="Overdue"></div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-emerald-500"></span>Resolved 42%</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-amber-500"></span>In progress 28%</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-talent-blue"></span>Logged 18%</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-sm bg-rose-500"></span>Overdue 12%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 19. Spinners + button loading state ─────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">19 · Spinners</h2>
+      <p class="text-sm text-gray-500">Standalone spinners at multiple sizes / tones, plus a button in its loading state.</p>
+    </header>
+
+    <div class="flex items-center gap-6 flex-wrap">
+      <% [
+        { size: "h-4 w-4", color: "text-gray-300", fill: "fill-talent-orange" },
+        { size: "h-6 w-6", color: "text-gray-300", fill: "fill-talent-orange" },
+        { size: "h-8 w-8", color: "text-gray-300", fill: "fill-talent-navy"   },
+        { size: "h-10 w-10", color: "text-gray-300", fill: "fill-emerald-500" },
+        { size: "h-12 w-12", color: "text-gray-300", fill: "fill-rose-500"    }
+      ].each do |spin| %>
+        <svg class="animate-spin <%= spin[:size] %> <%= spin[:color] %> <%= spin[:fill] %>" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+        </svg>
+      <% end %>
+    </div>
+
+    <div class="mt-6 flex items-center gap-3 flex-wrap">
+      <%# Button with loading state %>
+      <button type="button" disabled
+              class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white opacity-80 cursor-not-allowed">
+        <svg class="animate-spin h-4 w-4 text-white/40 fill-white" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+        </svg>
+        Saving…
+      </button>
+      <button type="button" disabled
+              class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy opacity-80 cursor-not-allowed">
+        <svg class="animate-spin h-4 w-4 text-gray-300 fill-talent-navy" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+        </svg>
+        Processing
+      </button>
+    </div>
+  </section>
+
+  <%# ── 20. Speed dial (floating action button) ─────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">20 · Speed dial</h2>
+      <p class="text-sm text-gray-500">A floating action button that fans out sub-actions on hover/click. Rendered inside this card relatively (production usage: fixed bottom-end).</p>
+    </header>
+
+    <div class="relative h-44 rounded-lg border border-dashed border-gray-200 bg-gray-50 grid place-items-center">
+      <span class="text-xs text-gray-400 uppercase tracking-widest">Hover the orange button →</span>
+
+      <div data-dial-init class="absolute end-6 bottom-6 group">
+        <div id="tp-speed-dial-menu" class="flex flex-col items-center hidden mb-3 space-y-2">
+          <% [
+            { label: "Log defect",    icon_path: "M12 5v14M5 12h14" },
+            { label: "Add site",      icon_path: "M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" },
+            { label: "Invite member", icon_path: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM20 8v6M23 11h-6" },
+            { label: "Comment",       icon_path: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }
+          ].each_with_index do |a, i| %>
+            <button type="button" data-tooltip-target="tp-dial-tip-<%= i %>" data-tooltip-placement="left"
+                    class="flex items-center justify-center w-11 h-11 text-talent-navy bg-white border border-gray-200 rounded-full shadow-md hover:bg-gray-50 cursor-pointer transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="<%= a[:icon_path] %>"/></svg>
+              <span class="sr-only"><%= a[:label] %></span>
+            </button>
+            <div id="tp-dial-tip-<%= i %>" role="tooltip"
+                 class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-medium text-white bg-talent-navy rounded-md opacity-0 transition-opacity">
+              <%= a[:label] %>
+            </div>
+          <% end %>
+        </div>
+        <button type="button" data-dial-toggle="tp-speed-dial-menu" aria-controls="tp-speed-dial-menu" aria-expanded="false"
+                class="flex items-center justify-center w-14 h-14 text-white bg-talent-orange rounded-full hover:bg-talent-orange-600 shadow-lg cursor-pointer transition">
+          <svg class="w-5 h-5 transition-transform group-hover:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span class="sr-only">Open actions</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 21. Rating stars ────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">21 · Rating</h2>
+      <p class="text-sm text-gray-500">Static average display, distribution breakdown, and interactive selector.</p>
+    </header>
+
+    <% star_svg = '<svg class="%s" viewBox="0 0 22 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03 3.656-3.564a1.524 1.524 0 0 0 .387-1.572Z"/></svg>'.html_safe %>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <%# Average + breakdown %>
+      <div class="rounded-lg border border-gray-200 p-5">
+        <div class="flex items-baseline gap-3">
+          <span class="text-4xl font-semibold text-talent-navy">4.7</span>
+          <span class="text-sm text-gray-500">out of 5</span>
+        </div>
+        <div class="flex items-center gap-1 mt-2">
+          <% 5.times do |i| %>
+            <%= raw star_svg % "w-5 h-5 #{i < 4 ? 'text-amber-400' : 'text-amber-400 opacity-70'}" %>
+          <% end %>
+        </div>
+        <p class="mt-1 text-xs text-gray-500">1,248 ratings</p>
+        <div class="mt-5 space-y-2">
+          <% [[5, 78], [4, 14], [3, 5], [2, 2], [1, 1]].each do |stars, pct| %>
+            <div class="flex items-center gap-2 text-xs text-gray-500">
+              <span class="w-3 font-medium text-talent-navy"><%= stars %></span>
+              <%= raw star_svg % "w-3 h-3 text-amber-400" %>
+              <div class="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+                <div class="h-2 rounded-full bg-amber-400" style="width: <%= pct %>%"></div>
+              </div>
+              <span class="w-8 text-right"><%= pct %>%</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Interactive rating (CSS-only via has-[:checked]:~) %>
+      <div class="rounded-lg border border-gray-200 p-5">
+        <h3 class="text-sm font-semibold text-talent-navy mb-2">Rate your contractor</h3>
+        <p class="text-xs text-gray-500 mb-4">Pick a star — bigger taps for mobile.</p>
+        <div class="flex flex-row-reverse justify-end items-center gap-1" role="radiogroup">
+          <% (1..5).to_a.reverse.each do |n| %>
+            <input type="radio" name="tp-rating" id="tp-rating-<%= n %>" value="<%= n %>" class="peer/<%= n %> sr-only">
+            <label for="tp-rating-<%= n %>"
+                   class="cursor-pointer text-gray-300 hover:text-amber-400 peer-checked/<%= n %>:text-amber-400 transition">
+              <%= raw star_svg % "w-7 h-7" %>
+              <span class="sr-only"><%= n %> star<%= 's' if n > 1 %></span>
+            </label>
+          <% end %>
+        </div>
+        <p class="mt-3 text-xs text-gray-500">Tip: this is purely CSS — no JS needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 22. Carousel ────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">22 · Carousel</h2>
+      <p class="text-sm text-gray-500">Flowbite carousel with auto-rotate, indicators, prev/next, and slide captions.</p>
+    </header>
+
+    <div id="tp-carousel" class="relative w-full" data-carousel="slide">
+      <%# Slides %>
+      <div class="relative h-56 overflow-hidden rounded-lg md:h-72">
+        <% slides = [
+          { grad: "linear-gradient(135deg, #FC5A07 0%, #FF7A33 100%)", title: "Live SLA radar", body: "Track every defect from intake to sign-off — in real time." },
+          { grad: "linear-gradient(135deg, #022043 0%, #06335E 100%)", title: "Contractor portal", body: "Tokenised links — no logins, no friction." },
+          { grad: "linear-gradient(135deg, #0057AE 0%, #1B7AC9 100%)", title: "Resident sign-off", body: "Pointer-driven signature, captured on any phone." },
+          { grad: "linear-gradient(135deg, #10B981 0%, #34D399 100%)", title: "Email intake",     body: "Defects+adur-14@acme — your inbox becomes the radar." }
+        ] %>
+        <% slides.each_with_index do |s, i| %>
+          <div class="<%= 'hidden' unless i.zero? %> duration-700 ease-in-out absolute inset-0" data-carousel-item="<%= 'active' if i.zero? %>">
+            <div class="absolute inset-0 grid place-items-center text-white text-center px-6" style="background: <%= s[:grad] %>;">
+              <div>
+                <h3 class="text-2xl font-semibold tracking-tight"><%= s[:title] %></h3>
+                <p class="mt-2 text-sm max-w-md mx-auto text-white/80"><%= s[:body] %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Indicators %>
+      <div class="absolute z-30 flex -translate-x-1/2 bottom-3 left-1/2 space-x-2">
+        <% slides.each_with_index do |_, i| %>
+          <button type="button" class="w-2 h-2 rounded-full bg-white/60 hover:bg-white" aria-current="<%= 'true' if i.zero? %>" aria-label="Slide <%= i + 1 %>" data-carousel-slide-to="<%= i %>"></button>
+        <% end %>
+      </div>
+
+      <%# Prev / Next %>
+      <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/40 group-hover:bg-white/70 transition">
+          <svg class="w-3 h-3 text-talent-navy" viewBox="0 0 6 10" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/></svg>
+          <span class="sr-only">Previous</span>
+        </span>
+      </button>
+      <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/40 group-hover:bg-white/70 transition">
+          <svg class="w-3 h-3 text-talent-navy" viewBox="0 0 6 10" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+          <span class="sr-only">Next</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <%# ── 23. Banner ──────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">23 · Banner</h2>
+      <p class="text-sm text-gray-500">Top-of-page announcement strip — dismissible via Flowbite <code class="px-1 py-0.5 bg-gray-100 rounded text-xs font-mono">data-dismiss-target</code>.</p>
+    </header>
+
+    <div id="tp-banner" tabindex="-1"
+         class="flex items-center justify-between gap-3 p-3 rounded-lg border border-talent-orange-100 bg-talent-orange-50">
+      <div class="flex items-center gap-3 text-sm text-talent-navy">
+        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-talent-orange text-white">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </span>
+        <span>
+          New: <strong class="text-talent-navy">resident sign-off via SMS</strong> is now in beta — opt-in your sites in Settings.
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="#" class="text-xs font-medium text-talent-orange-700 hover:text-talent-orange whitespace-nowrap">Learn more →</a>
+        <button type="button" data-dismiss-target="#tp-banner" aria-label="Dismiss banner"
+                class="h-7 w-7 grid place-items-center rounded text-gray-500 hover:text-talent-navy hover:bg-white cursor-pointer transition">
+          <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 24. Breadcrumb variants ─────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">24 · Breadcrumb</h2>
+      <p class="text-sm text-gray-500">Three breadcrumb styles: chevron separator, slash separator, and a pill-style trail.</p>
+    </header>
+
+    <div class="space-y-5">
+      <%# Chevron %>
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center gap-2 text-sm text-gray-500">
+          <li><a href="/dashboard" class="hover:text-talent-orange transition">Dashboard</a></li>
+          <li><svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></li>
+          <li><a href="/defects" class="hover:text-talent-orange transition">Defects</a></li>
+          <li><svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></li>
+          <li><span class="font-medium text-talent-navy" aria-current="page">Plot 14 — kitchen tap</span></li>
+        </ol>
+      </nav>
+
+      <%# Slash %>
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center text-sm text-gray-500">
+          <li><a href="/dashboard" class="hover:text-talent-orange transition">Dashboard</a></li>
+          <li class="px-2 text-gray-300">/</li>
+          <li><a href="/sites"     class="hover:text-talent-orange transition">Sites</a></li>
+          <li class="px-2 text-gray-300">/</li>
+          <li><a href="#"          class="hover:text-talent-orange transition">Adur Apartments</a></li>
+          <li class="px-2 text-gray-300">/</li>
+          <li><span class="font-medium text-talent-navy" aria-current="page">Plot 14</span></li>
+        </ol>
+      </nav>
+
+      <%# Pill trail %>
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center gap-1.5">
+          <% [
+            { label: "Reports", href: "/reports", active: false },
+            { label: "SLA",     href: "#",        active: false },
+            { label: "Q1 2026", href: "#",        active: true }
+          ].each_with_index do |b, i| %>
+            <li>
+              <% if b[:active] %>
+                <span class="inline-flex items-center rounded-md bg-talent-orange-50 text-talent-orange-700 text-xs font-medium px-2 py-1" aria-current="page"><%= b[:label] %></span>
+              <% else %>
+                <a href="<%= b[:href] %>" class="inline-flex items-center rounded-md bg-gray-100 text-talent-navy text-xs font-medium px-2 py-1 hover:bg-gray-200 transition"><%= b[:label] %></a>
+              <% end %>
+            </li>
+            <% unless i == 2 %>
+              <li class="text-gray-300 text-xs">›</li>
+            <% end %>
+          <% end %>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <%# ── 25. List group ──────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">25 · List group</h2>
+      <p class="text-sm text-gray-500">Settings-style list with rich rows — title, helper text, value indicator on the right.</p>
+    </header>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <%# Settings list %>
+      <ul class="divide-y divide-gray-100 rounded-lg border border-gray-200 overflow-hidden bg-white">
+        <% [
+          { title: "Email notifications",   sub: "Daily digest, 9:00 GMT",                state: "On" },
+          { title: "SMS escalations",       sub: "For red-flagged SLA breaches only",      state: "On" },
+          { title: "Slack integration",     sub: "Posts to #snags channel",                state: "Off" },
+          { title: "Auto-assign contractor", sub: "Based on trade + postcode rules",       state: "Beta" },
+          { title: "Two-factor authentication", sub: "TOTP via authenticator app",         state: "Required" }
+        ].each do |row| %>
+          <li class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-gray-50 transition">
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-talent-navy"><%= row[:title] %></div>
+              <div class="text-xs text-gray-500"><%= row[:sub] %></div>
+            </div>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full
+                         <%= 'bg-emerald-100 text-emerald-700' if row[:state] == 'On' %>
+                         <%= 'bg-gray-100    text-gray-600'    if row[:state] == 'Off' %>
+                         <%= 'bg-amber-100   text-amber-700'   if row[:state] == 'Beta' %>
+                         <%= 'bg-rose-100    text-rose-700'    if row[:state] == 'Required' %>">
+              <%= row[:state] %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+
+      <%# Simple anchor list — icons stored in a hash to keep ERB readable. %>
+      <%
+        list_icons = {
+          grid:   '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>'.html_safe,
+          folder: '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'.html_safe,
+          users:  '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>'.html_safe,
+          chart:  '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'.html_safe,
+          cog:    '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'.html_safe
+        }
+      %>
+      <ul class="rounded-lg border border-gray-200 overflow-hidden divide-y divide-gray-100 bg-white">
+        <% [
+          { icon: :grid,    label: "Dashboard" },
+          { icon: :folder,  label: "Defects",  badge: 12 },
+          { icon: :users,   label: "Contractors" },
+          { icon: :chart,   label: "Reports" },
+          { icon: :cog,     label: "Settings" }
+        ].each do |row| %>
+          <li>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+              <span class="h-8 w-8 grid place-items-center rounded-md bg-gray-100 text-talent-navy"><%= list_icons[row[:icon]] %></span>
+              <span class="flex-1 text-sm font-medium text-talent-navy"><%= row[:label] %></span>
+              <% if row[:badge] %>
+                <span class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-talent-orange-50 text-talent-orange-700 text-[11px] font-semibold"><%= row[:badge] %></span>
+              <% end %>
+              <svg class="h-3 w-3 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </section>
+
+  <%# ── 26. Empty states ────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5">
+      <h2 class="text-lg font-semibold text-talent-navy">26 · Empty states</h2>
+      <p class="text-sm text-gray-500">Four patterns: nothing-here, search-no-results, error, and success / all-done.</p>
+    </header>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <%# Nothing here yet %>
+      <div class="rounded-lg border border-dashed border-gray-200 p-8 text-center">
+        <div class="mx-auto h-12 w-12 rounded-full bg-talent-orange-50 text-talent-orange grid place-items-center">
+          <%= icon "satellite", class: "h-6 w-6" %>
+        </div>
+        <h4 class="mt-3 text-sm font-semibold text-talent-navy">No defects yet</h4>
+        <p class="mt-1 text-xs text-gray-500">Log your first defect and it appears on the radar instantly.</p>
+        <button class="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-talent-orange px-3 py-1.5 text-xs font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">
+          <%= icon "plus", class: "h-3 w-3" %>
+          Log defect
+        </button>
+      </div>
+
+      <%# Search no results %>
+      <div class="rounded-lg border border-dashed border-gray-200 p-8 text-center">
+        <div class="mx-auto h-12 w-12 rounded-full bg-gray-100 text-gray-500 grid place-items-center">
+          <%= icon "search", class: "h-6 w-6" %>
+        </div>
+        <h4 class="mt-3 text-sm font-semibold text-talent-navy">No matches for "boiler"</h4>
+        <p class="mt-1 text-xs text-gray-500">Try a different keyword, or clear filters to widen the search.</p>
+        <button class="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Clear filters</button>
+      </div>
+
+      <%# Error %>
+      <div class="rounded-lg border border-rose-200 bg-rose-50/50 p-8 text-center">
+        <div class="mx-auto h-12 w-12 rounded-full bg-rose-100 text-rose-700 grid place-items-center">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h4 class="mt-3 text-sm font-semibold text-talent-navy">Couldn't load reports</h4>
+        <p class="mt-1 text-xs text-gray-500">Something went wrong on our side. Please try again in a moment.</p>
+        <button class="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-700 cursor-pointer transition">Retry</button>
+      </div>
+
+      <%# All done %>
+      <div class="rounded-lg border border-emerald-200 bg-emerald-50/50 p-8 text-center">
+        <div class="mx-auto h-12 w-12 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4 class="mt-3 text-sm font-semibold text-talent-navy">All defects signed off</h4>
+        <p class="mt-1 text-xs text-gray-500">Nice work — no outstanding items across any site. Tea break.</p>
+        <button class="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-50 cursor-pointer transition">View archive</button>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 14. Coverage map — what we still might want ───────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">14 · Coverage map</h2>
+      <p class="text-sm text-gray-500">Quick stocktake of the Flowbite component catalogue. Anything not listed below is already on this page or used elsewhere in the app.</p>
+    </header>
+
+    <% covered = [
+      "Dropdown", "Modal (standard, confirm, form)", "Drawer (right + mobile sidebar)", "Accordion", "Tabs", "Tooltip", "Popover",
+      "Forms (all input types + dropzone)", "Password with eye toggle",
+      "Charts (area, column, bar, donut, radial, line, sparkline)",
+      "Toasts (success/info/warning/danger/rich)",
+      "Datepicker (inline + input)", "Calendar (month grid + nav)",
+      "Kanban board (Flowbite layout + SortableJS drag)",
+      "Table (defects index)", "Timeline (defect show)", "Pagination shell",
+      "Status & SLA badges", "Sidebar nav", "Topbar with user menu",
+      "Realtime via Turbo Streams + Solid Cable",
+      "Stepper / Wizard", "Skeleton loaders", "Progress bars (single + stacked)",
+      "Spinners + button loading state", "Speed dial (FAB)", "Rating stars (display + interactive)",
+      "Carousel (auto-rotate + indicators + controls)", "Banner (dismissible)",
+      "Breadcrumb (chevron / slash / pill)", "List group (settings + nav)",
+      "Empty states (4 patterns)"
+    ] %>
+    <% nice_to_add = [
+      "Wire kanban drag → Turbo Stream PATCH (currently logs to console)",
+      "Mega-menu / multi-column dropdown",
+      "Dark mode toggle (theme is already token-driven)",
+      "Rich text editor (Action Text + Trix)"
+    ] %>
+
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wide text-emerald-700 mb-3 flex items-center gap-2">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Covered (<%= covered.size %>)
+        </h3>
+        <ul class="space-y-1.5 text-sm text-talent-navy">
+          <% covered.each do |c| %>
+            <li class="flex items-start gap-2">
+              <span class="mt-1.5 h-1 w-1 rounded-full bg-emerald-500 flex-shrink-0"></span>
+              <span><%= c %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wide text-talent-orange-700 mb-3 flex items-center gap-2">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Worth doing next (<%= nice_to_add.size %>)
+        </h3>
+        <ul class="space-y-1.5 text-sm text-talent-navy">
+          <% nice_to_add.each do |c| %>
+            <li class="flex items-start gap-2">
+              <span class="mt-1.5 h-1 w-1 rounded-full bg-talent-orange flex-shrink-0"></span>
+              <span><%= c %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 15. Realtime via Turbo Streams + Solid Cable ───────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-5 flex items-start justify-between flex-wrap gap-3">
+      <div>
+        <h2 class="text-lg font-semibold text-talent-navy">15 · Realtime updates (Turbo Streams)</h2>
+        <p class="text-sm text-gray-500">
+          Open this page in a second tab. Post a message — it appears in <em>both</em> tabs instantly.
+          Delete one — gone from both. No reload, no polling. Pure Hotwire over Solid Cable.
+        </p>
+      </div>
+      <% if @testpage_messages.any? %>
+        <%= button_to destroy_all_testpage_messages_path, method: :delete,
+              class: "inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition",
+              form: { data: { turbo_confirm: "Clear every demo message?" } } do %>
+          <%= icon "delete", class: "h-3.5 w-3.5 text-gray-500" %>
+          Clear feed
+        <% end %>
+      <% end %>
+    </header>
+
+    <%# Subscribe to the broadcast channel. After this tag is rendered, any
+        broadcast_prepend/remove_to "testpage_messages" reaches this tab live. %>
+    <%= turbo_stream_from TestpageMessage::STREAM %>
+
+    <div class="grid lg:grid-cols-5 gap-6">
+
+      <%# Compose form (2/5) — extracted to partial so controller can
+          turbo_stream.replace it after submit (clears textarea, no scroll). %>
+      <div class="lg:col-span-2">
+        <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Post a message</h3>
+        <%= render "testpage_messages/form" %>
+
+        <%# Helper: how it works %>
+        <div class="mt-4 rounded-lg bg-gray-50 border border-gray-200 p-3 text-xs text-gray-600 leading-relaxed">
+          <p class="font-semibold text-talent-navy mb-1">How it works</p>
+          <ol class="list-decimal list-inside space-y-0.5">
+            <li>Form POSTs to <code class="px-1 bg-white border border-gray-200 rounded font-mono">/testpage_messages</code>.</li>
+            <li>Model <code class="px-1 bg-white border border-gray-200 rounded font-mono">after_create_commit</code> calls <code class="px-1 bg-white border border-gray-200 rounded font-mono">broadcast_prepend_to "testpage_messages"</code>.</li>
+            <li>Every tab subscribed via <code class="px-1 bg-white border border-gray-200 rounded font-mono">turbo_stream_from</code> prepends the partial — no reload.</li>
+            <li>Delete uses <code class="px-1 bg-white border border-gray-200 rounded font-mono">broadcast_remove_to</code> on the same channel.</li>
+          </ol>
+        </div>
+      </div>
+
+      <%# Live feed (3/5) %>
+      <div class="lg:col-span-3">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wide">Live feed</h3>
+          <span class="inline-flex items-center gap-1.5 text-xs text-emerald-700">
+            <span class="relative inline-flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Subscribed
+          </span>
+        </div>
+
+        <%# Container must keep the dom_id that broadcast_prepend_to targets. %>
+        <div id="testpage_message_list" class="space-y-2 min-h-[200px]">
+          <% if @testpage_messages.any? %>
+            <%= render @testpage_messages %>
+          <% else %>
+            <div class="flex flex-col items-center justify-center text-center py-10 rounded-lg border border-dashed border-gray-200 bg-gray-50">
+              <svg class="h-8 w-8 text-gray-300 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <p class="text-sm text-talent-navy font-medium">No messages yet</p>
+              <p class="text-xs text-gray-500 mt-0.5">Post one on the left to see it appear here — and in every other open tab.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </section>
 
   <%# ── Diagnostic note ────────────────────────────────────── %>

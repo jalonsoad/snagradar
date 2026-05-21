@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_20_141454) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_21_065549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -257,6 +257,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_141454) do
     t.index ["organization_id"], name: "index_sla_policies_on_organization_id"
     t.index ["site_id"], name: "index_sla_policies_on_site_id"
     t.index ["trade_id"], name: "index_sla_policies_on_trade_id"
+  end
+
+  create_table "testpage_messages", force: :cascade do |t|
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.string "kind", default: "info", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_testpage_messages_on_created_at"
   end
 
   create_table "trades", force: :cascade do |t|

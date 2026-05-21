@@ -11,6 +11,13 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # ─── Bullet — wrap each test so N+1 raises if Bullet.raise = true ──
+    if defined?(Bullet) && Bullet.enable?
+      setup    { Bullet.start_request }
+      teardown do
+        Bullet.perform_out_of_channel_notifications if Bullet.notification?
+        Bullet.end_request
+      end
+    end
   end
 end

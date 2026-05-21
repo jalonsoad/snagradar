@@ -22,14 +22,14 @@ puts "  ✓ Admin user:   #{admin.email_address} / password123"
 
 # ─── Default trades ───────────────────────────────────────────────────
 [
-  ["Plumbing",   3],
-  ["Electrical", 2],
-  ["Carpentry",  5],
-  ["Decorating", 7],
-  ["Tiling",     5],
-  ["Roofing",    7],
-  ["Glazing",    5],
-  ["General",    7]
+  [ "Plumbing",   3 ],
+  [ "Electrical", 2 ],
+  [ "Carpentry",  5 ],
+  [ "Decorating", 7 ],
+  [ "Tiling",     5 ],
+  [ "Roofing",    7 ],
+  [ "Glazing",    5 ],
+  [ "General",    7 ]
 ].each do |name, sla|
   org.trades.find_or_create_by!(name: name) { |t| t.default_sla_days = sla }
 end
@@ -59,9 +59,9 @@ electrical = org.trades.find_by!(name: "Electrical")
 decorating = org.trades.find_by!(name: "Decorating")
 
 [
-  ["Robson Plumbing",  plumbing,   "contact@robson-plumb.co.uk", "+44 20 7000 1110"],
-  ["Crown Electrics",  electrical, "ops@crown-elec.co.uk",       "+44 20 7000 2220"],
-  ["Pemberton Decor",  decorating, "studio@pemberton-decor.uk",  "+44 20 7000 3330"]
+  [ "Robson Plumbing",  plumbing,   "contact@robson-plumb.co.uk", "+44 20 7000 1110" ],
+  [ "Crown Electrics",  electrical, "ops@crown-elec.co.uk",       "+44 20 7000 2220" ],
+  [ "Pemberton Decor",  decorating, "studio@pemberton-decor.uk",  "+44 20 7000 3330" ]
 ].each do |name, trade, email, phone|
   org.contractor_companies.find_or_create_by!(name: name) do |c|
     c.trade = trade; c.contact_email = email; c.phone = phone

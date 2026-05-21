@@ -37,6 +37,6 @@ class TradesController < AuthenticatedController
   end
 
   def trade_params
-    params.expect(trade: [:name, :default_sla_days])
+    params.expect(trade: [ :name, :default_sla_days ])
   end
 end
