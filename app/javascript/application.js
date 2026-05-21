@@ -2,8 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// Flowbite — data-attribute components (dropdown, modal, drawer, accordion, tabs…)
-// Init on every Turbo navigation so dynamically rendered components hook up.
-import { initFlowbite } from "flowbite"
-document.addEventListener("turbo:load", initFlowbite)
-document.addEventListener("turbo:render", initFlowbite)
+// Flowbite — Turbo-compatible UMD bundle. Self-initializes on DOMContentLoaded
+// AND re-initializes on turbo:load / turbo:render. Exposes window.Flowbite.
+import "flowbite"

@@ -1,8 +1,17 @@
 <% content_for :title, "Edit defect — SnagRadar" %>
 
 <div class="max-w-3xl mx-auto">
-  <h1 class="font-display text-3xl font-extrabold tracking-tight text-talent-navy">Edit defect</h1>
-  <div class="mt-8 rounded-2xl bg-white border border-talent-navy/5 shadow-soft p-6 sm:p-8">
+  <nav class="flex items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
+    <%= link_to "Defects", defects_path, class: "hover:text-talent-navy transition" %>
+    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <%= link_to @defect.title, defect_path(@defect), class: "hover:text-talent-navy transition truncate max-w-xs" %>
+    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="font-medium text-talent-navy">Edit</span>
+  </nav>
+
+  <h1 class="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-talent-navy">Edit defect</h1>
+
+  <div class="mt-6 rounded-lg bg-white border border-gray-200 p-6 sm:p-8">
     <%= render "form", defect: @defect %>
   </div>
 </div>

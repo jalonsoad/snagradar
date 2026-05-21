@@ -1,0 +1,16 @@
+<%# Flowbite-style status badge. Local: status (string). %>
+<%
+  styles = {
+    "logged"      => "bg-gray-100 text-gray-700",
+    "assigned"    => "bg-blue-100 text-blue-700",
+    "accepted"    => "bg-talent-orange-50 text-talent-orange-700",
+    "booked"      => "bg-purple-100 text-purple-700",
+    "in_progress" => "bg-amber-100 text-amber-700",
+    "completed"   => "bg-emerald-100 text-emerald-700",
+    "signed_off"  => "bg-emerald-100 text-emerald-700",
+    "closed"      => "bg-gray-200 text-gray-700",
+    "rejected"    => "bg-rose-100 text-rose-700"
+  }
+  pill = styles[status.to_s] || "bg-gray-100 text-gray-700"
+%>
+<span class="inline-flex items-center text-xs font-medium px-2.5 py-0.5 rounded-full capitalize <%= pill %>"><%= status.to_s.tr("_", " ") %></span>

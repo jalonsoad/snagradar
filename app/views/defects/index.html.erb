@@ -1,85 +1,175 @@
 <% content_for :title, "Defects — SnagRadar" %>
 
 <div class="space-y-6">
-  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+
+  <%# ─── Page header ─────────────────────────────────────────────── %>
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
-      <h1 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-talent-navy">Defects</h1>
-      <p class="mt-1 text-talent-slate"><%= @defects.size %> shown · <%= @counts[:open] %> open across the organisation</p>
+      <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-talent-navy">Defects</h1>
+      <p class="mt-1 text-sm text-gray-500"><%= @defects.size %> shown · <%= @counts[:open] %> open across the organisation</p>
     </div>
-    <%= link_to new_defect_path, class: "btn-primary cursor-pointer" do %>
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Log defect
-    <% end %>
-  </div>
-
-  <%# Filter chips %>
-  <div class="flex flex-wrap gap-2">
-    <% [
-         ["All",        nil,           @counts[:open] + @counts[:signed_off]],
-         ["Open",       "open",        @counts[:open]],
-         ["Overdue",    "overdue",     @counts[:overdue]],
-         ["≤48h SLA",   "amber",       @counts[:amber]],
-         ["Signed off", "signed_off",  @counts[:signed_off]]
-       ].each do |label, filter, count| %>
-      <% active = params[:filter].to_s == filter.to_s %>
-      <%= link_to defects_path(filter: filter), class: "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition #{active ? 'bg-talent-navy text-white' : 'bg-white text-talent-navy hover:bg-talent-mist'}" do %>
-        <%= label %>
-        <span class="<%= active ? 'bg-white/15' : 'bg-talent-mist' %> rounded-full px-2 py-0.5 text-xs"><%= count %></span>
+    <div class="flex items-center gap-2">
+      <%= link_to reports_defects_csv_path, class: "inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-orange transition" do %>
+        <%= icon "download", class: "h-4 w-4" %>
+        Export CSV
       <% end %>
-    <% end %>
+      <%= link_to new_defect_path, class: "inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-orange focus-visible:ring-offset-2 transition" do %>
+        <%= icon "plus", class: "h-4 w-4" %>
+        Log defect
+      <% end %>
+    </div>
   </div>
 
-  <%# Defects table card %>
-  <div class="rounded-2xl bg-white border border-talent-navy/5 shadow-soft overflow-hidden">
-    <% if @defects.any? %>
-      <table class="w-full text-sm">
-        <thead class="bg-talent-mist/50 border-b border-talent-navy/5">
-          <tr class="text-left text-xs font-semibold uppercase tracking-wider text-talent-muted">
-            <th class="px-5 py-3">Reference</th>
-            <th class="px-5 py-3">Defect</th>
-            <th class="px-5 py-3">Trade</th>
-            <th class="px-5 py-3">Contractor</th>
-            <th class="px-5 py-3">SLA</th>
-            <th class="px-5 py-3 text-right">Status</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-talent-navy/5">
-          <% @defects.each do |d| %>
-            <tr class="hover:bg-talent-mist/40 transition cursor-pointer" onclick="window.location='<%= defect_path(d) %>'">
-              <td class="px-5 py-3.5 font-mono text-xs"><%= d.reference || "##{d.id}" %></td>
-              <td class="px-5 py-3.5">
-                <div class="font-semibold text-talent-navy"><%= d.title %></div>
-                <div class="text-xs text-talent-muted"><%= d.site&.name %> <%= "· #{d.plot.label}" if d.plot %></div>
-              </td>
-              <td class="px-5 py-3.5 text-talent-slate"><%= d.trade&.name %></td>
-              <td class="px-5 py-3.5 text-talent-slate"><%= d.contractor_company&.name || "—" %></td>
-              <td class="px-5 py-3.5">
-                <% case d.sla_state
-                   when :red %>
-                  <span class="sla-red"><span class="dot bg-red-500"></span> <%= d.days_until_sla.to_i.abs %>d overdue</span>
-                <% when :amber %>
-                  <span class="sla-amber"><span class="dot bg-amber-500"></span> Due in <%= d.days_until_sla %>d</span>
-                <% when :green %>
-                  <span class="sla-green"><span class="dot bg-emerald-500"></span> On track</span>
-                <% else %>
-                  <span class="text-xs text-talent-muted">—</span>
-                <% end %>
-              </td>
-              <td class="px-5 py-3.5 text-right">
-                <span class="inline-flex items-center gap-1.5 rounded-full bg-talent-mist text-talent-navy px-2.5 py-1 text-xs font-semibold capitalize"><%= d.status.tr("_", " ") %></span>
-              </td>
-            </tr>
+  <%# ─── Filter card ─────────────────────────────────────────────── %>
+  <div class="bg-white border border-gray-200 rounded-lg p-4 flex flex-col lg:flex-row lg:items-center gap-4">
+
+    <%# Status filter pills (Flowbite badge-style) %>
+    <div class="flex flex-wrap gap-2 flex-1">
+      <% [
+           ["All",        nil,           @counts[:open] + @counts[:signed_off]],
+           ["Open",       "open",        @counts[:open]],
+           ["Overdue",    "overdue",     @counts[:overdue]],
+           ["≤48h SLA",   "amber",       @counts[:amber]],
+           ["Signed off", "signed_off",  @counts[:signed_off]]
+         ].each do |label, filter, count| %>
+        <% active = params[:filter].to_s == filter.to_s %>
+        <%= link_to defects_path(filter: filter), class: "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition #{active ? 'bg-talent-navy text-white' : 'bg-gray-100 text-talent-navy hover:bg-gray-200'}" do %>
+          <%= label %>
+          <span class="<%= active ? 'bg-white/20 text-white' : 'bg-white text-talent-navy' %> rounded-full px-2 py-0.5 text-xs font-semibold"><%= count %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Search + filter dropdown %>
+    <div class="flex items-center gap-2">
+      <%= form_with url: defects_path, method: :get, local: true, class: "relative" do |f| %>
+        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <%= icon "search", class: "h-4 w-4" %>
+        </span>
+        <%= f.text_field :q, value: params[:q], placeholder: "Search title…",
+              class: "block w-56 rounded-lg border border-gray-200 bg-white pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20" %>
+        <%# Carry the active status filter across search submits %>
+        <% if params[:filter].present? %>
+          <%= hidden_field_tag :filter, params[:filter] %>
+        <% end %>
+      <% end %>
+
+      <button data-dropdown-toggle="defects-filter-menu" data-dropdown-placement="bottom-end"
+              class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition" type="button">
+        <%= icon "filter", class: "h-4 w-4" %>
+        Filter
+      </button>
+      <div id="defects-filter-menu" class="z-50 hidden w-56 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-100">
+          <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500">Filter by site</h6>
+        </div>
+        <ul class="py-1 text-sm max-h-64 overflow-y-auto">
+          <li><%= link_to "All sites", defects_path(filter: params[:filter]), class: "block px-4 py-2 text-talent-navy hover:bg-gray-50 transition #{'font-semibold bg-talent-orange-50' if params[:site_id].blank?}" %></li>
+          <% Current.organization.sites.order(:name).each do |site| %>
+            <% active = params[:site_id].to_s == site.id.to_s %>
+            <li>
+              <%= link_to site.name, defects_path(filter: params[:filter], site_id: site.id),
+                    class: "block px-4 py-2 text-talent-navy hover:bg-gray-50 transition #{'font-semibold bg-talent-orange-50' if active}" %>
+            </li>
           <% end %>
-        </tbody>
-      </table>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <%# ─── Defects table card (Flowbite admin pattern) ─────────────── %>
+  <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <% if @defects.any? %>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-700">
+          <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th scope="col" class="px-5 py-3">Reference</th>
+              <th scope="col" class="px-5 py-3">Defect</th>
+              <th scope="col" class="px-5 py-3">Trade</th>
+              <th scope="col" class="px-5 py-3">Contractor</th>
+              <th scope="col" class="px-5 py-3">SLA</th>
+              <th scope="col" class="px-5 py-3">Status</th>
+              <th scope="col" class="px-5 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <% @defects.each do |d| %>
+              <tr class="hover:bg-gray-50 transition">
+                <td class="px-5 py-3 font-mono text-xs text-gray-500">
+                  <%= link_to (d.reference || "##{d.id}"), defect_path(d), class: "hover:text-talent-orange transition" %>
+                </td>
+                <td class="px-5 py-3">
+                  <%= link_to defect_path(d), class: "block group" do %>
+                    <div class="font-medium text-talent-navy group-hover:text-talent-orange transition"><%= d.title %></div>
+                    <div class="text-xs text-gray-500"><%= d.site&.name %><%= " · #{d.plot.label}" if d.plot %></div>
+                  <% end %>
+                </td>
+                <td class="px-5 py-3 text-gray-500"><%= d.trade&.name %></td>
+                <td class="px-5 py-3 text-gray-500"><%= d.contractor_company&.name || "—" %></td>
+                <td class="px-5 py-3"><%= render "defects/sla_badge", defect: d %></td>
+                <td class="px-5 py-3"><%= render "defects/status_badge", status: d.status %></td>
+                <td class="px-5 py-3 text-right">
+                  <button data-dropdown-toggle="defect-actions-<%= d.id %>" data-dropdown-placement="bottom-end"
+                          class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-talent-navy cursor-pointer transition" type="button" aria-label="Open actions">
+                    <%= icon "more", class: "h-4 w-4" %>
+                  </button>
+                  <div id="defect-actions-<%= d.id %>" class="z-50 hidden w-44 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden">
+                    <ul class="py-1 text-sm text-talent-navy">
+                      <li><%= link_to defect_path(d), class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition" do %>
+                        <%= icon "view", class: "h-4 w-4 text-gray-500" %>
+                        View
+                      <% end %></li>
+                      <li><%= link_to edit_defect_path(d), class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition" do %>
+                        <%= icon "edit", class: "h-4 w-4 text-gray-500" %>
+                        Edit
+                      <% end %></li>
+                      <% unless d.contractor_company %>
+                        <li><%= link_to defect_path(d, anchor: "assign"), class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition" do %>
+                          <%= icon "assign", class: "h-4 w-4 text-gray-500" %>
+                          Assign
+                        <% end %></li>
+                      <% end %>
+                      <% if d.status_completed? || d.status_signed_off? %>
+                        <li><%= button_to close_defect_path(d), method: :post, class: "w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer transition text-left" do %>
+                          <%= icon "check", class: "h-4 w-4 text-emerald-600" %>
+                          Close
+                        <% end %></li>
+                      <% end %>
+                      <li class="border-t border-gray-100">
+                        <%= button_to defect_path(d), method: :delete,
+                              data: { turbo_confirm: "Delete defect '#{d.title}'?" },
+                              class: "w-full flex items-center gap-2 px-4 py-2 text-rose-600 hover:bg-rose-50 cursor-pointer transition text-left" do %>
+                          <%= icon "delete", class: "h-4 w-4" %>
+                          Delete
+                        <% end %>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <%# Footer / pagination shell — table caps at 100 rows in controller %>
+      <div class="px-5 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs text-gray-500">
+        <span>Showing <span class="font-semibold text-talent-navy"><%= @defects.size %></span> defects</span>
+        <span>Limit 100 · refine with filters above for more</span>
+      </div>
+
     <% else %>
       <div class="p-12 text-center">
-        <div class="mx-auto h-16 w-16 rounded-2xl bg-talent-orange/10 text-talent-orange grid place-items-center">
+        <div class="mx-auto h-16 w-16 rounded-full bg-talent-orange-50 text-talent-orange grid place-items-center">
           <%= icon "satellite", class: "h-8 w-8" %>
         </div>
-        <h3 class="mt-5 font-display text-xl font-extrabold text-talent-navy">No defects yet</h3>
-        <p class="mt-2 text-talent-muted">Log your first defect — it appears on the radar instantly.</p>
-        <%= link_to "Log defect", new_defect_path, class: "btn-primary mt-6 inline-flex cursor-pointer" %>
+        <h3 class="mt-5 text-xl font-semibold text-talent-navy">No defects yet</h3>
+        <p class="mt-2 text-sm text-gray-500">Log your first defect — it appears on the radar instantly.</p>
+        <%= link_to new_defect_path, class: "inline-flex items-center gap-2 mt-6 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 transition" do %>
+          <%= icon "plus", class: "h-4 w-4" %>
+          Log defect
+        <% end %>
       </div>
     <% end %>
   </div>

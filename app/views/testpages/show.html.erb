@@ -1,0 +1,364 @@
+<% content_for :title, "Component playground — SnagRadar" %>
+
+<div class="space-y-10">
+
+  <%# ── Header ──────────────────────────────────────────────── %>
+  <div>
+    <nav class="flex items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
+      <%= link_to "Dashboard", dashboard_path, class: "hover:text-talent-navy transition" %>
+      <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <span class="font-medium text-talent-navy">Component playground</span>
+    </nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-talent-navy">Flowbite component playground</h1>
+    <p class="mt-1 text-sm text-gray-500">Quick smoke-test of the Flowbite components we rely on. If any trigger fails to react, Flowbite isn't initialising.</p>
+  </div>
+
+  <%# ── 1. Dropdown ─────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">1 · Dropdown</h2>
+      <p class="text-sm text-gray-500">Click the button — a menu should appear positioned below.</p>
+    </header>
+
+    <button id="testpage-dropdown-trigger"
+            data-dropdown-toggle="testpage-dropdown"
+            data-dropdown-placement="bottom-start"
+            class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition" type="button">
+      Open dropdown
+      <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+
+    <div id="testpage-dropdown"
+         class="z-50 hidden w-48 rounded-lg bg-white border border-gray-200 shadow-lg overflow-hidden">
+      <ul class="py-1 text-sm text-talent-navy">
+        <li><a href="#" class="block px-4 py-2 hover:bg-gray-50 transition">Settings</a></li>
+        <li><a href="#" class="block px-4 py-2 hover:bg-gray-50 transition">Earnings</a></li>
+        <li><a href="#" class="block px-4 py-2 hover:bg-gray-50 transition">Sign out</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <%# ── 2. Modal ────────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">2 · Modal</h2>
+      <p class="text-sm text-gray-500">Click the button — a centred modal with backdrop should overlay the page.</p>
+    </header>
+
+    <button data-modal-target="testpage-modal" data-modal-toggle="testpage-modal"
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition" type="button">
+      Open modal
+    </button>
+
+    <div id="testpage-modal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-lg border border-gray-200">
+          <div class="flex items-center justify-between p-4 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-talent-navy">Confirm action</h3>
+            <button type="button" data-modal-hide="testpage-modal"
+                    class="text-gray-400 bg-transparent hover:bg-gray-100 hover:text-talent-navy rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center cursor-pointer transition" aria-label="Close">
+              <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+            </button>
+          </div>
+          <div class="p-5 space-y-3 text-sm text-gray-600">
+            <p>This is a Flowbite modal rendered from a Rails partial. It can be closed by the X button, the backdrop, or pressing <kbd class="px-1.5 py-0.5 rounded bg-gray-100 text-xs font-mono">Esc</kbd>.</p>
+            <p>If you can see and dismiss this, modal initialisation works.</p>
+          </div>
+          <div class="flex items-center justify-end gap-2 p-4 border-t border-gray-200">
+            <button type="button" data-modal-hide="testpage-modal"
+                    class="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Cancel</button>
+            <button type="button" data-modal-hide="testpage-modal"
+                    class="rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 3. Drawer ───────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">3 · Drawer</h2>
+      <p class="text-sm text-gray-500">Click the button — a side drawer should slide in from the right.</p>
+    </header>
+
+    <button data-drawer-target="testpage-drawer" data-drawer-show="testpage-drawer"
+            data-drawer-placement="right" aria-controls="testpage-drawer"
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition" type="button">
+      Open drawer
+    </button>
+
+    <div id="testpage-drawer" tabindex="-1" aria-labelledby="testpage-drawer-label"
+         class="fixed top-0 right-0 z-50 h-screen p-5 overflow-y-auto bg-white w-80 border-l border-gray-200 transition-transform translate-x-full">
+      <h5 id="testpage-drawer-label" class="inline-flex items-center text-base font-semibold text-talent-navy">Right drawer</h5>
+      <button type="button" data-drawer-hide="testpage-drawer" aria-controls="testpage-drawer"
+              class="text-gray-400 bg-transparent hover:bg-gray-100 hover:text-talent-navy rounded-lg text-sm w-8 h-8 absolute top-3 end-3 inline-flex items-center justify-center cursor-pointer transition" aria-label="Close menu">
+        <svg class="w-3 h-3" viewBox="0 0 14 14" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
+      </button>
+      <p class="mt-4 text-sm text-gray-600">If you can see this drawer slide in and dismiss it, drawer init works.</p>
+    </div>
+  </section>
+
+  <%# ── 4. Accordion ────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">4 · Accordion</h2>
+      <p class="text-sm text-gray-500">Click a row — the body expands; clicking another collapses this one.</p>
+    </header>
+
+    <div id="testpage-accordion" data-accordion="collapse" class="rounded-lg border border-gray-200 overflow-hidden">
+      <h3 id="acc-heading-1">
+        <button type="button"
+                class="flex items-center justify-between w-full px-4 py-3 font-medium text-left text-talent-navy bg-white hover:bg-gray-50 cursor-pointer transition"
+                data-accordion-target="#acc-body-1" aria-expanded="true" aria-controls="acc-body-1">
+          <span>What is SnagRadar?</span>
+          <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" viewBox="0 0 10 6" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/></svg>
+        </button>
+      </h3>
+      <div id="acc-body-1" class="hidden" aria-labelledby="acc-heading-1">
+        <div class="px-4 py-3 border-t border-gray-200 text-sm text-gray-600">A construction defects / customer-care platform.</div>
+      </div>
+
+      <h3 id="acc-heading-2">
+        <button type="button"
+                class="flex items-center justify-between w-full px-4 py-3 font-medium text-left text-talent-navy bg-white hover:bg-gray-50 border-t border-gray-200 cursor-pointer transition"
+                data-accordion-target="#acc-body-2" aria-expanded="false" aria-controls="acc-body-2">
+          <span>Is the dropdown above working?</span>
+          <svg data-accordion-icon class="w-3 h-3 shrink-0" viewBox="0 0 10 6" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/></svg>
+        </button>
+      </h3>
+      <div id="acc-body-2" class="hidden" aria-labelledby="acc-heading-2">
+        <div class="px-4 py-3 border-t border-gray-200 text-sm text-gray-600">If yes, then Flowbite is wired up correctly.</div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── 5. Tabs ─────────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">5 · Tabs</h2>
+      <p class="text-sm text-gray-500">Switching tabs swaps the panel below.</p>
+    </header>
+
+    <div class="border-b border-gray-200">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium" id="testpage-tabs" data-tabs-toggle="#testpage-tab-content" role="tablist">
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-3 border-b-2 rounded-t-lg cursor-pointer" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-3 border-b-2 rounded-t-lg cursor-pointer" id="dashboard-tab" data-tabs-target="#dashboard-panel" type="button" role="tab" aria-controls="dashboard-panel" aria-selected="false">Dashboard</button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-3 border-b-2 rounded-t-lg cursor-pointer" id="settings-tab" data-tabs-target="#settings-panel" type="button" role="tab" aria-controls="settings-panel" aria-selected="false">Settings</button>
+        </li>
+      </ul>
+    </div>
+    <div id="testpage-tab-content" class="pt-4">
+      <div class="hidden text-sm text-gray-600" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile content goes here.</div>
+      <div class="hidden text-sm text-gray-600" id="dashboard-panel" role="tabpanel" aria-labelledby="dashboard-tab">Dashboard content goes here.</div>
+      <div class="hidden text-sm text-gray-600" id="settings-panel" role="tabpanel" aria-labelledby="settings-tab">Settings content goes here.</div>
+    </div>
+  </section>
+
+  <%# ── 6. Tooltip ──────────────────────────────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-4">
+      <h2 class="text-lg font-semibold text-talent-navy">6 · Tooltip</h2>
+      <p class="text-sm text-gray-500">Hover the button — a tooltip should float above it.</p>
+    </header>
+    <button data-tooltip-target="testpage-tooltip" data-tooltip-placement="top" type="button"
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">
+      Hover me
+    </button>
+    <div id="testpage-tooltip" role="tooltip"
+         class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-talent-navy rounded-lg shadow-sm opacity-0 tooltip">
+      Floating Flowbite tooltip
+      <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
+  </section>
+
+  <%# ── 7. Form — every Flowbite field type ────────────────── %>
+  <section class="bg-white border border-gray-200 rounded-lg p-6">
+    <header class="mb-6">
+      <h2 class="text-lg font-semibold text-talent-navy">7 · Form fields</h2>
+      <p class="text-sm text-gray-500">All Flowbite-styled input types in one place — confirms the theme is consistent.</p>
+    </header>
+
+    <form class="grid sm:grid-cols-2 gap-5">
+
+      <%# Text + helper text %>
+      <div>
+        <label for="tp-name" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Full name</label>
+        <input type="text" id="tp-name" placeholder="Sara Jenkins"
+               class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+        <p class="mt-1 text-xs text-gray-500">As it should appear on contracts.</p>
+      </div>
+
+      <%# Email with leading icon %>
+      <div>
+        <label for="tp-email" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Email</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <input type="email" id="tp-email" placeholder="you@example.com"
+                 class="block w-full rounded-lg border border-gray-200 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+        </div>
+      </div>
+
+      <%# Password with show/hide (data-attribute toggle via Flowbite) %>
+      <div>
+        <label for="tp-password" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Password</label>
+        <div class="relative">
+          <input type="password" id="tp-password" placeholder="••••••••"
+                 class="block w-full rounded-lg border border-gray-200 bg-white pl-3 pr-10 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+          <button type="button" data-popover-target="tp-pw-hint" data-popover-trigger="hover"
+                  class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-talent-navy cursor-pointer">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </button>
+          <div data-popover id="tp-pw-hint" role="tooltip"
+               class="absolute z-10 invisible inline-block w-48 text-xs text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0">
+            <div class="p-3">At least 8 characters, mix of letters &amp; numbers.</div>
+          </div>
+        </div>
+      </div>
+
+      <%# Search with leading icon + suffix kbd %>
+      <div>
+        <label for="tp-search" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Search</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="search" id="tp-search" placeholder="Search…"
+                 class="block w-full rounded-lg border border-gray-200 bg-white pl-10 pr-12 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+          <kbd class="absolute inset-y-0 right-2 my-auto h-5 px-1.5 inline-flex items-center rounded border border-gray-200 bg-gray-50 text-[10px] font-mono text-gray-500">⌘K</kbd>
+        </div>
+      </div>
+
+      <%# Select %>
+      <div>
+        <label for="tp-trade" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Trade</label>
+        <select id="tp-trade"
+                class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+          <option>Plumbing</option><option>Electrical</option><option>Carpentry</option><option>Decoration</option>
+        </select>
+      </div>
+
+      <%# Number %>
+      <div>
+        <label for="tp-priority" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">SLA days</label>
+        <input type="number" id="tp-priority" min="1" max="30" value="7"
+               class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+      </div>
+
+      <%# Date + Time pair (uses Flowbite datepicker if needed; native here is enough) %>
+      <div>
+        <label for="tp-date" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Visit date</label>
+        <input type="date" id="tp-date"
+               class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+      </div>
+      <div>
+        <label for="tp-time" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Visit time</label>
+        <input type="time" id="tp-time"
+               class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20">
+      </div>
+
+      <%# Textarea %>
+      <div class="sm:col-span-2">
+        <label for="tp-notes" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Notes</label>
+        <textarea id="tp-notes" rows="3" placeholder="Anything the contractor should know on site…"
+                  class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-talent-orange focus:ring-2 focus:ring-talent-orange/20 resize-none"></textarea>
+        <p class="mt-1 text-xs text-gray-500"><span id="tp-notes-count">0</span> / 500 characters</p>
+      </div>
+
+      <%# File upload %>
+      <div class="sm:col-span-2">
+        <label for="tp-photos" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Photos</label>
+        <input type="file" id="tp-photos" multiple accept="image/*"
+               class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-talent-orange file:text-white hover:file:bg-talent-orange-600 cursor-pointer">
+        <p class="mt-1 text-xs text-gray-500">PNG, JPG up to 10 MB.</p>
+      </div>
+
+      <%# Range %>
+      <div class="sm:col-span-2">
+        <label for="tp-range" class="block mb-1 text-xs font-medium text-gray-700 uppercase tracking-wide">Severity</label>
+        <input type="range" id="tp-range" min="0" max="10" value="3"
+               class="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-talent-orange">
+        <div class="mt-1 flex justify-between text-[10px] text-gray-400 uppercase tracking-widest">
+          <span>Low</span><span>Medium</span><span>Urgent</span>
+        </div>
+      </div>
+
+      <%# Radio group (priority) %>
+      <fieldset class="sm:col-span-2">
+        <legend class="block mb-2 text-xs font-medium text-gray-700 uppercase tracking-wide">Priority</legend>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <% [["low", "emerald"], ["medium", "amber"], ["high", "rose"], ["urgent", "talent-navy"]].each_with_index do |(level, tone), i| %>
+            <label class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 transition has-[input:checked]:border-talent-orange has-[input:checked]:bg-talent-orange-50">
+              <input type="radio" name="tp-priority-group" value="<%= level %>" <%= "checked" if i.zero? %>
+                     class="h-4 w-4 border-gray-300 text-talent-orange focus:ring-talent-orange">
+              <span class="capitalize text-talent-navy"><%= level %></span>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+
+      <%# Checkbox group %>
+      <fieldset class="sm:col-span-2">
+        <legend class="block mb-2 text-xs font-medium text-gray-700 uppercase tracking-wide">Notify</legend>
+        <div class="space-y-2 text-sm text-talent-navy">
+          <% ["Contractor", "Resident", "Site manager"].each_with_index do |who, i| %>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" <%= "checked" if i < 2 %>
+                     class="h-4 w-4 rounded border-gray-300 text-talent-orange focus:ring-talent-orange">
+              <%= who %>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+
+      <%# Toggle switch (Flowbite pattern) %>
+      <div class="sm:col-span-2">
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" value="" class="sr-only peer" checked>
+          <div class="relative w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-talent-orange/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-talent-orange"></div>
+          <span class="ms-3 text-sm text-talent-navy">Send SMS reminders</span>
+        </label>
+      </div>
+
+      <%# Inline alert / helper card %>
+      <div class="sm:col-span-2 flex items-start gap-3 rounded-lg bg-talent-orange-50 border border-talent-orange-100 p-3 text-sm">
+        <svg class="h-4 w-4 mt-0.5 text-talent-orange-700 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div class="text-talent-navy">SLA target will be auto-calculated from the selected trade.</div>
+      </div>
+
+      <%# Error-state input example %>
+      <div class="sm:col-span-2">
+        <label for="tp-bad" class="block mb-1 text-xs font-medium text-rose-700 uppercase tracking-wide">Reference (error example)</label>
+        <input type="text" id="tp-bad" value="ABC-12" aria-invalid="true"
+               class="block w-full rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-900 placeholder-rose-300 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/30">
+        <p class="mt-1 text-xs text-rose-600 flex items-center gap-1">
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Reference must be 6 characters or more.
+        </p>
+      </div>
+
+      <div class="sm:col-span-2 flex justify-end gap-2 pt-2 border-t border-gray-100">
+        <button type="reset" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-talent-navy hover:bg-gray-50 cursor-pointer transition">Reset</button>
+        <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 cursor-pointer transition">Save</button>
+      </div>
+    </form>
+  </section>
+
+  <%# ── Diagnostic note ────────────────────────────────────── %>
+  <section class="bg-talent-navy text-white rounded-lg p-6">
+    <h2 class="text-lg font-semibold">Diagnostic checklist</h2>
+    <ul class="mt-3 space-y-1.5 text-sm text-white/80 list-disc list-inside">
+      <li>Open the browser console — there should be no Flowbite import errors.</li>
+      <li>Type <code class="px-1.5 py-0.5 bg-white/10 rounded font-mono">window.initFlowbite()</code> in the console to force re-init.</li>
+      <li>Every interactive section above should react on click/hover.</li>
+    </ul>
+  </section>
+</div>

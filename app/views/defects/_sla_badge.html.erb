@@ -1,0 +1,20 @@
+<%# Traffic-light SLA pill. Local: defect. %>
+<% case defect.sla_state
+   when :red %>
+  <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700">
+    <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+    <%= defect.days_until_sla.to_i.abs %>d overdue
+  </span>
+<% when :amber %>
+  <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700">
+    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+    Due in <%= defect.days_until_sla %>d
+  </span>
+<% when :green %>
+  <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+    On track
+  </span>
+<% else %>
+  <span class="text-xs text-gray-400">—</span>
+<% end %>

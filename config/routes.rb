@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   # ─── Authenticated app ────────────────────────────────────────────
   get "dashboard", to: "dashboards#show", as: :dashboard
+  get "testpage",  to: "testpages#show",  as: :testpage
 
   resources :defects do
     collection do

@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-40 bg-white border-b border-talent-navy/5">
+<header class="sticky top-0 z-40 bg-white border-b border-gray-200">
   <div class="flex items-center justify-between gap-4 px-6 lg:px-10 h-16">
     <%# Mobile menu trigger — Flowbite drawer %>
     <button type="button"
@@ -6,7 +6,7 @@
             data-drawer-show="mobile-sidebar"
             data-drawer-placement="left"
             aria-controls="mobile-sidebar"
-            class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-talent-navy hover:bg-talent-mist transition cursor-pointer"
+            class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg text-talent-navy hover:bg-gray-100 transition cursor-pointer"
             aria-label="Open menu">
       <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
@@ -18,27 +18,27 @@
          data-action="click@window->topbar-search#clickOutside">
       <%= form_with url: search_path, method: :get, class: "w-full" do |f| %>
         <div class="relative w-full">
-          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-talent-muted pointer-events-none">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 pointer-events-none">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </span>
           <%= f.search_field :q,
                 placeholder: "Search defects, sites, contractors…",
                 data: { topbar_search_target: "input",
                         action: "input->topbar-search#schedule focus->topbar-search#schedule" },
-                class: "block w-full rounded-xl border border-talent-navy/10 bg-talent-mist/60 pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-talent-orange focus:bg-white focus:ring-2 focus:ring-talent-orange/20" %>
+                class: "block w-full rounded-xl border border-gray-200 bg-gray-50 pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-talent-orange focus:bg-white focus:ring-2 focus:ring-talent-orange/20" %>
         </div>
       <% end %>
 
       <%# Live results dropdown %>
       <div data-topbar-search-target="panel"
-           class="hidden absolute top-full left-0 right-0 mt-2 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden max-h-[28rem] overflow-y-auto z-50">
+           class="hidden absolute top-full left-0 right-0 mt-2 rounded-2xl bg-white border border-gray-200 shadow-card overflow-hidden max-h-[28rem] overflow-y-auto z-50">
         <div data-topbar-search-target="results"></div>
       </div>
     </div>
 
     <%# Right cluster %>
     <div class="flex items-center gap-2 sm:gap-3">
-      <%= link_to new_defect_path, class: "hidden sm:inline-flex items-center gap-2 rounded-full border border-talent-navy/10 bg-white px-3 py-1.5 text-xs font-semibold text-talent-navy hover:bg-talent-mist transition" do %>
+      <%= link_to new_defect_path, class: "hidden sm:inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-talent-navy hover:bg-gray-100 transition" do %>
         <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New defect
       <% end %>
@@ -51,7 +51,7 @@
                 data-dropdown-toggle="notifications-dropdown"
                 data-dropdown-placement="bottom-end"
                 type="button"
-                class="relative h-9 w-9 grid place-items-center rounded-full hover:bg-talent-mist transition cursor-pointer"
+                class="relative h-9 w-9 grid place-items-center rounded-full hover:bg-gray-100 transition cursor-pointer"
                 aria-label="Notifications (<%= unread_count %> unread)">
           <svg class="h-5 w-5 text-talent-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <% if unread_count > 0 %>
@@ -60,17 +60,17 @@
         </button>
 
         <div id="notifications-dropdown"
-             class="z-50 hidden w-80 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden">
-          <div class="px-4 py-3 border-b border-talent-navy/5 flex items-center justify-between">
+             class="z-50 hidden w-80 rounded-2xl bg-white border border-gray-200 shadow-card overflow-hidden">
+          <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
             <div class="font-display text-sm font-extrabold text-talent-navy">Notifications</div>
-            <span class="text-xs text-talent-muted"><%= unread_count %> unread</span>
+            <span class="text-xs text-gray-500"><%= unread_count %> unread</span>
           </div>
           <% if recent_notifications.any? %>
-            <ul class="divide-y divide-talent-navy/5 max-h-80 overflow-y-auto">
+            <ul class="divide-y divide-gray-100 max-h-80 overflow-y-auto">
               <% recent_notifications.each do |n| %>
                 <li class="<%= 'bg-talent-orange/[0.04]' if n.read_at.nil? %>">
                   <%= link_to (n.defect ? defect_path(n.defect) : notifications_path),
-                              class: "block px-4 py-3 hover:bg-talent-mist/40 transition" do %>
+                              class: "block px-4 py-3 hover:bg-gray-100/40 transition" do %>
                     <div class="flex items-start gap-3">
                       <span class="mt-1 h-6 w-6 rounded-lg bg-talent-orange/15 text-talent-orange grid place-items-center flex-shrink-0">
                         <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
@@ -78,20 +78,20 @@
                       <div class="flex-1 min-w-0">
                         <div class="text-sm font-semibold text-talent-navy truncate"><%= n.subject || n.event_type.humanize %></div>
                         <% if n.preview.present? %>
-                          <div class="text-xs text-talent-muted truncate"><%= n.preview %></div>
+                          <div class="text-xs text-gray-500 truncate"><%= n.preview %></div>
                         <% end %>
-                        <div class="text-[10px] text-talent-muted font-mono mt-0.5"><%= time_ago_in_words(n.created_at) %> ago</div>
+                        <div class="text-[10px] text-gray-500 font-mono mt-0.5"><%= time_ago_in_words(n.created_at) %> ago</div>
                       </div>
                     </div>
                   <% end %>
                 </li>
               <% end %>
             </ul>
-            <div class="px-4 py-2 border-t border-talent-navy/5 text-center">
+            <div class="px-4 py-2 border-t border-gray-200 text-center">
               <%= link_to "See all notifications", notifications_path, class: "text-xs font-semibold text-talent-orange hover:text-talent-orange-700 transition" %>
             </div>
           <% else %>
-            <div class="px-4 py-8 text-center text-sm text-talent-muted">You're all caught up.</div>
+            <div class="px-4 py-8 text-center text-sm text-gray-500">You're all caught up.</div>
           <% end %>
         </div>
       </div>
@@ -102,31 +102,63 @@
               data-dropdown-toggle="user-menu-dropdown"
               data-dropdown-placement="bottom-end"
               type="button"
-              class="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l sm:border-talent-navy/10 sm:ml-1 cursor-pointer hover:opacity-90 transition"
+              class="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l sm:border-gray-200 sm:ml-1 cursor-pointer hover:opacity-90 transition"
               aria-label="Account menu">
-        <div class="h-9 w-9 rounded-full bg-gradient-to-br from-talent-orange to-talent-orange-600 grid place-items-center text-white text-sm font-bold">
+        <div class="h-9 w-9 rounded-full bg-talent-orange grid place-items-center text-white text-sm font-bold">
           <%= user&.initials %>
         </div>
         <div class="hidden sm:block leading-tight text-left">
           <div class="text-sm font-semibold text-talent-navy truncate max-w-[140px]"><%= user&.display_name %></div>
-          <div class="text-xs text-talent-muted capitalize"><%= user&.role&.tr("_", " ") %></div>
+          <div class="text-xs text-gray-500 capitalize"><%= user&.role&.tr("_", " ") %></div>
         </div>
-        <svg class="hidden sm:block h-3 w-3 text-talent-muted ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="hidden sm:block h-3 w-3 text-gray-500 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
 
       <div id="user-menu-dropdown"
-           class="z-50 hidden w-56 rounded-2xl bg-white border border-talent-navy/10 shadow-card overflow-hidden">
-        <div class="px-4 py-3 border-b border-talent-navy/5">
-          <div class="text-xs text-talent-muted">Signed in as</div>
+           class="z-50 hidden w-60 rounded-lg bg-white border border-gray-200 shadow-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-200">
+          <div class="text-xs text-gray-500">Signed in as</div>
           <div class="text-sm font-semibold text-talent-navy truncate"><%= user&.email_address %></div>
+          <div class="mt-0.5 text-xs text-gray-500 capitalize"><%= user&.role&.tr("_", " ") %> · <%= Current.organization&.name %></div>
         </div>
-        <ul class="py-1 text-sm">
-          <li><%= link_to "Team", invitations_path, class: "block px-4 py-2 text-talent-navy hover:bg-talent-mist transition" %></li>
-          <li><%= link_to "Profile", "#", class: "block px-4 py-2 text-talent-navy hover:bg-talent-mist transition" %></li>
+        <ul class="py-1 text-sm text-talent-navy">
+          <li>
+            <%= link_to "#", class: "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition" do %>
+              <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Profile
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "#", class: "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition" do %>
+              <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Account settings
+            <% end %>
+          </li>
+          <li>
+            <%= link_to invitations_path, class: "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition" do %>
+              <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Team
+            <% end %>
+          </li>
+          <li>
+            <%= link_to testpage_path, class: "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition" do %>
+              <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              Component playground
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "https://flowbite.com/docs/components/dropdowns/", target: "_blank", rel: "noopener", class: "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition" do %>
+              <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Help &amp; docs
+            <% end %>
+          </li>
         </ul>
-        <div class="border-t border-talent-navy/5">
-          <%= button_to "Sign out", session_path, method: :delete,
-                class: "block w-full text-left px-4 py-2 text-sm text-talent-navy hover:bg-talent-mist transition cursor-pointer" %>
+        <div class="border-t border-gray-200">
+          <%= button_to session_path, method: :delete,
+                class: "w-full flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition cursor-pointer text-left" do %>
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          <% end %>
         </div>
       </div>
     </div>

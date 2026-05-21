@@ -49,13 +49,11 @@
   --font-mono:        "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
   /* Shadows — soft, layered */
-  --shadow-soft: 0 1px 2px rgba(2, 32, 67, 0.04), 0 8px 24px -8px rgba(2, 32, 67, 0.08);
-  --shadow-card: 0 1px 2px rgba(2, 32, 67, 0.05), 0 16px 40px -12px rgba(2, 32, 67, 0.12);
+  /* Shadow tokens — marketing-only depth (cards & glows behind hero panels). */
+  --shadow-soft:        0 1px 2px rgba(2, 32, 67, 0.04), 0 8px 24px -8px rgba(2, 32, 67, 0.08);
+  --shadow-card:        0 1px 2px rgba(2, 32, 67, 0.05), 0 16px 40px -12px rgba(2, 32, 67, 0.12);
   --shadow-glow-orange: 0 12px 22px -6px rgba(252, 90, 7, 0.55);
-  --shadow-glow-navy: 0 12px 22px -6px rgba(2, 32, 67, 0.55);
-  /* Uniflow's signature button drop shadow (translated to orange) */
-  --shadow-btn-primary: 0px 12px 11px rgba(252, 90, 7, 0.45);
-  --shadow-btn-soft: 0px 2px 2.5px rgba(0, 0, 0, 0.2);
+  --shadow-glow-navy:   0 12px 22px -6px rgba(2, 32, 67, 0.55);
 
   /* Radii */
   --radius-pill: 9999px;
@@ -148,16 +146,8 @@
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-7 py-3 text-base font-semibold whitespace-nowrap transition-colors hover:bg-talent-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-navy focus-visible:ring-offset-2;
   }
 
-  .btn-dark-md {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-navy text-white px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-talent-navy-700;
-  }
-
   .btn-light {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy px-7 py-3 text-base font-semibold whitespace-nowrap transition-colors hover:bg-talent-mist focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-talent-navy;
-  }
-
-  .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-talent-orange text-white px-6 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-talent-orange-600;
   }
 
   /* Nav link */
@@ -176,13 +166,6 @@
   .btn-pill-orange:hover { background-color: var(--color-talent-orange-600); }
   .btn-pill-dark   { background-color: var(--color-talent-navy);   color: #fff; }
   .btn-pill-dark:hover   { background-color: var(--color-talent-navy-700); }
-
-  .btn-pill-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-talent-navy/15 bg-white text-talent-navy px-6 py-3 text-sm font-semibold transition-all duration-200 hover:border-talent-navy;
-  }
-  .btn-pill-ghost {
-    @apply inline-flex items-center gap-2 rounded-full text-talent-navy px-4 py-2 text-sm font-semibold transition-colors duration-200 hover:bg-talent-mist;
-  }
 
   /* Eyebrow tag */
   .eyebrow {
@@ -236,13 +219,6 @@
     background-image:
       linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-
-  .bp-grid-light {
-    background-image:
-      linear-gradient(rgba(2,32,67,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(2,32,67,0.06) 1px, transparent 1px);
     background-size: 56px 56px;
   }
 

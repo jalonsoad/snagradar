@@ -5,3 +5,6 @@ Rails.application.config.assets.version = "1.0"
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
+
+# Serve vendored third-party stylesheets (Flowbite, etc.) through Propshaft.
+Rails.application.config.assets.paths << Rails.root.join("vendor/assets/stylesheets")

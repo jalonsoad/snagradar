@@ -5,6 +5,7 @@ class DefectsController < AuthenticatedController
     scope = Current.organization.defects.includes(:site, :plot, :trade, :contractor_company)
     scope = filter_status(scope)
     scope = filter_site(scope)
+    scope = filter_query(scope)
     @defects = scope.recent.limit(100)
     @counts  = {
       open:       Current.organization.defects.open.count,
@@ -137,6 +138,11 @@ class DefectsController < AuthenticatedController
   def filter_site(scope)
     return scope if params[:site_id].blank?
     scope.where(site_id: params[:site_id])
+  end
+
+  def filter_query(scope)
+    return scope if params[:q].blank?
+    scope.where("title ILIKE :q OR reference ILIKE :q", q: "%#{params[:q].strip}%")
   end
 
   def broadcast_dashboard_update

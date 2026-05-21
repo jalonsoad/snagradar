@@ -67,8 +67,10 @@
     <p class="mt-2 text-xs text-talent-muted">JPEG / PNG / HEIC up to 10MB each. Camera capture works on mobile.</p>
   </div>
 
-  <div class="flex gap-3">
-    <%= f.submit (defect.persisted? ? "Save changes" : "Log defect"), class: "btn-primary cursor-pointer" %>
-    <%= link_to "Cancel", (defect.persisted? ? defect_path(defect) : defects_path), class: "inline-flex items-center justify-center gap-2 rounded-full bg-white text-talent-navy border border-talent-navy/10 px-7 py-3 text-sm font-semibold hover:bg-talent-mist transition" %>
+  <div class="flex gap-2 pt-2">
+    <%= f.submit (defect.persisted? ? "Save changes" : "Log defect"),
+          class: "inline-flex items-center justify-center gap-2 rounded-lg bg-talent-orange px-4 py-2 text-sm font-medium text-white hover:bg-talent-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-talent-orange focus-visible:ring-offset-2 cursor-pointer transition" %>
+    <%= link_to "Cancel", (defect.persisted? ? defect_path(defect) : defects_path),
+          class: "inline-flex items-center justify-center gap-2 rounded-lg bg-white text-talent-navy border border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-50 transition" %>
   </div>
 <% end %>

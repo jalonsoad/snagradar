@@ -1,9 +1,9 @@
 <%# Shared between the desktop sidebar and the mobile drawer.
     Caller passes a tone (`dark` or `light`) — defaults to dark navy. %>
 <% tone = local_assigns.fetch(:tone, :dark) %>
-<% link_idle    = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-talent-slate hover:bg-talent-mist" %>
+<% link_idle    = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-gray-600 hover:bg-gray-100 hover:text-talent-navy" %>
 <% link_active  = tone == :dark ? "bg-white/10 text-white"                                : "bg-talent-orange/10 text-talent-orange-700" %>
-<% footer_idle  = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-talent-slate hover:bg-talent-mist" %>
+<% footer_idle  = tone == :dark ? "text-white/65 hover:bg-white/5 hover:text-white"      : "text-gray-600 hover:bg-gray-100 hover:text-talent-navy" %>
 <% divider_cls  = tone == :dark ? "border-white/10"                                       : "border-talent-navy/10" %>
 
 <nav class="flex-1 px-3 py-2 space-y-0.5 text-sm">
@@ -18,7 +18,7 @@
     { name: "Reports",      path: reports_path,                icon: :chart,   active: controller_path == "reports" }
   ] %>
   <% nav.each do |item| %>
-    <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-xl transition #{item[:active] ? link_active : link_idle}" do %>
+    <%= link_to item[:path], class: "flex items-center gap-3 px-3 py-2.5 rounded-lg transition #{item[:active] ? link_active : link_idle}" do %>
       <% case item[:icon] %>
       <% when :grid %>
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -43,11 +43,11 @@
 </nav>
 
 <div class="px-3 py-4 border-t <%= divider_cls %>">
-  <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-xl transition #{footer_idle}" do %>
+  <%= link_to "#", class: "flex items-center gap-3 px-3 py-2 rounded-lg transition #{footer_idle}" do %>
     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span class="text-sm font-medium">Settings</span>
   <% end %>
-  <%= button_to session_path, method: :delete, class: "w-full flex items-center gap-3 px-3 py-2 rounded-xl transition cursor-pointer #{footer_idle}" do %>
+  <%= button_to session_path, method: :delete, class: "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition cursor-pointer #{footer_idle}" do %>
     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     <span class="text-sm font-medium">Sign out</span>
   <% end %>

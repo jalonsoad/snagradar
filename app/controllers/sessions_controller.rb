@@ -19,4 +19,12 @@ class SessionsController < ApplicationController
     terminate_session
     redirect_to new_session_path, status: :see_other
   end
+
+  private
+
+  # Override Authentication#after_authentication_url so a direct sign-in
+  # (with no stored return URL) lands on the dashboard, not the marketing root.
+  def after_authentication_url
+    session.delete(:return_to_after_authenticating) || dashboard_url
+  end
 end

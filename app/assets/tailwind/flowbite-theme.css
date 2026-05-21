@@ -1,47 +1,57 @@
 /* ============================================================
-   SnagRadar — Flowbite design tokens
+   SnagRadar — Flowbite design tokens (enterprise edition)
    Generated via the Flowbite MCP (generate-theme) with brand
-   color #FC5A07 + SnagRadar instructions, then tuned for our
-   Talent palette + Sofia Sans typography.
+   color #FC5A07 + an explicit "Linear / Vercel / Stripe admin"
+   brief, then tuned by hand for SnagRadar.
+
+   Philosophy:
+     - Brand orange only on primary CTAs and active accents.
+     - Talent navy on dark surfaces, headings, sidebar.
+     - A cool slate neutral scale (Tailwind v4 defaults) for
+       calm, professional surface chrome.
+     - Restrained radii: 6 / 8 / 12 px. Cards = 12 px.
+     - Borders over shadows. Shadow only on dropdowns + modals.
    ============================================================ */
 
 @theme {
-  /* Typography — Sofia Sans throughout (matches the rest of the app) */
+  /* ─── Typography — Sofia Sans throughout ───────────────────── */
   --font-sans: "Sofia Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif";
   --font-body: "Sofia Sans", "ui-sans-serif", "system-ui", "sans-serif";
+  --font-mono: "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", monospace;
 
-  --text-2xs: 0.625rem;
-  --spacing-8xl: 90rem;
-  --leading-9: 36px;
+  /* Type scale tuned for dense admin reading (body = 14 px) */
+  --text-2xs: 0.6875rem;       /* 11 px — meta / table micro */
+  --leading-4: 16px;
+  --leading-5: 20px;
+  --leading-6: 24px;
   --leading-7: 28px;
   --leading-8: 32px;
-  --leading-6: 24px;
-  --leading-4: 16px;
-  --leading-none: 1px;
-  --leading-5: 20px;
-  --leading-heading-none: 60px;
-  --tracking-tighter: -0.8px;
-  --tracking-tight: -0.4px;
+  --leading-9: 36px;
+  --leading-none: 1;
+  --leading-heading-none: 1.15;
+  --tracking-tight:   -0.4px;  /* default heading */
+  --tracking-tighter: -0.6px;  /* display titles */
 
-  /* Border radius — generous, SaaS-modern; cards 16px, inputs 12px */
+  /* ─── Radii — restrained, enterprise ───────────────────────── */
   --radius-0:    0px;
-  --radius-xxs:  4px;
-  --radius-xs:   6px;
-  --radius-sm:   8px;
-  --radius:     10px;
-  --radius-base:12px;   /* inputs */
-  --radius-lg:  16px;   /* cards */
+  --radius-xxs:  3px;
+  --radius-xs:   4px;
+  --radius-sm:   6px;          /* inputs / small buttons */
+  --radius:      8px;          /* default — buttons, inputs */
+  --radius-base: 8px;          /* aligns inputs + buttons */
+  --radius-lg:   12px;         /* cards, panels */
 
   --default-border-width: 1px;
+  --spacing-8xl: 90rem;
 
-  /* TEXT COLOR VARIABLES — Talent navy on light backgrounds */
-  --color-body:                 var(--color-talent-slate);
-  --color-body-subtle:          var(--color-talent-muted);
+  /* ─── Text colors ───────────────────────────────────────────── */
+  --color-body:                 var(--color-gray-700);   /* slate */
+  --color-body-subtle:          var(--color-gray-500);
   --color-heading:              var(--color-talent-navy);
 
-  --color-fg-brand-subtle:      #ffd2bb;
-  --color-fg-brand:             var(--color-talent-orange);     /* #FC5A07 */
-  --color-fg-brand-strong:      var(--color-talent-orange-700); /* #BF3D00 */
+  --color-fg-brand-subtle:      var(--color-talent-orange-100);
+  --color-fg-brand:             var(--color-talent-orange);
+  --color-fg-brand-strong:      var(--color-talent-orange-700);
 
   --color-fg-success:           var(--color-emerald-700);
   --color-fg-success-strong:    var(--color-emerald-900);
@@ -49,19 +59,38 @@
   --color-fg-danger-strong:     var(--color-rose-900);
   --color-fg-warning-subtle:    var(--color-amber-600);
   --color-fg-warning:           var(--color-amber-700);
-  --color-fg-yellow:            var(--color-yellow-400);
+  --color-fg-yellow:            var(--color-yellow-500);
   --color-fg-disabled:          var(--color-gray-400);
+  --color-fg-purple:            var(--color-violet-600);
+  --color-fg-cyan:              var(--color-cyan-600);
+  --color-fg-indigo:            var(--color-indigo-600);
+  --color-fg-pink:              var(--color-pink-600);
+  --color-fg-lime:              var(--color-lime-600);
 
-  /* BACKGROUND COLOR VARIABLES */
+  /* ─── Background — neutral scale (Tailwind slate-ish) ───────── */
+  /* Tailwind v4 gray-* defaults are warm. Override to a cool slate
+     scale so the UI reads "enterprise" instead of "consumer". */
+  --color-gray-50:  #F8FAFC;
+  --color-gray-100: #F1F5F9;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
+  --color-gray-400: #94A3B8;
+  --color-gray-500: #64748B;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1E293B;
+  --color-gray-900: #0F172A;
+  --color-gray-950: #020617;
+
   --color-neutral-primary-soft:        var(--color-white);
   --color-neutral-primary:             var(--color-white);
   --color-neutral-primary-medium:      var(--color-white);
   --color-neutral-primary-strong:      var(--color-white);
-  --color-neutral-secondary-soft:      var(--color-talent-mist);
-  --color-neutral-secondary:           var(--color-talent-mist);
-  --color-neutral-secondary-medium:    var(--color-talent-mist);
-  --color-neutral-secondary-strong:    var(--color-talent-mist);
-  --color-neutral-secondary-strongest: var(--color-talent-mist);
+  --color-neutral-secondary-soft:      var(--color-gray-50);
+  --color-neutral-secondary:           var(--color-gray-50);
+  --color-neutral-secondary-medium:    var(--color-gray-50);
+  --color-neutral-secondary-strong:    var(--color-gray-50);
+  --color-neutral-secondary-strongest: var(--color-gray-100);
   --color-neutral-tertiary-soft:       var(--color-gray-100);
   --color-neutral-tertiary:            var(--color-gray-100);
   --color-neutral-tertiary-medium:     var(--color-gray-100);
@@ -69,14 +98,14 @@
   --color-neutral-quaternary-medium:   var(--color-gray-200);
   --color-gray:                        var(--color-gray-300);
 
-  /* Brand background tokens — Flowbite components look up --color-brand */
-  --color-brand-softer:  #fff1e8;
-  --color-brand-soft:    #ffe1cd;
+  /* ─── Brand background tokens (Flowbite primary) ───────────── */
+  --color-brand-softer:  var(--color-talent-orange-50);
+  --color-brand-soft:    var(--color-talent-orange-100);
   --color-brand:         var(--color-talent-orange);
-  --color-brand-medium:  #ffb98a;
+  --color-brand-medium:  var(--color-talent-orange-600);
   --color-brand-strong:  var(--color-talent-orange-700);
 
-  /* Status backgrounds */
+  /* ─── Semantic backgrounds ─────────────────────────────────── */
   --color-success-soft:    var(--color-emerald-50);
   --color-success:         var(--color-emerald-600);
   --color-success-medium:  var(--color-emerald-100);
@@ -90,30 +119,46 @@
   --color-warning-medium:  var(--color-amber-100);
   --color-warning-strong:  var(--color-amber-700);
 
-  /* "Dark" tokens use the Talent navy */
+  /* "Dark" surfaces = SnagRadar navy */
   --color-dark-soft:    var(--color-talent-navy-700);
   --color-dark:         var(--color-talent-navy);
   --color-dark-strong:  var(--color-talent-navy-900);
   --color-disabled:     var(--color-gray-100);
 
-  /* BORDER COLOR VARIABLES */
+  /* Misc accents */
+  --color-purple:   var(--color-violet-500);
+  --color-sky:      var(--color-talent-blue);
+  --color-teal:     var(--color-teal-600);
+  --color-pink:     var(--color-pink-500);
+  --color-cyan:     var(--color-cyan-500);
+  --color-fuchsia:  var(--color-fuchsia-500);
+  --color-indigo:   var(--color-indigo-600);
+  --color-orange:   var(--color-talent-orange);
+
+  /* ─── Borders — 1 px, low-contrast ─────────────────────────── */
   --color-buffer:           var(--color-white);
   --color-buffer-medium:    var(--color-white);
   --color-buffer-strong:    var(--color-white);
-  --color-muted:            var(--color-talent-mist);
+  --color-muted:            var(--color-gray-50);
   --color-light-subtle:     var(--color-gray-100);
   --color-light:            var(--color-gray-100);
   --color-light-medium:     var(--color-gray-200);
   --color-default-subtle:   var(--color-gray-200);
-  --color-default:          var(--color-talent-navy);
+  --color-default:          var(--color-gray-200);
   --color-default-medium:   var(--color-gray-300);
-  --color-default-strong:   var(--color-talent-navy);
+  --color-default-strong:   var(--color-gray-400);
 
   --color-success-subtle:   var(--color-emerald-200);
   --color-danger-subtle:    var(--color-rose-200);
   --color-warning-subtle:   var(--color-amber-200);
-  --color-brand-subtle:     #ffd2bb;
+  --color-brand-subtle:     var(--color-talent-orange-100);
   --color-brand-light:      var(--color-talent-orange);
   --color-dark-subtle:      var(--color-talent-navy-700);
   --color-dark-backdrop:    var(--color-talent-navy-900);
+
+  /* ─── Shadows — only where they earn their pixels ──────────── */
+  /* Cards rely on 1 px borders. These live for popovers + modals. */
+  --shadow-card-flat: 0 0 0 1px var(--color-gray-200);
+  --shadow-popover:   0 4px 6px -2px rgba(15, 23, 42, 0.05), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
+  --shadow-modal:     0 25px 50px -12px rgba(15, 23, 42, 0.18);
 }
