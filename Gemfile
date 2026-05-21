@@ -40,7 +40,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 
 # CSV was removed from Ruby 3.4+ default gems — Reports controller depends on it.
 gem "csv"
